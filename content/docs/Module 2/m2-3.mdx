@@ -1,0 +1,122 @@
+---
+title: Module 2.3
+description: Sorting and flattening array explained
+---
+
+# Array
+
+Array methods directly edit the main array.
+
+## Sorting
+
+Without compare function (the arrow function passed to the method `sort`) the sorting would be:
+
+### For letters
+
+Capital letters will be first, then small letters. So the sorted value would be like this:
+
+```js
+["Banana", "apple", "carrot"];
+```
+
+### For numbers
+
+The sorting would be character by character, because the `sort` method converts any value to string to sort. So the output would be like this:
+
+```js
+[1, 10, 100, 25, 40, 5];
+```
+
+### Sort data ascendingly or descendingly
+
+```js tab="ascending"
+array.sort((a, b) => a - b);
+```
+
+```js tab="descending"
+array.sort((a, b) => b - a);
+```
+
+## `flat` method
+
+The `flat` method takes ad array and flattens it down. Basically it takes all the nested values and puts it in the root. Example:
+
+```js tab="code"
+const numbers = [1, 2, 3, [4, 5, 6]];
+
+numbers.flat();
+```
+
+```bash tab="result"
+[1, 2, 3, 4, 5, 6]
+```
+
+By default `flat` only flattens the first nested array. So if there are more arrays inside the nested one `flat` wouldn't take it, therefore the main aaray would still have nested arrays. Example:
+
+```js tab="code"
+const numbers = [1, 2, 3, [4, 5, 6, [7, 8]]];
+
+numbers.flat();
+```
+
+```bash tab="result"
+[1, 2, 3, 4, 5, 6, [7, 8]]
+```
+
+Pass the number of nesting/layers you want to flatten to fix this:
+
+```js tab="code"
+const numbers = [1, 2, 3, [4, 5, 6, [7, 8]]];
+
+numbers.flat(2); // [!code highlight]
+```
+
+```bash tab="result"
+[1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+The problem is fixed! But there's one more issue, what if we don't know how many layers of nested arrays there is. To flatten all the nested arrays use `Infinity` as teh parameter. Example:
+
+```js tab="code"
+const numbers = [1, 2, 3, [4, 5, 6, [7, 8, [9, [10, 11]]]]];
+
+numbers.flat(Infinity); // [!code highlight]
+```
+
+```bash tab="result"
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+```
+
+### Using `flat` with `Set`
+
+The `flat` method can be used with `new Set` to flatten and also remove duplicates in an array.
+
+```js tab="code"
+const tagsFromPosts = [
+  ["javascript", "react", "css"],
+  ["node", "express"],
+  ["css", "html", "react"],
+];
+
+const filterTags = new Set(tagsFromPosts.flat()); // [!code highlight]
+```
+
+```bash tab="result"
+Set(6) {"javascript", "react", "css", "node", "express", "html"}
+```
+
+The returned data is a set, not an array. To fix that, simply wrap the `new Set` with a spread operator. Example:
+
+```js tab="code"
+const tagsFromPosts = [
+  ["javascript", "react", "css"],
+  ["node", "express"],
+  ["css", "html", "react"],
+];
+
+const filterTags = [...new Set(tagsFromPosts.flat())]; // [!code highlight]
+```
+
+```bash tab="result"
+["javascript", "react", "css", "node", "express", "html"]
+```

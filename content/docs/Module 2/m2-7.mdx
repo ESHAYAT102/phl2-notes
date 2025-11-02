@@ -1,0 +1,24 @@
+---
+title: Module 2.7
+description: Scenario Based Activity - Grouping Data
+---
+
+# Lookup table
+
+This is an example of a lookup table. The goal here is to outupt the array elements with the number of times they are in the array.
+
+```js tab="code"
+const options = ["A","C","B","A","B","B","C","A","B","D","A","C","B","A",
+];
+
+const count = options.reduce((table, response) => { // [!code highlight]
+  table[response] = (table[response] || 0) + 1; // [!code highlight]
+  return table; // [!code highlight]
+}, {}); // [!code highlight]
+
+console.log(count);
+```
+
+```js tab="result"
+{ A: 5, C: 3, B: 5, D: 1 }
+```

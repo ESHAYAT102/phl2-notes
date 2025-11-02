@@ -1,0 +1,58 @@
+---
+title: Module 2.1
+description: Object Limitations & Map Introduction
+---
+
+# Object
+
+## Accessing keys
+
+Objects only allow the key to be a string type. Use `obj["Key Name"]` instead of `obj.name` to access the key if it has special characters in it. And to use special characters as a key, you must use double quotations:
+
+```js tab="without special characters"
+const obj = {
+  key: value, // [!code highlight]
+};
+```
+
+```js tab="with special characters"
+const obj = {
+  "Key Name": value, // [!code highlight]
+};
+```
+
+# `new` keyword
+
+Use the `new` keyword to create a `Map` and `Set`.
+
+```js
+const demoMap = new Map();
+const demoSet = new Set();
+```
+
+## Useful methods
+
+`set` - (key, value)
+
+`delete` - (key)
+
+`forEach` - ((value, key) => ...)
+
+`keys()` - // Returns all the keys and the keys can be stored as an array with a spread operator.
+
+`entries()` - // Returns an object of arrays, the first index is the key and the second index is the value.
+
+```bash
+[Map Entries] {
+  [ key1, value1 ]
+  [ key2, value2 ]
+  [ key3, value3 ]
+}
+```
+
+<Cards>
+  <Card
+    title="Code Repository"
+    href="https://github.com/Apollo-Level2-Web-Dev/critical-thinking/tree/main/module-02"
+  />
+</Cards>

@@ -1,0 +1,46 @@
+---
+title: Module 2.6
+description: The Common Pattern - Normalizing using lookup table
+---
+
+# Array & Object
+
+## Lookup Table
+
+Creating a lookup table:
+
+```js
+const postsArray = [
+  { id: "p-101", title: "Intro to SQL", author: "Alex" },
+  { id: "p-102", title: "Data Structures in JS", author: "Beth" },
+  { id: "p-103", title: "Understanding Reduce", author: "Chris" },
+  { id: "p-104", title: "CSS Grid Tricks", author: "Alex" },
+];
+
+const lookupTable = postsArray.reduce((table, post) => { // [!code highlight]
+  table[post.id] = post; // [!code highlight]
+  return table; // [!code highlight]
+}, {}); // [!code highlight]
+```
+
+Using a lookup table with for in loop:
+
+```js
+for (let post in lookupTable) {
+  console.log(lookupTable[post]); // [!code highlight]
+}
+```
+
+Output:
+
+```js
+{ id: "p-101", title: "Intro to SQL", author: "Alex" }
+{ id: "p-102", title: "Data Structures in JS", author: "Beth" }
+{ id: "p-103", title: "Understanding Reduce", author: "Chris" }
+{ id: "p-104", title: "CSS Grid Tricks", author: "Alex" }
+```
+
+## Why use a lookup table
+
+Usually if you do the loop on an array the output will be an **O(n)**, which will take a very long time if the array has a lot of data.
+But if you use a lookup table, basically convert the array into an object, the output will be an O(1). Which means it will take the same time no matter how long the object is.

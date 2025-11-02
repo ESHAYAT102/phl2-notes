@@ -1,0 +1,181 @@
+---
+title: Module 2.8
+description: Scenario Based Activity - Aggregating Data
+---
+
+# Lookup table (Advanced)
+
+This one is also a lookup table but just a bit advanced with just a little more data.
+
+The goal is to get an output like this:
+
+```js
+{
+  Electronics: {
+    totalRevenue: 1330,
+    itemCount: 4,
+  },
+  Books: {
+    totalRevenue: 110,
+    itemCount: 3,
+  },
+  Home: {
+    totalRevenue: 150,
+    itemCount: 1,
+  },
+}
+```
+
+The output would contain the category name as a key. Then an object with two more values in it, one to store the total revenue and the other to store the item quantity.
+
+The code given is this:
+
+```js
+const sales = [
+  { category: "Electronics", item: "Laptop", price: 1200, quantity: 1 },
+  { category: "Books", item: "JS Basics", price: 30, quantity: 2 },
+  { category: "Electronics", item: "Mouse", price: 25, quantity: 2 },
+  { category: "Home", item: "Chair", price: 150, quantity: 1 },
+  { category: "Books", item: "React Deep Dive", price: 50, quantity: 1 },
+  { category: "Electronics", item: "Keyboard", price: 80, quantity: 1 },
+];
+```
+
+To get that outupt we first need a variable containing the function (reduce).
+
+```js
+const output = sales.reduce(() => {}, {});
+```
+
+Then we need to name the parameters that we want to recieve.
+
+```js
+const output = sales.reduce((table, sale) => {}, {});
+```
+
+Now, as we will need the keys - `category`, `price`, `quantity` in this function, we can destructure the object.
+
+```js
+const output = sales.reduce((table, sale) => {
+  const { category, price, quantity } = sale; // [!code highlight]
+}, {});
+
+```
+
+And as the parameter `table` will store the final output, we can simply return it, of course in the end of the function so that it's the last line.
+
+```js
+const output = sales.reduce((table, sale) => {
+  const { category, price, quantity } = sale;
+
+  return table; // [!code highlight]
+}, {});
+
+```
+
+Now we can add a condition which will check that if an object of a category already exists or not.
+
+```js
+const output = sales.reduce((table, sale) => {
+  const { category, price, quantity } = sale;
+
+  if (!table[category]) { // [!code highlight]
+    table[category] = { // [!code highlight]
+      totalRevenue: 0, // [!code highlight]
+      itemCount: 0, // [!code highlight]
+    }; // [!code highlight]
+  } // [!code highlight]
+
+  return table;
+}, {});
+```
+
+Finally, we can set the initial values to add up.
+
+```js
+const output = sales.reduce((table, sale) => {
+  const { category, price, quantity } = sale;
+
+  if (!table[category]) {
+    table[category] = {
+      totalRevenue: 0,
+      itemCount: 0,
+    };
+  }
+
+  table[category].totalRevenue += price * quantity; // [!code highlight]
+  table[category].itemCount += quantity; // [!code highlight]
+
+  return table;
+}, {});
+```
+
+If we now add a `console.log`, we can get the output in the terminal.
+
+```js
+const output = sales.reduce((table, sale) => {
+  const { category, price, quantity } = sale;
+
+  if (!table[category]) {
+    table[category] = {
+      totalRevenue: 0,
+      itemCount: 0,
+    };
+  }
+
+  table[category].totalRevenue += price * quantity;
+  table[category].itemCount += quantity;
+
+  return table;
+}, {});
+
+console.log(output); // [!code highlight]
+```
+
+Final code & output:
+
+```js tab="code"
+const sales = [
+  { category: "Electronics", item: "Laptop", price: 1200, quantity: 1 },
+  { category: "Books", item: "JS Basics", price: 30, quantity: 2 },
+  { category: "Electronics", item: "Mouse", price: 25, quantity: 2 },
+  { category: "Home", item: "Chair", price: 150, quantity: 1 },
+  { category: "Books", item: "React Deep Dive", price: 50, quantity: 1 },
+  { category: "Electronics", item: "Keyboard", price: 80, quantity: 1 },
+];
+
+const output = sales.reduce((table, sale) => {
+  const { category, price, quantity } = sale;
+
+  if (!table[category]) {
+    table[category] = {
+      totalRevenue: 0,
+      itemCount: 0,
+    };
+  }
+
+  table[category].totalRevenue += price * quantity;
+  table[category].itemCount += quantity;
+
+  return table;
+}, {});
+
+console.log(output);
+```
+
+```js tab="result"
+{
+  Electronics: {
+    totalRevenue: 1330,
+    itemCount: 4,
+  },
+  Books: {
+    totalRevenue: 110,
+    itemCount: 3,
+  },
+  Home: {
+    totalRevenue: 150,
+    itemCount: 1,
+  },
+}
+```

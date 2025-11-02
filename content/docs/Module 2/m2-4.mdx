@@ -1,0 +1,69 @@
+---
+title: Module 2.4
+description: Array cross matching and Array.from() explained
+---
+
+# Array
+
+## Useful methods
+
+`some` - ((param) => ...) // Returns true if it finds one element in the array that satisfies the provided testing function. Otherwise, it returns false.
+
+```js tab="code"
+const currentUserRoles = ["user", "editor"];
+
+const featureAccessRoles = ["admin", "manager"];
+
+const canAccess = currentUserRoles.some((role) =>
+  featureAccessRoles.includes(role)
+);
+```
+
+```bash tab="result"
+false
+```
+
+`fill` - ("Hello") // Creates a 4 values long array with undefined values. Takes a parameter to fill all the arrays with that value.
+
+`from` - (params) // Creates an array out of thin air. Takes two parameters. First parameter to create the array, it can take an array or an object with the key "length" and an integer value as the length of the array as the first parameter. In the second parameter a function that will be iterated.
+
+Example with array and object as the first parameter:
+
+```js tab="code"
+Array.from(["apple", "banana", "mango", "orange"], (v, i) => `${i + 1}. ${v}`);
+```
+
+```bash tab="result"
+1. apple
+2. banana
+3. mango
+4. orange
+```
+
+```js tab="code"
+Array.from({ length: 4 }, (_, i) => i);
+```
+
+```bash tab="result"
+[0, 1, 2, 3]
+```
+
+The second parameter can take two parameters itself, first one as the value and the second one as the index of the array element.
+
+## Practice code
+
+Creating `range` from Python in JavaScript:
+
+```js tab="code"
+const range = (start, stop, step) =>
+  Array.from(
+    { length: Math.ceil((stop - start) / step) },
+    (_, i) => start + i * step
+  );
+
+console.log(range(0, 11, 2));
+```
+
+```bash tab="result"
+[0, 2, 4, 6, 8, 10]
+```

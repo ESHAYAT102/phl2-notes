@@ -1,0 +1,28 @@
+---
+title: Module 2.2
+description: The Core Transformation Toolkit (map, filter, sort, slice)
+---
+
+# Array
+
+## Useful methods
+
+`filter` - ((param) => ...) // One line would automatically return but if not then returning with `return` keyword is mandatory.
+
+`sort` - ((a, b) => ...) // `a` is the value of the previous index (intially the first index) and `b` is the value of the next index (intially the second index), `sort` will automatically iterate, so the array will be sorted. The `sort` method can be used without any params/functions in it.
+
+`slice` - (0, 3) // Takes two parameters, first one as the first index of the array to slice from and the last parameter as the last index to slice to.
+
+`map` - ((param) => ...) // The `.map` is an iteratator, so the function will automatically loop for each index.
+
+## Confusion with `map`
+
+The `return` keyword is not needed if the function is not multi line.
+
+```js tab="with return"
+array.map((item) => value);
+```
+
+```js tab="without return"
+array.map((item) => {return value});
+```

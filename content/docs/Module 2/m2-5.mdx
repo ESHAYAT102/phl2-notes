@@ -1,0 +1,54 @@
+---
+title: Module 2.5
+description: From Simple Totals to Powerful Aggregation (reduce)
+---
+
+# Array
+
+## `reduce` method
+
+The `reduce` method takes two parameters. It takes an arrow function that will be iterated through teh array in the first parameter. The first parameter itself can take two parameters, first one as the accumulator to store the returned value, and the second one to point to the curent element. Then the last parameter of the `reduce` method takes the initial value of the accumulator.
+
+```js tab="code"
+const cartItems = [
+  { id: "p-002", name: "iPhone 15 Pro", price: 1000, quantity: 1 },
+  { id: "p-002", name: "iPhone Charger", price: 40, quantity: 1 },
+  { id: "p-002", name: "MagSafe Charger for iPhone", price: 50, quantity: 1 },
+  { id: "p-001", name: "iPhone 15 case", price: 80, quantity: 3 },
+  { id: "p-003", name: "14 inch M5 MacBook Pro", price: 2000, quantity: 1 },
+];
+
+const subtotal = cartItems.reduce((subtotal, product) => { // [!code highlight]
+  return subtotal + product.price * product.quantity; // [!code highlight]
+}, 0); // [!code highlight]
+
+console.log(subtotal);
+```
+
+```bash tab="result"
+3330
+```
+
+```js tab="code"
+const driver = [
+  { name: "Lewis Hamilton", score: 105 },
+  { name: "Michael Schumacher", score: 91 },
+  { name: "Max Verstappen", score: 68 },
+  { name: "Sebastian Vettel", score: 53 },
+  { name: "Alain Prost", score: 51 },
+];
+
+const bestScorer = driver.reduce((bestDriver, driver) => { // [!code highlight]
+  console.log(bestDriver, driver); // [!code highlight]
+  if (bestDriver.score > driver.score) { // [!code highlight]
+    return bestDriver; // [!code highlight]
+  } // [!code highlight]
+  return driver; // [!code highlight]
+}, driver[0]); // [!code highlight]
+
+console.log(bestScorer);
+```
+
+```bash tab="result"
+{ name: "Lewis Hamilton", score: 105 }
+```
