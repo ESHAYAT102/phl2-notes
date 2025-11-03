@@ -1,0 +1,56 @@
+---
+title: Module 1.8
+description: Hands on experiment to understand Big-O notation of basic Array methods
+---
+
+# Code Practices
+
+## Tracking the time taken of a code
+
+### `performance.now()` approach
+
+Using `performance.now()` to track time of a certain process. Example:
+
+```js
+const startTime = performance.now(); // [!code highlight]
+
+for (let i = 0; i <= 5000; i++) {
+  console.log(i);
+}
+
+const endTime = performance.now(); // [!code highlight]
+
+console.log(`This code took ${endTime - startTime}ms`); // [!code highlight]
+```
+
+The output will have something like this:
+
+```bash
+This code took 8.351621000000002ms
+```
+
+### `console.time()` approach
+
+Using `console.time()` to track time:
+
+```js
+console.time("task"); // [!code highlight]
+
+for (let i = 0; i <= 5000; i++) {
+  console.log(i);
+}
+
+console.timeEnd("task"); // [!code highlight]
+```
+
+The output would have something like this in the end:
+
+```bash
+[6.95ms] task
+```
+
+### Warning
+
+<Callout type="warning">
+  `performance.now()` is more accurate than `console.time()`
+</Callout>

@@ -1,0 +1,173 @@
+---
+title: Module 1.9
+description: Basic interactions of Set datastructure
+---
+
+# Set
+
+Create set with `new Set()`:
+
+```js
+const mySet = new Set();
+```
+
+## Adding values in a set
+
+Use `add` method to add an element in the set:
+
+```js
+const mySet = new Set();
+
+mySet.add("apple"); // [!code highlight]
+```
+
+You can use `size` to check the size of the set:
+
+```js tab="code"
+const mySet = new Set();
+
+mySet.add("apple");
+
+console.log(mySet.size); // [!code highlight]
+```
+
+```bash tab="result"
+1
+```
+
+In a `Set`, there can't be any repeated data:
+
+```js tab="code"
+const mySet = new Set();
+
+mySet.add("apple"); // [!code highlight]
+mySet.add("mango");
+mySet.add("banana");
+mySet.add("apple"); // [!code highlight]
+
+console.log(mySet);
+```
+
+```js tab="result"
+Set(3) {
+  "apple", // [!code highlight]
+  "mango",
+  "banana",
+}
+```
+
+As you can see, the repeated data `apple` is registered once.
+
+## Creating a set from an array
+
+We can remove duplicates by doing this while also creating the set.
+
+```js tab="code"
+const arr = ["apple", "mango", "banana", "apple"];
+
+const mySet = new Set(arr); // [!code highlight]
+
+console.log(mySet);
+```
+
+```bash tab="result"
+Set(3) {
+  "apple",
+  "mango",
+  "banana",
+}
+```
+
+## Iterating method for sets
+
+The iterating method for a set is `forEach`.
+
+## Creating an array from a set
+
+To create an array from a set we can simply use the `from` method. (It's the `from` method of an array, sets don't have that)
+
+```js tab="code"
+const mySet = new Set();
+
+mySet.add("apple");
+mySet.add("mango");
+mySet.add("banana");
+mySet.add("apple");
+
+const arr = Array.from(mySet); // [!code highlight]
+
+console.log(arr);
+```
+
+```bash tab="result"
+[ "apple", "mango", "banana" ]
+```
+
+As you can see, the duplicates are also cleared down.
+
+## `has` method for sets
+
+The `has` method checks if the set has a data or not. Example:
+
+```js tab="code"
+const mySet = new Set();
+
+mySet.add("apple");
+mySet.add("mango");
+mySet.add("banana");
+mySet.add("apple");
+
+console.log(mySet.has("tomato")); // [!code highlight]
+```
+
+```bash tab="result"
+false
+```
+
+The returned value is false because the set doesn't have the value `tomato` in it.
+
+## `delete` method for sets
+
+The `delete` method deletes a data from a set. Example:
+
+```js tab="code"
+const mySet = new Set();
+
+mySet.add("apple");
+mySet.add("mango");
+mySet.add("banana");
+mySet.add("apple");
+
+mySet.delete("banana");
+
+console.log(mySet); // [!code highlight]
+```
+
+```js tab="result"
+Set(3) {
+  "apple",
+  "mango",
+}
+```
+
+# Array
+
+## Removing duplicates from an array
+
+The simplest way to remove duplicates from an array is:
+
+```js tab="code"
+const arr = ["apple", "mango", "banana", "apple"];
+
+const removeDuplicates = (arr) => {
+  const set = new Set(arr);
+
+  return Array.from(set);
+};
+
+console.log(removeDuplicates(arr));
+```
+
+```bash tab="result"
+[ "apple", "mango", "banana" ]
+```
