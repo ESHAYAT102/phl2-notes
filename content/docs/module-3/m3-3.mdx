@@ -1,0 +1,365 @@
+---
+title: Module 3.3
+description: Stack Implementation using Array
+---
+
+# Stack
+
+## Understanding stack
+
+### What is a stack
+
+A stack is a dataset/array that is in LIFO (Last In First Out) format.
+
+### The `methods`
+
+Stack has a few methods:
+
+- `push` - add an element.
+- `pop` - remove the latest element.
+- `peek` - view the latest element.
+- `print` - to check the dataset/array
+
+### Different types of stack
+
+A stack can be defined with 2 data types:
+
+- array
+- linked list
+
+To create a stack with an array, we can use `class`.
+
+## Creating a stack
+
+### The base of the stack
+
+We can create the base simply with a class returning an empty array:
+
+```js
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+}
+```
+
+---
+
+### Defining the methods we want
+
+Then add the methods we want:
+
+```js
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push() {} // [!code highlight]
+  pop() {} // [!code highlight]
+  peek() {} // [!code highlight]
+}
+```
+
+---
+
+#### Creating the push method
+
+Now let's create the push method:
+
+```js
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(value) { // [!code highlight]
+    this.items.push(value); // [!code highlight]
+  } // [!code highlight]
+
+  pop() {}
+  peek() {}
+}
+```
+
+We simply passed an argument named value into the array method `push` because it has the behaviour we want by default.
+
+---
+
+#### Creating the pop method
+
+Return undefined if the length of the stack is 0:
+
+```js
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(value) {
+    this.items.push(value);
+  }
+
+  pop() { // [!code highlight]
+    if (this.isEmpty()) { // [!code highlight]
+      return undefined; // [!code highlight]
+    } // [!code highlight]
+  } // [!code highlight]
+
+  peek() {}
+
+  isEmpty() { // [!code highlight]
+    return this.items.length === 0; // [!code highlight]
+  } // [!code highlight]
+}
+```
+
+Created another method named `isEmpty` to check if the array is empty or not and conditioning on that in the `pop` method. (this is more efficient)
+
+---
+
+Now returning the actual value to pop:
+
+```js
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(value) {
+    this.items.push(value);
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.items.pop(); // [!code highlight]
+  }
+
+  peek() {}
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+```
+
+---
+
+#### Creating the peek method
+
+Return undefined if the length of the stack is 0:
+
+```js
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(value) {
+    this.items.push(value);
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.items.pop();
+  }
+
+  peek() {
+    if (this.isEmpty()) { // [!code highlight]
+      return undefined; // [!code highlight]
+    } // [!code highlight]
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+```
+
+---
+
+Now returning the latest item in the stack:
+
+```js
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(value) {
+    this.items.push(value);
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.items.pop();
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      console.log(undefined);
+    }
+    console.log(this.items[this.items.length - 1]); // [!code highlight]
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+```
+
+---
+
+#### Creating the print method
+
+```js
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(value) {
+    this.items.push(value);
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.items.pop();
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      console.log(undefined);
+    }
+    console.log(this.items[this.items.length - 1]);
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+
+  print() { // [!code highlight]
+    console.log(this.items.slice().reverse().join(" -> ")); // [!code highlight]
+  } // [!code highlight]
+}
+```
+
+The `slice` method is used because it creates a copy of the original array and edits that, not the main array.
+
+## Using the stack
+
+As we have defined, the stack has these features/methods:
+
+- `push` - to add an element
+- `pop` - to remove the latest element
+- `peek` - to see the latest element
+- `isEmpty` - to check if the stack is empty or not
+- `print` - to outupt the stack
+
+### Using the methods
+
+#### Using the push method
+
+The push method is exactly the same `push` method for arrays, so the code would be:
+
+```js
+const myStack = new Stack();
+
+myStack.push("apple"); // [!code highlight]
+myStack.push("mango"); // [!code highlight]
+myStack.push("banana"); // [!code highlight]
+```
+
+This code will push an element into the stack named `myStack`.
+
+---
+
+#### Using the pop method
+
+The pop method doesn't take any paramenters so we can simply call it:
+
+```js
+const myStack = new Stack();
+
+myStack.push("apple");
+myStack.push("mango");
+myStack.push("banana");
+
+myStack.pop(); // [!code highlight]
+```
+
+This will remove the last added element.
+
+---
+
+#### Using the peek method
+
+The peek method will `console.log` the last added element and it deosn't take any paramenters, so it should be used like this:
+
+```js
+const myStack = new Stack();
+
+myStack.push("apple");
+myStack.push("mango");
+myStack.push("banana");
+
+myStack.peek(); // [!code highlight]
+```
+
+This code will output this in the console:
+
+```bash
+banana
+```
+
+---
+
+#### Using the isEmpty method
+
+The isEmpty method simply returns a boolean value based on if the stack is empty or not:
+
+```js
+const myStack = new Stack();
+
+myStack.push("apple");
+myStack.push("mango");
+myStack.push("banana");
+
+console.log(myStack.isEmpty()); // [!code highlight]
+```
+
+This code will output `false` in the console because the stack is not empty:
+
+```bash
+false
+```
+
+---
+
+#### Using the print method
+
+The print method itself logs the output so it can just be called:
+
+```js
+const myStack = new Stack();
+
+myStack.push("apple");
+myStack.push("mango");
+myStack.push("banana");
+
+myStack.print(); // [!code highlight]
+```
+
+This code will output this in the console:
+
+```js
+banana -> mango -> apple
+```

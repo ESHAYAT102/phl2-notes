@@ -1,0 +1,366 @@
+---
+title: Module 3.4
+description: Queue Implementation using Array
+---
+
+# Queue
+
+## Understanding queue
+
+### What is a queue
+
+A queue is a dataset/array that is in FIFO (First In First Out) format.
+
+### The `methods`
+
+Queue has a few methods:
+
+- `enqueue` - add element to the queue
+- `dequeue` - remove element from the queue
+- `peek` - to check the last enqueued element
+- `isEmpty` - to check if teh array empty or not
+- `print` - to check the dataset/array
+
+### Different types of queue
+
+A queue can be defined with 2 data types:
+
+- array
+- linked list
+
+To create a queue with an array, we can use `class`. (using linked list is more efficient)
+
+## Creating a queue with array
+
+### The base of the queue
+
+We can create the base simply with a class returning an empty array:
+
+```js
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+}
+```
+
+---
+
+### Defining the methods we want
+
+Then add the methods we want:
+
+```js
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+
+  enqueue() {} // [!code highlight]
+  dequeue() {} // [!code highlight]
+  peek() {} // [!code highlight]
+}
+```
+
+---
+
+#### Creating the enqueue method
+
+Now let's create the enqueue method:
+
+```js
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+
+  equeue(value) { // [!code highlight]
+    this.items.push(value); // [!code highlight]
+  } // [!code highlight]
+
+  dequeue() {}
+  peek() {}
+}
+```
+
+We simply passed an argument named value into the array method `enqueue` because it has the behaviour we want by default.
+
+---
+
+#### Creating the dequeue method
+
+Return undefined if the length of the queue is 0:
+
+```js
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+
+  enqueue(value) {
+    this.items.push(value);
+  }
+
+  dequeue() { // [!code highlight]
+    if (this.isEmpty()) { // [!code highlight]
+      return undefined; // [!code highlight]
+    } // [!code highlight]
+  } // [!code highlight]
+
+  peek() {}
+
+  isEmpty() { // [!code highlight]
+    return this.items.length === 0; // [!code highlight]
+  } // [!code highlight]
+}
+```
+
+Created another method named `isEmpty` to check if the array is empty or not and conditioning on that in the `dequeue` method. (this is more efficient)
+
+---
+
+Now returning the actual value to dequeue:
+
+```js
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+
+  enqueue(value) {
+    this.items.push(value);
+  }
+
+  dequeue() {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.items.shift(); // [!code highlight]
+  }
+
+  peek() {}
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+```
+
+---
+
+#### Creating the peek method
+
+Return undefined if the length of the queue is 0:
+
+```js
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+
+  enqueue(value) {
+    this.items.push(value);
+  }
+
+  dequeue() {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.items.shift();
+  }
+
+  peek() { // [!code highlight]
+    if (this.isEmpty()) { // [!code highlight]
+      return undefined; // [!code highlight]
+    } // [!code highlight]
+  } // [!code highlight]
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+```
+
+---
+
+Now returning the latest item in the queue:
+
+```js
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+
+  enqueue(value) {
+    this.items.push(value);
+  }
+
+  dequeue() {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.items.shift();
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      console.log(undefined);
+    }
+    console.log(this.items[0]); // [!code highlight]
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+```
+
+---
+
+#### Creating the print method
+
+```js
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+
+  enqueue(value) {
+    this.items.push(value);
+  }
+
+  dequeue() {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.items.shift();
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      console.log(undefined);
+    }
+    console.log(this.items[0]); // [!code highlight]
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+
+  print() { // [!code highlight]
+    console.log("[Start] ->", this.items.join(" -> "), "-> [End]"); // [!code highlight]
+  } // [!code highlight]
+}
+```
+
+The `slice` method is used because it creates a copy of the original array and edits that, not the main array.
+
+## Using the queue
+
+As we have defined, the queue has these features/methods:
+
+- `enqueue` - add element to the queue
+- `dequeue` - remove element from the queue
+- `peek` - to check the last enqueued element
+- `isEmpty` - to check if teh array empty or not
+- `print` - to check the dataset/array
+
+### Using the methods
+
+#### Using the enqueue method
+
+The enqueue method is exactly the same `push` method for arrays, so the code would be:
+
+```js
+const myQueue = new Queue();
+
+myQueue.enqueue("apple"); // [!code highlight]
+myQueue.enqueue("mango"); // [!code highlight]
+myQueue.enqueue("banana"); // [!code highlight]
+```
+
+This code will enqueue an element into the queue named `myQueue`.
+
+---
+
+#### Using the dequeue method
+
+The dequeue method doesn't take any paramenters so we can simply call it:
+
+```js
+const myQueue = new Queue();
+
+myQueue.enqueue("apple");
+myQueue.enqueue("mango");
+myQueue.enqueue("banana");
+
+myQueue.dequeue(); // [!code highlight]
+```
+
+This will remove the last added element.
+
+---
+
+#### Using the peek method
+
+The peek method will `console.log` the last added element and it deosn't take any paramenters, so it should be used like this:
+
+```js
+const myQueue = new Queue();
+
+myQueue.enqueue("apple");
+myQueue.enqueue("mango");
+myQueue.enqueue("banana");
+
+myQueue.peek(); // [!code highlight]
+```
+
+This code will output this in the console:
+
+```bash
+apple
+```
+
+---
+
+#### Using the isEmpty method
+
+The isEmpty method simply returns a boolean value based on if the queue is empty or not:
+
+```js
+const myQueue = new Queue();
+
+myQueue.enqueue("apple");
+myQueue.enqueue("mango");
+myQueue.enqueue("banana");
+
+console.log(myQueue.isEmpty()); // [!code highlight]
+```
+
+This code will output `false` in the console because the queue is not empty:
+
+```bash
+false
+```
+
+---
+
+#### Using the print method
+
+The print method itself logs the output so it can just be called:
+
+```js
+const myQueue = new Queue();
+
+myQueue.enqueue("apple");
+myQueue.enqueue("mango");
+myQueue.enqueue("banana");
+
+myQueue.print(); // [!code highlight]
+```
+
+This code will output this in the console:
+
+```js
+[Start] -> apple -> mango -> banana -> [End]
+```

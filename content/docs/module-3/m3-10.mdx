@@ -1,0 +1,193 @@
+---
+title: Module 3.10
+description: Linked List Implementation - remove()
+---
+
+# Linked list
+
+## Methods
+
+As we have finished the `append`, `prepend`, `print`, and `insert` in the previous module, we will manage the final `remove` method in this module.
+
+### Creating the methods
+
+The `remove` method will handle three conditions:
+
+- start - the node being deleted in the first index of the list (the head)
+- end - the node being deleted in the last index of the list (the tail)
+- mid - the node being deleted anywhere else in the list (except head and tail)
+
+#### Creating the remove method
+
+Handling the `mid` condition:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+  prepend(...) {...}
+  insert(...) {...}
+
+  remove(index) { // [!code highlight]
+    const leadingNode = this._traverseToIndex(index - 1); // [!code highlight]
+    const nodeToRemove = leadingNode.next; // [!code highlight]
+
+    leadingNode.next = nodeToRemove.next; // [!code highlight]
+  } // [!code highlight]
+
+  print(...) {...}
+}
+```
+
+---
+
+Handling the `end` condition:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+  prepend(...) {...}
+  insert(...) {...}
+
+  remove(index) {
+    const leadingNode = this._traverseToIndex(index - 1);
+    const nodeToRemove = leadingNode.next;
+
+    leadingNode.next = nodeToRemove.next;
+
+    if(leadingNode.next === null) { // [!code highlight]
+      this.tail = leadingNode; // [!code highlight]
+    } // [!code highlight]
+  }
+
+  print(...) {...}
+}
+```
+
+---
+
+Handling the `start` condition:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+  prepend(...) {...}
+  insert(...) {...}
+
+  remove(index) {
+    if(index === 0) { // [!code highlight]
+      this.head = this.head.next; // [!code highlight]
+    } // [!code highlight]
+
+    const leadingNode = this._traverseToIndex(index - 1);
+    const nodeToRemove = leadingNode.next;
+
+    leadingNode.next = nodeToRemove.next;
+
+    if(leadingNode.next === null) {
+      this.tail = leadingNode;
+    }
+  }
+
+  print(...) {...}
+}
+```
+
+---
+
+Handling if the user has deleted the only node. So after removing the node the list will have nothing inside, it'll be empty or `null`.
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+  prepend(...) {...}
+  insert(...) {...}
+
+  remove(index) {
+    if(index === 0) {
+      this.head = this.head.next;
+
+      if(this.length === 1) { // [!code highlight]
+        this.tail = null; // [!code highlight]
+      } // [!code highlight]
+    }
+
+    const leadingNode = this._traverseToIndex(index - 1);
+    const nodeToRemove = leadingNode.next;
+
+    leadingNode.next = nodeToRemove.next;
+
+    if(leadingNode.next === null) {
+      this.tail = leadingNode;
+    }
+  }
+
+  print(...) {...}
+}
+```
+
+## Code cleanup
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+  prepend(...) {...}
+  insert(...) {...}
+
+  remove(index) {
+    if(index === 0) {
+      const removedNode = this.head.value; // [!code highlight]
+      this.head = this.head.next;
+
+      if(this.length === 1) {
+        this.tail = null;
+      }
+
+      this.length--; // [!code highlight]
+      return removedNode; // [!code highlight]
+    }
+
+    const leadingNode = this._traverseToIndex(index - 1);
+    const nodeToRemove = leadingNode.next;
+
+    leadingNode.next = nodeToRemove.next;
+
+    if(leadingNode.next === null) {
+      this.tail = leadingNode;
+    }
+
+    return nodeToRemove.value; // [!code highlight]
+  }
+
+  print(...) {...}
+}
+```

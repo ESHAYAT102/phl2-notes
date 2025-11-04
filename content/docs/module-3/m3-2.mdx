@@ -1,0 +1,42 @@
+---
+title: Module 3.2
+description: Basic Class constructor and methods refresher
+---
+
+# Stateful
+
+The best stateful approach is using a `class`. Example:
+
+```js
+class Counter {
+  constructor(count) {
+    this.count = count;
+  }
+
+  add(amount) {
+    this.count = this.count + amount;
+  }
+
+  print() {
+    console.log(this.count);
+  }
+}
+
+const counter1 = new Counter(0);
+
+counter1.add(2);
+counter1.add(3);
+
+counter1.print();
+
+const counter2 = new Counter(10);
+
+counter2.add(20);
+counter2.add(30);
+
+counter2.print();
+```
+
+As you can see, using a `class` can be very beneficial as it can be reused. (`counter1` and `counter2`)
+
+This is all OOP by teh way.

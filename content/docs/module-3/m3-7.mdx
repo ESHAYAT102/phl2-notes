@@ -1,0 +1,462 @@
+---
+title: Module 3.7
+description: Linked List Implementation - append() and print()
+---
+
+# Linked list
+
+## Methods
+
+The selectors we need:
+
+- `head` - to pick the first node
+- `tail` - to pick the last node
+- `length` - to see the length of the list
+
+The methods we need:
+
+- `append` - add a node to the list
+- `prepend` - add a node to the starting of the list
+- `insert` - add a node anywhere in the list
+- `remove` - remove a node
+- `print` - `console.log` the list
+
+### Creating methods for linked lists
+
+Create the base:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+}
+```
+
+Then add the methods:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append() {}
+  prepend() {}
+  insert() {}
+  remove() {}
+  print() {}
+}
+```
+
+---
+
+#### Creating the append method
+
+Creating a condition to check if the list is empty:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append() {
+    // [!code highlight]
+    if (this.head === null) {
+      // [!code highlight]
+    } else {
+      // [!code highlight]
+    } // [!code highlight]
+  } // [!code highlight]
+
+  prepend() {}
+  insert() {}
+  remove() {}
+  print() {}
+}
+```
+
+---
+
+To take a node in the append method we need to create a new node:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(value) {
+    // [!code highlight]
+    const newNode = new Node(value); // [!code highlight]
+
+    if (this.head === null) {
+    } else {
+    }
+  }
+
+  prepend() {}
+  insert() {}
+  remove() {}
+  print() {}
+}
+```
+
+This node is created via the last code from the previous module.
+
+---
+
+Now we can pass the new node to the condition:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(value) {
+    const newNode = new Node(value);
+
+    if (this.head === null) {
+      this.head = newNode; // [!code highlight]
+      this.tail = newNode; // [!code highlight]
+    } else {
+    }
+  }
+
+  prepend() {}
+  insert() {}
+  remove() {}
+  print() {}
+}
+```
+
+This condition is giving the node both the head and the tail identity because the condition checks if the list is empty.
+
+---
+
+Now we need to change the tail node if a node gets appended in `else`:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(value) {
+    const newNode = new Node(value);
+
+    if (this.head === null) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.tail.next = newNode; // [!code highlight]
+    }
+  }
+
+  prepend() {}
+  insert() {}
+  remove() {}
+  print() {}
+}
+```
+
+This code addds the new node, and now let's replace the tail value/identity:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(value) {
+    const newNode = new Node(value);
+
+    if (this.head === null) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.tail.next = newNode; // [!code highlight]
+      this.tail = newNode; // [!code highlight]
+    }
+  }
+
+  prepend() {}
+  insert() {}
+  remove() {}
+  print() {}
+}
+```
+
+---
+
+Finally we need to increase the length value:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(value) {
+    const newNode = new Node(value);
+
+    if (this.head === null) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+
+    this.length++; // [!code highlight]
+  }
+
+  prepend() {}
+  insert() {}
+  remove() {}
+  print() {}
+}
+```
+
+---
+
+#### Creating the prepend method
+
+<Callout type="warning">We'll create this method in the next module.</Callout>
+
+---
+
+#### Creating the insert method
+
+For the insert method we'll need the index to know where to insert the node and the value.
+
+So we can take them as parameters for the method:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+
+  prepend(...) {...}
+
+  insert(index, value) {} // [!code highlight]
+
+  remove() {}
+  print() {}
+}
+```
+
+We need to handle three cases for the insert method:
+
+- start - the node being inserted in the first index of the list (the head)
+- end - the node being inserted in the last index of the list (the tail)
+- mid - the node being inserted anywhere else in the list (except head and tail)
+
+---
+
+Let's first create the base:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+
+  prepend(...) {...}
+
+  insert(index, value) {
+    if (index < 0 || index > this.length) { // [!code highlight]
+      console.error("Index out of bound"); // [!code highlight]
+      return undefined; // [!code highlight]
+    } // [!code highlight]
+  }
+
+  remove() {}
+  print() {}
+}
+```
+
+This code checks if the given index is valid or not.
+
+---
+
+Now let's handle the `start` case:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+
+  prepend(...) {...}
+
+  insert(index, value) {
+    if (index < 0 || index > this.length) {
+      console.error("Index out of bound");
+      return undefined;
+    }
+
+    if(index === 0) { // [!code highlight]
+      return this.prepend(value); // [!code highlight]
+    } // [!code highlight]
+  }
+
+  remove() {}
+  print() {}
+}
+```
+
+This code simply passes the value to the prepend method because it has the same logic, adding an element in the first index.
+
+---
+
+Now let's handle the `end` case:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+
+  prepend(...) {...}
+
+  insert(index, value) {
+    if (index < 0 || index > this.length) {
+      console.error("Index out of bound");
+      return undefined;
+    }
+
+    if(index === 0) {
+      return this.prepend(value);
+    }
+
+    if(index === this.length) { // [!code highlight]
+      return this.append(value); // [!code highlight]
+    } // [!code highlight]
+  }
+
+  remove() {}
+  print() {}
+}
+```
+
+This case does a similar process like the `start` case. It uses prepend for this.
+
+---
+
+Finally we can handle the `mid` case:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+
+  prepend(...) {...}
+
+  insert(index, value) {
+    if (index < 0 || index > this.length) {
+      console.error("Index out of bound");
+      return undefined;
+    }
+
+    if(index === 0) {
+      return this.prepend(value);
+    }
+
+    if(index === this.length) {
+      return this.append(value);
+    }
+
+    let count = 0; // [!code highlight]
+    let leadingNode = this.head; // [!code highlight]
+
+    while(count !== index -1) { // [!code highlight]
+      leadingNode = leadingNode.next; // [!code highlight]
+      count++; // [!code highlight]
+    } // [!code highlight]
+  }
+
+  remove() {}
+  print() {}
+}
+```
+
+<Callout type="error">
+  This code doesn't handle the indexes properly, it'll be done along with values
+  in a later module.
+</Callout>
+
+---
+
+#### Creating the print method
+
+We can simply `console.log` the list:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(...) {...}
+
+  prepend(...) {...}
+
+  insert(...) {...}
+
+  remove(...) {...}
+
+  print() {
+    const arr = []; // [!code highlight]
+    let currentNode = this.head; // [!code highlight]
+
+    while (currentNode !== null) { // [!code highlight]
+      arr.push(currentNode.value); // [!code highlight]
+      currentNode = currentNode.next; // [!code highlight]
+    } // [!code highlight]
+
+    console.log(arr.join(" -> "), "-> null"); // [!code highlight]
+  }
+```

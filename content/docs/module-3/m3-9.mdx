@@ -1,0 +1,167 @@
+---
+title: Module 3.9
+description: Linked List Implementation - insert()
+---
+
+# Linked list
+
+## Methods
+
+As we have kinda managed the indexes in the previous module, we will manage it further and then we'll start managing the values.
+
+### Creating the methods
+
+#### Creating the insert method
+
+Properly handling the indexes of the `mid` case:
+
+```js
+class LinkedList {
+  constructor() {...}
+
+  append(...) {...}
+  prepend(...) {...}
+
+  insert(index, value) {
+    // code for other conditions...
+
+    let count = 0; // [!code --]
+    let leadingNode = this.head; // [!code --]
+
+    while(count !== index -1) { // [!code --]
+      leadingNode = leadingNode.next; // [!code --]
+      count++; // [!code --]
+    } // [!code --]
+
+    const leadingNode = this._traverseToIndex(index - 1); // [!code ++]
+    const holdingNode = leadingNode.next; // [!code ++]
+
+    const newNode = new Node(value); // [!code ++]
+
+    leadingNode.next = newNode; // [!code ++]
+    newNode.next = holdingNode; // [!code ++]
+
+    this.length++; // [!code ++]
+  }
+  _traverseToIndex(index) { // [!code ++]
+    let count = 0; // [!code ++]
+    let currentNode = this.head; // [!code ++]
+
+    while(count !== index) { // [!code ++]
+      currentNode = currentNode.next; // [!code ++]
+      count++; // [!code ++]
+    } // [!code ++]
+
+    return currentNode; // [!code ++]
+  } // [!code ++]
+
+  remove() {}
+  print(...) {...}
+}
+```
+
+Moved the function for `mid` case to a seperate function for better code.
+Added `_` before the extra function is because we don't want it to be used out of the class. So basically to let the develoler know that this shouldn't be used outside the class.
+
+---
+
+The `remove` method will be done in teh next module.
+
+## Code cleanup
+
+The final code:
+
+```js
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
+  append(value) {
+    const newNode = new Node(value);
+
+    if (this.head === null) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+
+    this.length++;
+
+    return this; // [!code highlight]
+  }
+
+  prepend(value) {
+    const newNode = new Node(value);
+
+    if (this.head === null) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      newNode.next = this.head;
+      this.head = newNode;
+    }
+
+    this.length++;
+
+    return this; // [!code highlight]
+  }
+
+  insert(index, value) {
+    if (index < 0 || index > this.length) {
+      console.error("Index out of bound");
+      return undefined;
+    }
+
+    if (index === 0) {
+      return this.prepend(value);
+    }
+
+    if (index === this.length) {
+      return this.append(value);
+    }
+
+    const leadingNode = this._traverseToIndex(index - 1);
+    const holdingNode = leadingNode.next;
+
+    const newNode = new Node(value);
+
+    leadingNode.next = newNode;
+    newNode.next = holdingNode;
+
+    this.length++;
+  }
+
+  _traverseToIndex(index) {
+    let count = 0;
+    let currentNode = this.head;
+
+    while (count !== index) {
+      currentNode = currentNode.next;
+      count++;
+    }
+
+    return currentNode;
+  }
+
+  remove() {}
+
+  print() {
+    const arr = [];
+    let currentNode = this.head;
+
+    while (currentNode !== null) {
+      arr.push(currentNode.value);
+      currentNode = currentNode.next;
+    }
+
+    console.log(arr.join(" -> "), "-> null");
+  }
+}
+```
+
+Added return statements for enabling chaining for the `append` and `prepend` methods.

@@ -1,0 +1,101 @@
+---
+title: Module 3.6
+description: Linked List Implementation - Basic concept of Node
+---
+
+# Linked list
+
+## Types of linked lists
+
+There are three types of linked lists:
+
+- Singly linked list
+- Doubly linked list
+- Circular linked list
+
+The first node of a linked list is called `head` and the last node is called `tail`.
+
+### Singly linked list
+
+Nodes in singly linked lists refer to the next node, but not the previous node.
+
+### Doubly linked list
+
+Nodes in doubly linked lists refer to both next and previous nodes.
+
+### Circular linked list
+
+Circular linked list is the one where the nodes refer to only the next node but the last one doesn't stay empty, it refers to the first node.
+
+## Creating a linked list
+
+Creating a singly linked list is very simple:
+
+```js
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+```
+
+## Using a linked list
+
+It's very simple using a linked list:
+
+```js
+const head = new Node("apple");
+
+head.next = new Node("mango");
+
+head.next.next = new Node("banana");
+
+console.log(head);
+```
+
+The first line creates a new node with the value "apple" in the constant variable "head", then a next node is added with the value "mango".
+Just like the previous one adding another node in the "head" with `.next`, the value is "banana" for this one.
+Then finally the whole list is logged.
+
+The output would be:
+
+```js
+Node {
+  value: "apple",
+  next: Node {
+    value: "mango",
+    next: Node {
+      value: "banana",
+      next: null,
+    },
+  },
+}
+```
+
+To see the output in a cleaner way, we can loop through it and log it:
+
+```js
+const head = new Node("apple");
+
+head.next = new Node("mango");
+
+head.next.next = new Node("banana");
+
+console.log(head); // [!code --]
+
+let temp = head; // [!code ++]
+
+while (temp !== null) { // [!code ++]
+  console.log(temp.value, " "); // [!code ++]
+  temp = temp.next; // [!code ++]
+} // [!code ++]
+```
+
+The output will be:
+
+```bash
+apple
+mango
+banana
+```
