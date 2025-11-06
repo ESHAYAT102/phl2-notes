@@ -1,0 +1,39 @@
+---
+title: Module 4.10
+description: Insertion sort implementation
+---
+
+# Insertion sorting
+
+Insertion sorting is kinda like selection sort, it start sorting from the 0th index. But the difference is, in insertion sorting, the comparison doesn't start from two ends but it compares with the next index value. For example 0th index data gets compared with 1st index data.
+It first goes from start to end then from the end to the start.
+
+## Creation
+
+```js
+const insertionSort = (array) => {
+  for (let i = 1; i < array.length; i++) {
+    let current = array[i];
+    let j = i - 1;
+    while (j >= 0 && array[j] > current) {
+      array[j + 1] = array[j];
+      j--;
+    }
+    array[j + 1] = current;
+  }
+
+  return array;
+};
+```
+
+## Usage
+
+```js
+console.log(insertionSort([5, 3, 8, 4, 2]));
+```
+
+## Output
+
+```bash
+[2, 3, 4, 5, 8]
+```

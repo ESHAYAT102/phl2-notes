@@ -1,0 +1,82 @@
+---
+title: Module 4.5
+description: Palindrome Checker
+---
+
+# What is palindrome
+
+Palindrome means a word that stays the same when its characters are in reverse.
+
+## Creation
+
+Basic code:
+
+```js
+const isPalindrome = (str) => {
+  const normalized = str.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  const reversed = normalized.split("").reverse().join();
+
+  if (reversed === normalized) {
+    return true;
+  }
+
+  return false;
+};
+```
+
+This is the easiest approach. Let's see a more advanced approach.
+
+Advanced code:
+
+```js
+const isPalindrome = (str) => {
+  const normalized = str.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  let left = 0;
+  let right = normalized.length - 1;
+
+  while (left < right) {
+    if (normalized[left] !== normalized[right]) {
+      return false;
+    }
+
+    left++;
+    right--;
+  }
+
+  return true;
+};
+```
+
+This one is a two pointer concept. two pointers start counting from two ends of the word and meet at the middle.
+
+## Usage
+
+```js tab="basic"
+console.log(isPalindrome("level"));
+console.log(isPalindrome("apple"));
+```
+
+```js tab="advanced"
+console.log(isPalindrome("level"));
+console.log(isPalindrome("apple"));
+```
+
+## Output
+
+```bash tab="basic"
+true
+false
+```
+
+```bash tab="advanced"
+true
+false
+```
+
+## Why use two pointers
+
+The two pointer approach is better than the basic implementation because it takes less space.
+The two pointer method copies the array once, but the basic approach copies it twice.
+Though it doesn't matter that much for small use cases because we're web developers, website space doesn't matter as much as app/software space.

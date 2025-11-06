@@ -1,0 +1,62 @@
+---
+title: Module 4.6
+description: Binary Search Algorithm
+---
+
+# What is binary search
+
+Binary search basically is an algorithm for searching a specific data from a dataset (array for example).
+It works by creating three pointers:
+
+- low - points to the first index (0)
+- max - points to the last index
+- mid - points to the middle index and if the array has an even number of indices then we'll add the mid two numbers then devide them with 2, and florr the result
+
+We will assume that the mid selectior is the target value at first.
+If the middle index does not have the target value then we'll check if the target is greater or less than the middle index.
+If it's greater then we'll take the indices between the mid pointer and the max pointer and redo the whole task, set the mid pointer in the middle and the low pointer at first.
+
+## Creation
+
+```js
+const binarySearch = (arr, target) => {
+  let low = 0;
+  let max = arr.length - 1;
+
+  while (low <= high) {
+    const mid = Math.floor((high + low) / 2);
+    const guess = arr[mid];
+
+    if (guess === target) {
+      return mid;
+    } else if (guess > target) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+
+  return -1;
+};
+```
+
+## Usage
+
+```js
+console.log([3, 5, 6, 7, 9, 11], 7);
+```
+
+## Output
+
+```bash
+3
+```
+
+The output is the index of the target.
+
+<Callout>THe time big O notation for this algorithm is O(log n)</Callout>
+
+<Callout type="warning">
+  In this code we have assumed that the given array will be sorted already so it
+  doesn't sort it in the code.
+</Callout>

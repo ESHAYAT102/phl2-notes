@@ -1,0 +1,32 @@
+---
+title: Module 4.9
+description: Selection sort implementation
+---
+
+# Selection sorting
+
+## Creation
+
+```js
+const selectionSort = (array) => {
+  for (let i = 0; i < array.length - 1; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < array.length; j++) {
+      if (array[j] < array[minIndex]) {
+        minIndex = j;
+      }
+    }
+    if (minIndex !== i) {
+      [array[i], array[minIndex]] = [array[minIndex], array[i]];
+    }
+  }
+};
+```
+
+## Usage
+
+```js
+selectionSort([5, 3, 8, 4, 2]);
+```
+
+It won't generate a console output but it will sort the array.

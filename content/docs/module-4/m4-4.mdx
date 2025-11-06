@@ -1,0 +1,43 @@
+---
+title: Module 4.4
+description: Two Sum
+---
+
+# The concept
+
+Two sum basically means a number and an array will be given and we'll have to add 2 with any other number in the the array and make sure the answer is equal to the output number.
+
+## Creation
+
+Doing this with a for loop would be very easy but it will not be much efficient. So we'll create it with a Map.
+
+```js
+const twoSum = (arr, target) => {
+  const numMap = new Map();
+
+  for (let i = 0; i <= arr.length; i++) {
+    const currentNumber = arr[i];
+    const compliment = target - currentNumber;
+
+    if (numMap.has(compliment)) {
+      return [numMap.get(compliment), i];
+    }
+
+    numMap.set(currentNumber, i);
+  }
+};
+```
+
+## Usage
+
+```js
+console.log(twoSum([2, 11, 7, 15], 9));
+```
+
+## Output
+
+```js
+[0, 2];
+```
+
+Because the indices that needs to be added to equal to 9 are 0 and 2.
