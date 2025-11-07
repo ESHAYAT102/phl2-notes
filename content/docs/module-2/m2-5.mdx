@@ -7,7 +7,7 @@ description: From Simple Totals to Powerful Aggregation (reduce)
 
 ## `reduce` method
 
-The `reduce` method takes two parameters. It takes an arrow function that will be iterated through teh array in the first parameter. The first parameter itself can take two parameters, first one as the accumulator to store the returned value, and the second one to point to the curent element. Then the last parameter of the `reduce` method takes the initial value of the accumulator.
+The `reduce` method takes two parameters. It takes an arrow function that will be iterated through the array in the first parameter. The first parameter itself can take two parameters, first one as the accumulator to store the returned value, and the second one to point to the curent element. Then the last parameter of the `reduce` method takes the initial value of the accumulator.
 
 ```js tab="code"
 const cartItems = [
@@ -18,7 +18,8 @@ const cartItems = [
   { id: "p-003", name: "14 inch M5 MacBook Pro", price: 2000, quantity: 1 },
 ];
 
-const subtotal = cartItems.reduce((subtotal, product) => { // [!code highlight]
+const subtotal = cartItems.reduce((subtotal, product) => {
+  // [!code highlight]
   return subtotal + product.price * product.quantity; // [!code highlight]
 }, 0); // [!code highlight]
 
@@ -38,9 +39,11 @@ const driver = [
   { name: "Alain Prost", score: 51 },
 ];
 
-const bestScorer = driver.reduce((bestDriver, driver) => { // [!code highlight]
+const bestScorer = driver.reduce((bestDriver, driver) => {
+  // [!code highlight]
   console.log(bestDriver, driver); // [!code highlight]
-  if (bestDriver.score > driver.score) { // [!code highlight]
+  if (bestDriver.score > driver.score) {
+    // [!code highlight]
     return bestDriver; // [!code highlight]
   } // [!code highlight]
   return driver; // [!code highlight]

@@ -18,7 +18,7 @@ Queue has a few methods:
 - `enqueue` - add element to the queue
 - `dequeue` - remove element from the queue
 - `peek` - to check the last enqueued element
-- `isEmpty` - to check if teh array empty or not
+- `isEmpty` - to check if the array empty or not
 - `print` - to check the dataset/array
 
 ### Different types of queue
@@ -74,7 +74,8 @@ class Queue {
     this.items = [];
   }
 
-  equeue(value) { // [!code highlight]
+  equeue(value) {
+    // [!code highlight]
     this.items.push(value); // [!code highlight]
   } // [!code highlight]
 
@@ -101,15 +102,18 @@ class Queue {
     this.items.push(value);
   }
 
-  dequeue() { // [!code highlight]
-    if (this.isEmpty()) { // [!code highlight]
+  dequeue() {
+    // [!code highlight]
+    if (this.isEmpty()) {
+      // [!code highlight]
       return undefined; // [!code highlight]
     } // [!code highlight]
   } // [!code highlight]
 
   peek() {}
 
-  isEmpty() { // [!code highlight]
+  isEmpty() {
+    // [!code highlight]
     return this.items.length === 0; // [!code highlight]
   } // [!code highlight]
 }
@@ -169,8 +173,10 @@ class Queue {
     return this.items.shift();
   }
 
-  peek() { // [!code highlight]
-    if (this.isEmpty()) { // [!code highlight]
+  peek() {
+    // [!code highlight]
+    if (this.isEmpty()) {
+      // [!code highlight]
       return undefined; // [!code highlight]
     } // [!code highlight]
   } // [!code highlight]
@@ -247,7 +253,8 @@ class Queue {
     return this.items.length === 0;
   }
 
-  print() { // [!code highlight]
+  print() {
+    // [!code highlight]
     console.log("[Start] ->", this.items.join(" -> "), "-> [End]"); // [!code highlight]
   } // [!code highlight]
 }
@@ -262,7 +269,7 @@ As we have defined, the queue has these features/methods:
 - `enqueue` - add element to the queue
 - `dequeue` - remove element from the queue
 - `peek` - to check the last enqueued element
-- `isEmpty` - to check if teh array empty or not
+- `isEmpty` - to check if the array empty or not
 - `print` - to check the dataset/array
 
 ### Using the methods
