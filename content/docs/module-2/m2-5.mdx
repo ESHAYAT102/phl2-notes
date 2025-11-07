@@ -41,7 +41,6 @@ const driver = [
 
 const bestScorer = driver.reduce((bestDriver, driver) => {
   // [!code highlight]
-  console.log(bestDriver, driver); // [!code highlight]
   if (bestDriver.score > driver.score) {
     // [!code highlight]
     return bestDriver; // [!code highlight]
