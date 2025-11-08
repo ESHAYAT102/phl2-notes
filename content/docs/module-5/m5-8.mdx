@@ -1,0 +1,36 @@
+---
+title: Module 5.8
+description: Rest & Spread Operator
+---
+
+# Spread operator
+
+If we push an array into another we'll get error if the other array doesn't allow nested arrays/type. To do that, we can simply spread the array, it won't give any errors.
+
+Example code:
+
+```ts
+const colors = ["red", "green", "blue"];
+
+const moreColors = ["pink", "indigo", "purple"];
+
+colors.push(...moreColors);
+
+console.log(colors);
+```
+
+# Rest operator
+
+Rest operator is the exact opposite of spread operator. They pick things up from different places and put in one set.
+
+Example code:
+
+```ts
+const addFruit = (...fruits: string[]) => { // [!code highlight]
+  fruits.forEach((fruit) => {
+    console.log(fruit);
+  });
+};
+
+addFruit("apple", "mango", "banana"); // [!code highlight]
+```

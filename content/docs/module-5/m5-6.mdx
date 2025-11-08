@@ -1,0 +1,24 @@
+---
+title: Module 5.6
+description: Object, Literal & Optional Type
+---
+
+# Optional Type
+
+Use a question mark after the type declaration for telling TypeScript that this value can be optional.
+
+```ts
+const user: {
+  firstName: string;
+  middleName?: string; // [!code highlight]
+  lastName: string;
+  age: number;
+} = {
+  firstName: "Eshayat",
+  lastName: "Al-Wasiu",
+  age: 16,
+};
+```
+
+If we pass a value instead of the type the value will not be reassignable, it's called literal.
+We can also disable reassigning by adding `readonly` before the type.

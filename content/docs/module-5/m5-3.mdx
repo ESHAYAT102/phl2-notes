@@ -1,0 +1,12 @@
+---
+title: Module 5.3
+description: Install and run typescript
+---
+
+Run TypeScript code with NodeJS with 'node [file].ts'. It's not running it natively, it's just removing all the types and converting it into vanilla JavaScript.
+
+Before version 22, NodeJS couldn't run TypeScript files like that.
+It required a flag `--experimental-strip-types`
+
+Use `tsc --init` to create a base tsconfig file.
+In the `target` in the tsconfig file the targetted version of `es` can be declared.

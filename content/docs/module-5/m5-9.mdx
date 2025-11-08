@@ -1,0 +1,72 @@
+---
+title: Module 5.9
+description: Destructuring in typescript
+---
+
+# Destructuring
+
+Destructuring in TypeScript is just the same as JavaScript:
+
+```ts
+const user = {
+  username: "Eshayat",
+  age: 16,
+  gender: "male",
+  courses: {
+    programming_hero: ["Web Development", "Next Level Web Development"],
+    codingal: {
+      web: ["Junior Web Development"],
+      python: ["Python Basics", "AI & LLM with Python"],
+    },
+  },
+};
+
+const { username, age, gender } = user;
+const { programming_hero } = user.courses;
+
+let coursesDone: string[] = [];
+
+for (let i = 0; i < programming_hero.length; i++) {
+  const element = programming_hero[i];
+  coursesDone[i] = element;
+}
+
+console.log(
+  `${username} completed ${coursesDone[0]} & ${coursesDone[1]} courses at the age of 16.`
+);
+```
+
+---
+
+We can give a destructured value an alias/nickname:
+
+```ts
+const user = {
+  username: "Eshayat",
+  age: 16,
+  gender: "male",
+  courses: {
+    programming_hero: ["Web Development", "Next Level Web Development"],
+    codingal: {
+      web: ["Junior Web Development"],
+      python: ["Python Basics", "AI & LLM with Python"],
+    },
+  },
+};
+
+const { username, age, gender } = user;
+const { programming_hero: heroCourses } = user.courses; // [!code highlight]
+
+let coursesDone: string[] = [];
+
+for (let i = 0; i < heroCourses.length; i++) { // [!code highlight]
+  const element = heroCourses[i]; // [!code highlight]
+  coursesDone[i] = element;
+}
+
+console.log(
+  `${username} completed ${coursesDone[0]} & ${coursesDone[1]} courses at the age of 16.`
+);
+```
+
+trying to access the data with `programming_hero` will not work, it will return error.
