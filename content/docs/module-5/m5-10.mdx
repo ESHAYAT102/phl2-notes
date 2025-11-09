@@ -1,0 +1,22 @@
+---
+title: Module 5.10
+description: Type Alias in typescript
+---
+
+# Type alias
+
+## What is a type alias
+
+We can say that a type alias is a template or the structure of the types. Example:
+
+```ts
+type addFunc = (num1: number, num2: number) => number; // [!code highlight]
+
+const add: addFunc = (num1, num2) => {
+  return num1 + num2;
+};
+
+console.log(add(12, 24));
+```
+
+This code creates a type alias which says the variable with this type will take two number type parameters and return a number type value. This one's for functions, of course we can create aliases for other values like: array, object, set, map, simple variable.

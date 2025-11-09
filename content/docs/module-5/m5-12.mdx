@@ -1,0 +1,49 @@
+---
+title: Module 5.12
+description: ternary, nullish coalescing & optional chaining
+---
+
+# Question mark
+
+- `?!` - ternary operator
+- `??` - nullish operator
+- `?.` - optional chaining
+
+Example of ternary operator:
+
+```ts
+const isAdult = (age: number) => age < 18 ? "you are not an adult" : "you are an adult";
+```
+
+Example of nullish operator
+
+```ts
+let userTheme;
+
+const selectedTheme = userTheme ?? "Dark Default";
+
+console.log(selectedTheme);
+```
+
+As the value of `userTheme` is nullish, the output will be "Dark Mode". If the user has a specific theme enabled then the output would be their theme. e.g. `Tokyo Night Theme`
+
+Example of optional chaining:
+
+```ts
+const user: {
+  name: {
+    firstName: string;
+    lastName?: string;
+  };
+  age: number;
+  location: { country: string; city: string; state?: string };
+} = {
+  name: { firstName: "Eshayat", lastName: "Al-Wasiu" },
+  age: 16,
+  location: { country: "Bangladesh", city: "Banasree" },
+};
+
+console.log(`${user.name.firstName} lives in ${user.location.state ?? user.location.city}`);
+```
+
+The `lastName` and `state` is optional here so TypeScript won't show error if the element doesn't exist. But the main thing is when we're accessing it, we must use a `?` after it, if we don't then our app might crash. The error is managed in this code, so it won't crash.

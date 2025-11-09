@@ -1,0 +1,25 @@
+---
+title: Module 5.13
+description: Nullable, unknown & never type
+---
+
+# Nullable type
+
+Nullable type is basically using `null` as teh type. Example:
+
+```ts
+const data: string | null = null;
+```
+
+# Unknown type
+
+Unknown type is the same as nullable type, but just not `null` but `unknown`.
+Example:
+
+```ts
+const data: unknown = 123;
+```
+
+# Void/Never
+
+The type `never` returns nothing, which means, if the type is `never`, then the value will never be returned.

@@ -1,0 +1,43 @@
+---
+title: Module 5.11
+description: Union & intersection types
+---
+
+# Union
+
+Union means either this or that, basically the or pipe `|`.
+
+Example:
+
+```ts
+type roles = "admin" | "user";
+```
+
+# Intersection
+
+Intersections are like unions, the symbol is `&`.
+
+```ts
+type Employee = {
+  id: string;
+  name: string;
+  phoneNo: string;
+};
+
+type Manager = {
+  designationg: string;
+  teamSize: number;
+};
+
+type EmployeeManager = Employee & Manager;
+
+const ChowdhuryShaheb: EmployeeManager = {
+  id: "idCard",
+  name: "Chowdhury Shaheb",
+  phoneNo: "0198765432",
+  designationg: "manager",
+  teamSize: 20,
+};
+
+console.log(ChowdhuryShaheb);
+```
