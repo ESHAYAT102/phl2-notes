@@ -1,0 +1,36 @@
+---
+title: Module 6.1
+description: Type Assertion
+---
+
+## Type assertion
+
+# What is type assertion
+
+Type assertion in TypeScript is a mechanism to explicitly inform the compiler about the specific type of a value, even when TypeScript might infer a more general or less specific type. It is essentially a way of saying, "Trust me, I know more about this value's type than you do."
+
+Example code:
+
+```ts
+let value: any = "apple";
+
+value = 3;
+```
+
+This code won't return any erro because we declared the type to be `any`, it's basically the default behavior of JavaScript.
+
+---
+
+If we return a value from a function like this:
+
+```ts
+const func = (input: number): number | undefined => {
+  return input * input;
+};
+```
+
+We can use the word `as` to define that the type is this not anything else, basically telling the compiler that "Bro, I know better than you".
+
+```ts
+const result = func(2) as boolean;
+```

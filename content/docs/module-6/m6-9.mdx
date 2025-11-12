@@ -1,0 +1,46 @@
+---
+title: Module 6.9
+description: Use as const instead of enum
+---
+
+```ts
+const Roles = {
+  Admin: "Admin",
+  Editor: "Editor",
+  Guest: "Guest",
+} as const;
+
+const canEdit = (role: keyof typeof Roles) => {
+  if (role === Roles.Admin || role === Roles.Editor) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+console.log(canEdit(Roles.Admin));
+```
+
+<Callout type="warning">
+  Enum produces heavy JavaScript code in prod so it's better to use `as const`.
+</Callout>
+
+If the value and the key are not exactly the same then it won't work, so for that:
+
+```ts
+const Roles = {
+  Admin: "ADMIN", // [!code highlight]
+  Editor: "EDITOR", // [!code highlight]
+  Guest: "GUEST", // [!code highlight]
+} as const;
+
+const canEdit = (role: (typeof Roles)[keyof typeof Roles]) => { // [!code highlight]
+  if (role === Roles.Admin || role === Roles.Editor) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+console.log(canEdit(Roles.Admin));
+```

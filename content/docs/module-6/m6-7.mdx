@@ -1,0 +1,24 @@
+---
+title: Module 6.7
+description: keyof constraint with generics
+---
+
+```ts
+type User = {
+  id: string;
+  name: string;
+  age: number;
+};
+
+const getKeyFromObject = <T>(obj: T, key: keyof T) => {
+  return obj[key];
+};
+
+const me: User = {
+  id: "WASD1234",
+  name: "Eshayat",
+  age: 16,
+};
+
+console.log(getKeyFromObject(me, "name"));
+```

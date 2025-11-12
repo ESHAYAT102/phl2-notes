@@ -1,0 +1,41 @@
+---
+title: Module 6.12
+description: Explore utility types
+---
+
+```ts
+type Developer = {
+  name: string;
+  age: number;
+  gender?: "male" | "female";
+  type: "web" | "android" | "apple" | "software";
+  device: {
+    os:
+      | "GOAT (Linux)"
+      | "Overpriced UNIX (Mac)"
+      | "TrashOS (Windows)"
+      | "Rice (Arch btw)";
+    brand: string;
+    model: string;
+    cpu: { name: string; cores: number; clockSpeed: number };
+    gpu?: { vram: number; name: string };
+    ram: number;
+    storage: {
+      type: "nvme" | "sata" | "hdd";
+      capacity: number;
+    };
+  };
+};
+
+type User = Pick<Developer, "name" | "age" | "gender">; // Takes teh keys to include // [!code highlight]
+
+type UserAlt = Omit<Developer, "device" | "type">; // Takes the keys to exclude // [!code highlight]
+
+type UserReq = Required<Developer>; // All the values are required // [!code highlight]
+
+type UserOpt = Partial<Developer>; // All the values are optional // [!code highlight]
+
+type UserRO = Readonly<Developer>; // The value is readonly and cannot be reassigned // [!code highlight]
+
+type UserRec = Record<string, number>; // The first parameter decides what the type of teh keys will be, nad the second one decides the type of the values // [!code highlight]
+```

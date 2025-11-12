@@ -1,0 +1,11 @@
+---
+title: Module 6.10
+description: Explore conditional type
+---
+
+```ts
+type a = null;
+type b = undefined;
+
+type isNullish = a | b extends null | undefined ? true : false;
+```

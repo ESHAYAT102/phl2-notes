@@ -1,0 +1,19 @@
+---
+title: Module 6.6
+description: Constraint in typescript
+---
+
+Use `extends` to sctrictly require values. Example:
+
+```ts
+type Student = { id: number; name: string }; // [!code highlight]
+
+const addStudent = <T extends Student>(info: T) => { // [!code highlight]
+  return { // [!code highlight]
+    course: "Next Level Web Development", // [!code highlight]
+    ...info, // [!code highlight]
+  }; // [!code highlight]
+}; // [!code highlight]
+
+const result = addStudent({ id: 10, name: "Eshayat" }); // [!code highlight]
+```

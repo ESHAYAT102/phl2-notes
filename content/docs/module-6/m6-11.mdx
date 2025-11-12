@@ -1,0 +1,31 @@
+---
+title: Module 6.11
+description: Explore mapped types
+---
+
+Inefficient:
+
+```ts
+const arrOfNum: number[] = [1, 2, 3];
+
+const arrOfStr: string[] = ["1", "2", "3"];
+
+const arrOfStrUsingMap: string[] = arrOfNum.map((num) => num.toString());
+
+console.log(arrOfStrUsingMap);
+```
+
+Efficient:
+
+```ts
+type areaInt = {
+  h: number;
+  w: number;
+};
+
+type area<T> = {
+  [key in keyof T]: T[key];
+};
+
+const myArea: area<{ h: string; w: string }> = { h: "12", w: "32" };
+```

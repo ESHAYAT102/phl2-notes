@@ -1,0 +1,76 @@
+---
+title: Module 6.4
+description: Generics with interface
+---
+
+When using generics for objects, we can use a type for cleaner code:
+
+```ts
+type GenericArray<value> = Array<value>;
+
+type User = { // [!code highlight]
+  name: { firstName: string; lastName?: string }; // [!code highlight]
+  age: number; // [!code highlight]
+  gender: "male" | "female"; // [!code highlight]
+  location: { city: string; state: string; country: string }; // [!code highlight]
+}; // [!code highlight]
+
+const userList: GenericArray<User> = [
+  {
+    name: { firstName: "Eshayat", lastName: "Al-Wasiu" },
+    age: 16,
+    gender: "male",
+    location: { city: "Banasree", country: "Bangladesh", state: "Dhaka" },
+  },
+];
+```
+
+Generics with interface:
+
+```ts
+interface Developer<T> {
+  name: string;
+  age: number;
+  gender: "male" | "female";
+  type: "web" | "android" | "apple" | "software";
+  device: {
+    specialFeatures: T;
+    os: "GOAT (Linux)" | "Overpriced UNIX (Mac)" | "TrashOS (Windows)" | "Rice (Arch btw)";
+    brand: string;
+    model: string;
+    cpu: { name: string; cores: number; clockSpeed: number };
+    gpu?: { vram: number; name: string };
+    ram: number;
+    storage: {
+      type: "nvme" | "sata" | "hdd";
+      capacity: number;
+    };
+  };
+}
+
+const newDeveloper: Developer<{ fingerprint: boolean; faceUnlock: boolean }> = {
+  name: "Eshayat",
+  age: 16,
+  gender: "male",
+  type: "web",
+  device: {
+    os: "Rice (Arch btw)",
+    brand: "Dell",
+    model: "Latitude",
+    cpu: { name: "i5 8th Gen", cores: 8, clockSpeed: 3.7 },
+    gpu: { name: "WhiskeyLake-U GT2 (UHD Graphics 620)", vram: 12 },
+    ram: 24,
+    storage: { type: "nvme", capacity: 256 },
+    specialFeatures: {
+      fingerprint: false,
+      faceUnlock: true,
+    },
+  },
+};
+```
+
+We can also define the default value in the angel brackets `<` `>`:
+
+```ts
+interface Developer<X, Y = null> {...}
+```

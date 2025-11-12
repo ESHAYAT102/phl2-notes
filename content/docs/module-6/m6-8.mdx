@@ -1,0 +1,24 @@
+---
+title: Module 6.8
+description: Explore Enum
+---
+
+```ts
+enum Roles {
+  Admin = "Admin",
+  Editor = "Editor",
+  Guest = "Guest",
+}
+
+const canEdit = (role: Roles) => {
+  if (role === Roles.Admin || role === Roles.Editor) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+console.log(canEdit(Roles.Admin));
+```
+
+<Callout type="warning">Enum doesn't work in strict mode</Callout>

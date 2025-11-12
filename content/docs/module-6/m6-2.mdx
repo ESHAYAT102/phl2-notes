@@ -1,0 +1,52 @@
+---
+title: Module 6.2
+description: Type Interface
+---
+
+# Type interface
+
+Type interface is like type alias.
+
+```ts tab="alias"
+type User = {
+  name: string;
+  age: number;
+  id: string;
+};
+```
+
+```ts tab="interface"
+interface User {
+  name: string;
+  age: number;
+  id: string;
+}
+```
+
+## So, what's the difference
+
+Well, interface only works with the type `object`. So only `array`, `object`, and `function`.
+
+### Creating an interface for an array
+
+```ts
+interface arr {
+  [index: number]: string;
+}
+```
+
+This code defines that the array will have index values as number type and the value of the indices as string type.
+
+### Creating an interface for a function
+
+```ts
+interface func {
+  (num1: number, num2: number): boolean;
+}
+```
+
+This code defines that the function will take two parameters of number type and return a boolean value.
+
+## Recommendations
+
+Use type alias for arrays and functions and use interface for object.
