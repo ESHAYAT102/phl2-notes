@@ -1,0 +1,79 @@
+---
+title: Module 7.5
+description: Access Modifiers
+---
+
+```ts
+class BankAcc {
+  constructor(
+    protected readonly userId: number,
+    public userName: string,
+    private userBalance: number
+  ) {}
+
+  add(balance: number) {
+    this.userBalance += balance;
+    return balance;
+  }
+}
+
+const MyAcc = new BankAcc(111, "Eshayat", 80);
+
+MyAcc.add(100);
+
+console.log(MyAcc);
+```
+
+We've changed the accessing persimmions by using `protected` and `private` as the accessing type.
+
+So if we have a child class, we won't have access to `private` values. And we will have access to `protected` values. Here is a list of their behaviors:
+
+- `public` - is available everywhere
+- `private` - only available in itself, not to child classes or in the main scope
+- `protected` - available to itself and its child classes but not to the outer world/main scope
+
+Example:
+
+```ts
+class BankAcc {
+  constructor(
+    protected readonly userId: number,
+    public userName: string,
+    private userBalance: number
+  ) {}
+
+  add(balance: number) {
+    this.userBalance += balance;
+    return balance;
+  }
+}
+
+const MyAcc = new BankAcc(111, "Eshayat", 80);
+
+MyAcc.add(100);
+
+console.log(MyAcc);
+
+class StudentBankAdd extends BankAcc {
+  constructor(
+    userId: number,
+    userName: string,
+    userBalance: number,
+    public userParent: string
+  ) {
+    super(userId, userName, userBalance);
+  }
+
+  checkId() {
+    return this.userId;
+  }
+
+  checkParent() {
+    return this.userParent;
+  }
+}
+
+const studentAcc = new StudentBankAdd(123, "Mr. Student", 20, "Mr. Parent");
+
+console.log(studentAcc.checkParent());
+```

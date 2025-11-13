@@ -1,0 +1,34 @@
+---
+title: Module 7.2
+description: Inheritance, the 1st pilar of OOP
+---
+
+We can recieve parameters in methods just like functions, no `this.` needed.
+
+# Inheritance
+
+```ts
+class Table {
+  constructor(public living: boolean) {}
+}
+
+class Human extends Table {
+  constructor(living: boolean, public job: string) {
+    super(living);
+  }
+}
+
+const you = new Human(true, "AURA farming");
+```
+
+If we don't add any extra properties in the child class then we won't have to do the `super` thing. Example:
+
+```ts
+class Table {
+  constructor(public living: boolean) {}
+}
+
+class Chair extends Table {} // [!code highlight]
+
+const you = new Chair(false);
+```

@@ -1,0 +1,98 @@
+---
+title: Module 7.4
+description: Type guard using instance of
+---
+
+Another type guard here :)
+
+The previous two are done using functions, but we are OOP people, so we'll see an OOP approach now.
+
+## instanceof
+
+```ts
+class Person {
+  constructor(public name: string) {}
+}
+
+class Developer extends Person {
+  constructor(name: string) {
+    super(name);
+  }
+
+  code(hours: number) {
+    console.log(`${this.name} codes ${hours} hours a day.`);
+  }
+}
+
+class Designer extends Person {
+  constructor(name: string) {
+    super(name);
+  }
+
+  design(hours: number) {
+    console.log(`${this.name} designs ${hours} hours a day.`);
+  }
+}
+
+const dev = new Developer("Eshayat");
+
+dev.code(4);
+
+const getInfo = (npc: Person) => {
+  if (npc instanceof Developer) {
+    return "bro be coding fr 💥";
+  } else if (npc instanceof Designer) {
+    return "dayum!!! the animations ✨";
+  } else {
+    return "tf r u bruh?";
+  }
+};
+
+console.log(getInfo(dev));
+```
+
+## Function guard
+
+```ts
+class Person {
+  constructor(public name: string) {}
+}
+
+class Developer extends Person {
+  constructor(name: string) {
+    super(name);
+  }
+
+  code(hours: number) {
+    console.log(`${this.name} codes ${hours} hours a day.`);
+  }
+}
+
+class Designer extends Person {
+  constructor(name: string) {
+    super(name);
+  }
+
+  design(hours: number) {
+    console.log(`${this.name} designs ${hours} hours a day.`);
+  }
+}
+
+const dev = new Developer("Eshayat");
+
+dev.code(4);
+
+const isDeveloper = (npc: Person) => {
+  return npc instanceof Developer;
+};
+
+const isDesigner = (npc: Person) => {
+  return npc instanceof Designer;
+};
+
+const isUnknown = (npc: Person | Developer | Designer) => {
+  return "hell nahhh";
+};
+
+console.log(isDeveloper(dev));
+```

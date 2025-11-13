@@ -1,0 +1,37 @@
+---
+title: Module 7.3
+description: Type guard using typeof and in
+---
+
+# Type guard using typeof
+
+```ts
+type Alphanumeric = string | number;
+
+const add = (num1: Alphanumeric, num2: Alphanumeric) => {
+  if (typeof num1 === "number" && typeof num2 === "number") {
+    return num1 + num2;
+  } else {
+    return num1.toString() + num2.toString();
+  }
+};
+```
+
+# Type guard using in
+
+```ts
+type normalUser = { name: string };
+type adminUser = { name: string; role: "admin" };
+
+const getUserInfo = (user: normalUser | adminUser) => {
+  if ("role" in user) {
+    console.log(`Bro's name is ${user.name} and bro is the final boss.`);
+  } else {
+    console.log(`Bro's name is ${user.name} and bro is lowkey an NPC.`);
+  }
+};
+
+getUserInfo({ name: "Apple" });
+```
+
+This method uses the `in` keyword in the condition.

@@ -1,0 +1,72 @@
+---
+title: Module 7.1
+description: Class and object
+---
+
+# Class
+
+```ts
+class Animal {
+  name: string;
+  species: string;
+  sound: string;
+  tail: boolean;
+  canFly: boolean;
+
+  constructor(
+    name: string,
+    species: string,
+    sound: string,
+    tail: boolean,
+    canFly: boolean
+  ) {
+    this.name = name;
+    this.species = species;
+    this.sound = sound;
+    this.tail = tail;
+    this.canFly = canFly;
+  }
+
+  fly() {
+    if (this.canFly) {
+      return "bro is flying";
+    } else {
+      return "lil bro can't fly";
+    }
+  }
+}
+
+const dog = new Animal("dogesh bhai", "dog", "gheu gheu", true, false);
+
+console.log(dog.fly());
+```
+
+That was a basic code, let's try a more advanced way.
+
+## Parameter properties
+
+```ts
+class Animal {
+  constructor(
+    public name: string, // [!code highlight]
+    public species: string, // [!code highlight]
+    public sound: string, // [!code highlight]
+    public tail: boolean, // [!code highlight]
+    public canFly: boolean // [!code highlight]
+  ) {}
+
+  fly() {
+    if (this.canFly) {
+      return "bro is flying";
+    } else {
+      return "lil bro can't fly";
+    }
+  }
+}
+
+const dog = new Animal("dogesh bhai", "dog", "gheu gheu", true, false);
+
+console.log(dog.fly());
+```
+
+So we can use the keyword `public` before the names of the parameters in the constructor section to keep our code clean and non repetitive.
