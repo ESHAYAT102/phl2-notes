@@ -1,4 +1,28 @@
 ---
 title: Module 7.6
-description: title
+description: Getter and Setter
 ---
+
+```ts
+class BankAcc {
+  constructor(
+    protected readonly userId: number,
+    public userName: string,
+    private userBalance: number
+  ) {}
+
+  set add(balance: number) {
+    this.userBalance += balance;
+  }
+
+  get balance() {
+    return this.userBalance;
+  }
+}
+
+const MyAcc = new BankAcc(111, "Eshayat", 80);
+
+MyAcc.add = 100; // [!code highlight]
+
+console.log(MyAcc.balance); // [!code highlight]
+```

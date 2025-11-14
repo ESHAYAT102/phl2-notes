@@ -1,4 +1,63 @@
 ---
 title: Module 7.7
-description: title
+description: Static in typescript
 ---
+
+```ts
+class Count {
+  static number: number = 0;
+
+  increment() {
+    return (Count.number += 1);
+  }
+
+  decrement() {
+    return (Count.number -= 1);
+  }
+
+  show() {
+    return Count.number;
+  }
+}
+
+const counter1 = new Count();
+
+counter1.increment();
+counter1.increment();
+counter1.increment();
+counter1.increment();
+
+console.log(counter1.show());
+
+const counter2 = new Count();
+
+counter2.increment();
+
+console.log(counter2.show());
+```
+
+A static value will be reserved for all of the instances.
+
+We can access it even without any additional instances.
+
+```ts
+class Counter {
+  static number: number = 0;
+
+  static increment() {
+    return (Counter.number += 1);
+  }
+
+  static decrement() {
+    return (Counter.number -= 1);
+  }
+
+  static show() {
+    return Counter.number;
+  }
+}
+
+Counter.increment();
+```
+
+Using the methods without any instances require the access type to be `static`.

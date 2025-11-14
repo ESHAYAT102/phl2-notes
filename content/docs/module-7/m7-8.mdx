@@ -1,4 +1,78 @@
 ---
 title: Module 7.8
-description: title
+description: Polymorphism, the 2nd pillar of OOP
 ---
+
+Polymorphism in OOP is a method of a class that behaves differently depending on the instance.
+
+```ts
+class Person {
+  getSleep() {
+    console.log(`I sleep for 10 hours`);
+  }
+}
+
+class Student extends Person {
+  getSleep() {
+    console.log(`I sleep for 8 hours`);
+  }
+}
+
+class Developer extends Person {
+  getSleep() {
+    console.log(`I barely get any sleep bro 😭`);
+  }
+}
+
+const getSleepingHours = (param: Person) => {
+  param.getSleep();
+};
+
+const person = new Person();
+const student = new Student();
+const developer = new Developer();
+
+getSleepingHours(developer);
+```
+
+A better and more practical example:
+
+```ts
+class Shape {
+  area(): number {
+    return 0;
+  }
+}
+
+class Circle extends Shape {
+  constructor(public r: number) {
+    super();
+  }
+
+  area(): number {
+    return Math.PI * this.r * this.r;
+  }
+}
+
+class Rectangle extends Shape {
+  constructor(public w: number, public h: number) {
+    super();
+  }
+
+  area(): number {
+    return this.w * this.h;
+  }
+}
+
+const getArea = (param: Shape) => {
+  console.log(param.area());
+};
+
+const shape = new Shape();
+const circle = new Circle(12);
+const rectangle = new Rectangle(12, 32);
+
+getArea(shape);
+getArea(circle);
+getArea(rectangle);
+```

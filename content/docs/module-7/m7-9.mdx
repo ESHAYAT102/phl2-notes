@@ -1,4 +1,64 @@
 ---
 title: Module 7.9
-description: title
+description: Abstraction, the 3rd pillar of OOP
 ---
+
+Use `extends` to create a class based on another class and use `implements` to create a class based on an interface.
+
+using interface:
+
+```ts
+interface MediaPlayer {
+  play(): void;
+  pause(): void;
+  stop(): void;
+}
+
+class MusicPlayer implements MediaPlayer {
+  play(): void {
+    console.log(`pleing moojik`);
+  }
+
+  pause(): void {
+    console.log(`moojik pojd`);
+  }
+
+  stop(): void {
+    console.log(`moojik ishtopd`);
+  }
+}
+
+const moojik = new MusicPlayer();
+
+moojik.play();
+```
+
+using abstract class:
+
+```ts
+abstract class MediaPlayer {
+  abstract play(): void;
+  abstract pause(): void;
+  abstract stop(): void;
+}
+
+class MusicPlayer extends MediaPlayer {
+  play(): void {
+    console.log("pleing miujik");
+  }
+
+  pause(): void {
+    console.log("miujik pojd");
+  }
+
+  stop(): void {
+    console.log("miujik ishtopd");
+  }
+}
+
+const moojik = new MusicPlayer();
+
+moojik.play();
+```
+
+You can't create a normal class from an abstract class.
