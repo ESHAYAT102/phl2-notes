@@ -1,0 +1,24 @@
+---
+title: Module 10.1
+description: Reading Files with the fs Module
+---
+
+`process.version` returns the current node version on the device.
+`process.platform` returns the OS.
+
+## Reading file with `fs` (`readFile`)
+
+`require` or `import` `fs`. Use the `readFile` method on the `fs` module. The `readFile` module mainly takes three parameters:
+
+- directory to the file we want `fs` to read
+- the encoding of the data (e.g. `utf-8`)
+- a returned error if the reading fails.
+
+## Reading file synchronously with `fs` (`readFileSync`)
+
+`require` or `import` `fs`. Use the `readFileSync` method on the `fs` module. The `readFileSync` module mainly takes two parameters:
+
+- directory to the file we want `fs` to read
+- the encoding of the data (e.g. `utf-8`)
+
+It's recommended to use the `fs` module in a try/catch block.

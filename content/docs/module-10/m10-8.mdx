@@ -1,0 +1,26 @@
+---
+title: Module 10.8
+description: Hashing Data with the crypto Module
+---
+
+```js tab="sha256"
+const crypto = require("crypto");
+
+const sha256hash = crypto
+  .createHash("sha256")
+  .update("password123")
+  .digest("hex");
+
+console.log("Input: password123\nSHA256:", sha256hash);
+```
+
+```js tab="sha512"
+const crypto = require("crypto");
+
+const sha512hash = crypto
+  .createHash("sha512")
+  .update("password123")
+  .digest("hex");
+
+console.log("Input: password123\nSHA256:", sha512hash);
+```

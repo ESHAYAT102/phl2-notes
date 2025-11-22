@@ -1,0 +1,69 @@
+---
+title: Module 10.7
+description: Introduction to OS Module
+---
+
+```js title="code.js"
+const os = require("os");
+
+console.log("System Info");
+
+console.log("-".repeat(50));
+
+console.log("OS:", os.platform());
+console.log("Hostname:", os.hostname());
+console.log("Architecture:", os.arch());
+console.log("Type:", os.type());
+console.log("Release Version:", os.release());
+
+console.log("CPU Info");
+
+console.log("-".repeat(50));
+
+const cpus = os.cpus();
+console.log("Model:", cpus[0].model);
+console.log("Cores:", cpus.length);
+console.log("Speed:", cpus[0].speed);
+
+console.log("RAM Info");
+
+console.log("-".repeat(50));
+
+const totalMem = os.totalmem();
+const freeMem = os.freemem();
+console.log("Total Memory:", (totalMem / 1024 / 1024 / 1024).toFixed(2), "GB");
+console.log("Free Memory:", (freeMem / 1024 / 1024 / 1024).toFixed(2), "GB");
+
+console.log("-".repeat(50));
+
+const uptime = os.uptime();
+
+const days = Math.floor(uptime / 86400);
+const hours = Math.floor((uptime % 86400) / 3600);
+const minutes = Math.floor((uptime % 3600) / 60);
+
+console.log("Uptime:", `${days} days ${hours} hours ${minutes} minutes`);
+```
+
+```bash title="terminal"
+➜ bun code.js
+
+System Info
+--------------------------------------------------
+OS: linux
+Hostname: ESH
+Architecture: x64
+Type: Linux
+Release Version: 6.17.8-arch1-1
+CPU Info
+--------------------------------------------------
+Model: Intel(R) Core(TM) i5-8265U CPU @ 1.60GHz
+Cores: 8
+Speed: 799
+RAM Info
+--------------------------------------------------
+Total Memory: 23.31 GB
+Free Memory: 4.87 GB
+--------------------------------------------------
+Uptime: 0 days 8 hours 55 minutes
+```

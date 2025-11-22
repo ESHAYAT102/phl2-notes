@@ -1,0 +1,75 @@
+---
+title: Module 10.5
+description: Building a Simple File Organizer CLI Part 1
+---
+
+```js title="code.js"
+const fs = require("fs");
+const path = require("path");
+
+const sourceDir = path.join(__dirname, "output", "messy-files");
+const cleanDir = path.join(__dirname, "output", "clean-files");
+
+const categories = {
+  images: [".png", ".jpg", ".jpeg", ".webp", ".svg", ".avif"],
+  documents: [".pdf", ".doc", ".docx", ".txt", ".md"],
+  videos: [".mp4", ".mov", ".mkv", ".avi"],
+  audio: [".mp3", ".wav", ".aac", ".ogg"],
+  code: [".js", ".jsx", ".ts", ".tsx", ".py", ".go", "cpp", ".html", ".css"],
+  archives: [".zip", ".tar", ".rar", ".gz", ".7z"],
+  spreadsheets: [".xls", ".xlsx", ".csv"],
+  applications: [".AppImage", ".deb", ".jar"],
+  others: [],
+};
+
+const testFiles = [
+  "cat.png",
+  "dog.jpg",
+  "logo.svg",
+  "app.pdf",
+  "minecraft.jar",
+  "docs.md",
+  "thats_so_true.mp3",
+  "interstellar.mov",
+  "script.js",
+  "main.jsx",
+  "main.go",
+  "main.py",
+  "archived.tar",
+  "balena_etcher.AppImage",
+];
+
+function initializeDirectories() {
+  if (!fs.existsSync(sourceDir)) {
+    fs.mkdirSync(sourceDir, { recursive: true });
+
+    testFiles.forEach((file) => {
+      fs.writeFileSync(path.join(sourceDir, file), `Content of ${file}`);
+    });
+  }
+  console.log("Messy directorry fies created");
+
+  if (!fs.existsSync(organizedDir)) {
+    fs.mkdirSync(organizedDir, { recursive: true });
+  }
+
+  Object.keys(categories).forEach((category) => {
+    const categoryPath = path.join(organizedDir, category);
+    if (!fs.existsSync(categoryPath)) {
+      fs.mkdirSync(categoryPath);
+    }
+  });
+}
+
+function getCategory(filename) {
+  const ext = path.extname(filename).toLowerCase();
+  for (const [category, extensions] of Object.entries(categories)) {
+    if (extensions.includes(ext)) {
+      return category;
+    }
+  }
+  return "others";
+}
+```
+
+We'll add the file organizing feature in the next module.

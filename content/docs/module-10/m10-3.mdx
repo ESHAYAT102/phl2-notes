@@ -1,0 +1,74 @@
+---
+title: Module 10.3
+description: Deleting Files with the fs Module
+---
+
+# Deleting
+
+`unlinkSync` is also async by default, just like `writeFile` & `readFile`.
+
+## Deleting file with `fs` (`unlink`)
+
+`require` or `import` `fs`. Use the `unlink` method on the `fs` module. The `unlink` module mainly takes one parameter:
+
+- directory to the file we want `fs` to delete
+
+We can use try/catch for error handling.
+
+## Deleting file with `fs` (`unlinkSync`)
+
+`require` or `import` `fs`. Use the `unlinkSync` method on the `fs` module. The `unlinkSync` module mainly takes one parameter:
+
+- directory to the file we want `fs` to delete
+
+We can use try/catch for error handling.
+
+# Usage
+
+## `unlinkSync`
+
+```js title="code.js"
+const fs = require("fs");
+
+fs.writeFileSync("./temp.txt", "temp file created");
+console.log("temp file created");
+
+fs.unlinkSync("./temp.txt");
+console.log("temp file deleted");
+```
+
+```bash title="terminal"
+➜ bun code.js
+temp file created
+temp file deleted
+➜
+```
+
+## `unlink`
+
+```js title="code.js"
+const fs = require("fs");
+
+fs.writeFile("./temp.txt", "temp file created", (err) => {
+  if (err) return console.error(err.message);
+
+  console.log("temp file created");
+
+  fs.unlink("./temp.txt", (err) => {
+    if (err) {
+      return console.error("Error:", err.message);
+    } else {
+      console.log("temp file deleted");
+    }
+  });
+});
+```
+
+```bash title="terminal"
+➜ bun code.js
+temp file created
+temp file deleted
+➜
+```
+
+The file will be created and then immediately in both methods.

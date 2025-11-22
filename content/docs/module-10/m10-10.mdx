@@ -1,0 +1,24 @@
+---
+title: Module 10.10
+description: Using dotenv with Configuration
+---
+
+```
+APP_NAME="Next Docs"
+APP_VERSION="0.0.0"
+PORT=3000
+```
+
+```js title="code.js"
+require("dotenv").config();
+
+const config = {
+  app: {
+    name: process.env.APP_NAME || "Default App",
+    version: process.env.APP_VERSION || "1.0.0",
+    port: process.env.PORT || 3000,
+  },
+};
+
+module.exports = config;
+```

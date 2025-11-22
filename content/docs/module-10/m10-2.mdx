@@ -1,0 +1,77 @@
+---
+title: Module 10.2
+description: Writing and Appending Files with the fs Module
+---
+
+# Writing
+
+`writeFile` is also async by default, just like `readFile`.
+
+## Writing file with `fs` (`writeFile`)
+
+`require` or `import` `fs`. Use the `writeFile` method on the `fs` module. The `writeFile` module mainly takes three parameters:
+
+- directory to the file we want `fs` to write
+- the data we want to write into the file
+- a returned error if writing fails.
+
+## Writing file synchronously with `fs` (`writeFileSync`)
+
+`require` or `import` `fs`. Use the `writeFileSync` method on the `fs` module. The `writeFileSync` module mainly takes two parameters:
+
+- directory to the file we want `fs` to write
+- the data we want to write into the file
+
+It's recommended to use the `fs` module in a try/catch block.
+
+# Append
+
+## Appending content into a file with `fs` (`append`)
+
+`require` or `import` `fs`. Use the `appendFileSync` method on the `fs` module. The `appendFileSync` module mainly takes two parameters:
+
+- directory to the file we want `fs` to write
+- the data we want to append into the file
+
+It's recommended to use the `fs` module in a try/catch block.
+
+# Usage
+
+```js title="log.js"
+const fs = require("fs");
+
+fs.writeFileSync("./logs/app.log", "Application Started\n");
+console.log("File Created");
+
+const time = new Date().toISOString();
+
+const loginLog = `${time} user logged in\n`;
+const signupLog = `${time} user signed up\n`;
+const deleteLog = `${time} user deleted their account\n`;
+const changePassLog = `${time} user changed their password\n`;
+const removeLog = `${time} admin removed a user\n`;
+const closeLog = `Application Stopped\n`;
+
+fs.appendFileSync("./logs/app.log", loginLog);
+fs.appendFileSync("./logs/app.log", signupLog);
+fs.appendFileSync("./logs/app.log", deleteLog);
+fs.appendFileSync("./logs/app.log", changePassLog);
+fs.appendFileSync("./logs/app.log", removeLog);
+fs.appendFileSync("./logs/app.log", closeLog);
+```
+
+```bash title="terminal"
+➜ bun log.js
+File Created
+➜
+```
+
+```log title="./logs/app.log"
+Application Started
+2025-11-21T18:19:33.421Z user logged in
+2025-11-21T18:19:33.421Z user signed up
+2025-11-21T18:19:33.421Z user deleted their account
+2025-11-21T18:19:33.421Z user changed their password
+2025-11-21T18:19:33.421Z admin removed a user
+Application Stopped
+```

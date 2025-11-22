@@ -1,0 +1,67 @@
+---
+title: Module 10.4
+description: Introduction to the path Module
+---
+
+# The `path` module
+
+`require` or `import` `path`. Use the `__filename` method on the `fs` module to see the name of the file and use the `__dirname` method to see the name of the directory.
+
+Example code:
+
+```js title="code.js"
+const path = require("path");
+
+console.log("Current File Info: \n");
+console.log("File:", __filename);
+console.log("Directory:", __dirname);
+```
+
+```bash title="terminal"
+➜ bun code.js
+Current File Info:
+
+File: home/eshayat/code/practice/code.js
+Directory: home/eshayat/code/practice
+➜
+```
+
+This will return the directory of the file that has the code.
+
+To do it for a specific selected file we can do this:
+
+```js title="code.js"
+const path = require("path");
+
+const demoPath = "/eshayat/code/practice/docs/app.md";
+
+console.log("Directory:", path.dirname(demoPath));
+console.log("File Name (With Extension):", path.basename(demoPath));
+console.log("File Extension:", path.extname(demoPath));
+console.log("File Name:", path.basename(demoPath, path.extname(demoPath)));
+
+const parsed = path.parse(demoPath);
+
+console.log("\nParsed Data:\n", parsed);
+console.log("\nFormatted Data:\n", path.format(parsed));
+```
+
+```bash title="terminal"
+➜ bun js.js
+Directory: /eshayat/code/practice/docs
+File Name (With Extension): app.md
+File Extension: .md
+File Name: app
+
+Parsed Data:
+ {
+  root: "/",
+  dir: "/eshayat/code/practice/docs",
+  base: "app.md",
+  ext: ".md",
+  name: "app",
+}
+
+Formatted Data:
+ /eshayat/code/practice/docs/app.md
+```
