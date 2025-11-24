@@ -1,0 +1,60 @@
+---
+title: Module 11.1
+description: Building a Server with Node.js
+---
+
+Create a basic server:
+
+```bash title="terminal"
+bun init -y
+```
+
+```text title="file tree"
+.
+├── src
+│   ├── config
+│   │   └── index.ts
+│   └── server.ts
+├── .env
+├── .gitignore
+├── bun.lock
+├── package.json
+└── tsconfig.json
+```
+
+```bash title=".env"
+NODE_ENV=dev
+NAME="Next Notes"
+PORT=5000
+```
+
+```ts title="./src/config/index.ts"
+import dotenv from "dotenv";
+import path from "path";
+
+dotenv.config({ path: path.join(process.cwd(), ".env") });
+```
+
+```ts title="./src/server.ts"
+import http, { IncomingMessage, Server, ServerResponse } from "http";
+
+const server: Server = http.createServer(
+  (req: IncomingMessage, res: ServerResponse) => {
+    console.log("Server Running...");
+
+    if (req.url == "/" && req.method == "GET") {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          message: "Hello from NodeJS with TypeScript...",
+          path: req.url,
+        })
+      );
+    }
+  }
+);
+
+server.listen(5000, () => {
+  console.log(`Server Port: ${5000}`);
+});
+```

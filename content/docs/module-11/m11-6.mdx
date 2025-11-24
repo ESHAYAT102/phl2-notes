@@ -1,0 +1,77 @@
+---
+title: Module 11.6
+description: Implementing sendJson & Cleaning Up server.ts
+---
+
+```ts title="./src/routes/index.ts"
+import addRoutes from "../helpers/RouteHandler";
+import sendJSON from "../helpers/sendJSON";
+
+addRoutes("GET", "/", (req, res) => {
+  sendJSON(res, 200, {
+    message: "Hello from NodeJS server with TypeScript...",
+    path: req.url,
+  });
+});
+
+addRoutes("GET", "/api", (req, res) => {
+  sendJSON(res, 200, {
+    message: "Health status - ok",
+    path: req.url,
+  });
+});
+```
+
+```ts title="./src/helpers/sendJSON.ts"
+import { ServerResponse } from "http";
+
+const sendJSON = (res: ServerResponse, statusCode: number, data: any) => {
+  res.writeHead(statusCode, { "content-type": "application/json" });
+  res.end(JSON.stringify(data));
+};
+export default sendJSON;
+```
+
+```ts title="./src/server.ts"
+import http, { IncomingMessage, Server, ServerResponse } from "http";
+import config from "./config";
+import addRoutes, { RouteHandler, routes } from "./helpers/RouteHandler";
+import sendJSON from "./helpers/sendJSON";
+import "./routes";
+
+addRoutes("GET", "/", (req, res) => {
+  sendJSON(res, 200, {
+    message: "Hello from NodeJS server with TypeScript...",
+    path: req.url,
+  });
+});
+
+const server: Server = http.createServer(
+  (req: IncomingMessage, res: ServerResponse) => {
+    console.log("Server Running...");
+
+    const method = req.method?.toUpperCase() || "";
+    const path = req.url || "";
+
+    const methodMap = routes.get(method);
+    const handler: RouteHandler | undefined = methodMap?.get(path);
+
+    if (handler) {
+      handler(req, res);
+    } else {
+      res.writeHead(404, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          success: false,
+          message: "404 Route not found",
+          path,
+        })
+      );
+    }
+  }
+);
+
+server.listen(config.port, () => {
+  console.log(`Server Port: ${config.port}`);
+});
+```

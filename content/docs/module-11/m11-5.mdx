@@ -1,0 +1,65 @@
+---
+title: Module 11.5
+description: Using Our Custom Route Handler
+---
+
+```ts title="./src/server.ts"
+import http, { IncomingMessage, Server, ServerResponse } from "http";
+import config from "./config";
+import addRoutes, { RouteHandler, routes } from "./helpers/RouteHandler";
+
+const server: Server = http.createServer(
+  (req: IncomingMessage, res: ServerResponse) => {
+    console.log("Server Running...");
+
+    const method = req.method?.toUpperCase() || "";
+    const path = req.url || "";
+
+    const methodMap = routes.get(method);
+    const handler: RouteHandler | undefined = methodMap?.get(path);
+
+    if (handler) {
+      handler(req, res);
+    } else {
+      res.writeHead(404, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          success: false,
+          message: "404 Route not found",
+          path,
+        })
+      );
+    }
+
+    addRoutes("GET", "/", (req, res) => {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          message: "Hello from NodeJS with TypeScript...",
+          path: req.url,
+        })
+      );
+    });
+  }
+);
+
+server.listen(config.port, () => {
+  console.log(`Server Port: ${config.port}`);
+});
+```
+
+```ts title="./src/helpers/RouteHandler.ts"
+import { IncomingMessage, ServerResponse } from "http";
+
+export type RouteHandler = (req: IncomingMessage, res: ServerResponse) => void;
+export const routes: Map<string, Map<string, RouteHandler>> = new Map();
+
+const addRoutes = (method: string, path: string, handler: RouteHandler) => {
+  if (!routes.has(method)) {
+    routes.set(method, new Map());
+  }
+  routes.get(method)!.set(path, handler);
+};
+
+export default addRoutes;
+```

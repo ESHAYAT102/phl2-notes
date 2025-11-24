@@ -1,0 +1,61 @@
+---
+title: Module 11.3
+description: API Routes & the Difference Between GET and POST
+---
+
+```ts title="./src/server.ts"
+import http, { IncomingMessage, Server, ServerResponse } from "http";
+import config from "./config";
+
+const server: Server = http.createServer(
+  (req: IncomingMessage, res: ServerResponse) => {
+    console.log("Server Running...");
+
+    if (req.url == "/" && req.method == "GET") {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          message: "Hello from NodeJS with TypeScript...",
+          path: req.url,
+        })
+      );
+    }
+
+    if (req.url == "/api" && req.method == "GET") {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          message: "Health status - ok",
+          path: req.url,
+        })
+      );
+    }
+
+    if (req.url == "/api/users" && req.method == "POST") {
+      let body = "";
+
+      req.on("data", (chunk) => {
+        body += chunk.toString();
+      });
+
+      req.on("end", () => {
+        // [!code highlight]
+        try {
+          // [!code highlight]
+          console.log(JSON.parse(body)); // [!code highlight]
+          res.end(body); // [!code highlight]
+        } catch (err: any) {
+          // [!code highlight]
+          console.log(err.message); // [!code highlight]
+        } // [!code highlight]
+      }); // [!code highlight]
+    }
+  }
+);
+
+server.listen(config.port, () => {
+  console.log(`Server Port: ${config.port}`);
+});
+```
+
+Created a POST method that takes an object and returns it.

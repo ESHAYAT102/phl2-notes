@@ -1,0 +1,91 @@
+---
+title: Module 11.7
+description: Creating parseBody & Building a Clean POST API
+---
+
+```ts title="./src/server.ts"
+import http, { IncomingMessage, Server, ServerResponse } from "http";
+import config from "./config";
+import { RouteHandler, routes } from "./helpers/RouteHandler";
+import "./routes";
+
+const server: Server = http.createServer(
+  (req: IncomingMessage, res: ServerResponse) => {
+    console.log("Server Running...");
+
+    const method = req.method?.toUpperCase() || "";
+    const path = req.url || "";
+
+    const methodMap = routes.get(method);
+    const handler: RouteHandler | undefined = methodMap?.get(path);
+
+    if (handler) {
+      handler(req, res);
+    } else {
+      res.writeHead(404, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          success: false,
+          message: "404 Route not found",
+          path,
+        })
+      );
+    }
+  }
+);
+
+server.listen(config.port, () => {
+  console.log(`Server Port: ${config.port}`);
+});
+```
+
+```ts title="./src/helpers/parseBody.ts"
+import { IncomingMessage } from "http";
+
+async function parseBody(req: IncomingMessage): Promise<any> {
+  return new Promise((resolve, reject) => {
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+
+    req.on("end", () => {
+      try {
+        resolve(body ? JSON.parse(body) : {});
+      } catch (err: any) {
+        reject(err);
+      }
+    });
+
+    req.on("error", reject);
+  });
+}
+
+export default parseBody;
+```
+
+```ts title="./src/routes/index.ts"
+import parseBody from "../helpers/parseBody";
+import addRoutes from "../helpers/RouteHandler";
+import sendJSON from "../helpers/sendJSON";
+
+addRoutes("GET", "/", (req, res) => {
+  sendJSON(res, 200, {
+    message: "Hello from NodeJS server with TypeScript...",
+    path: req.url,
+  });
+});
+
+addRoutes("GET", "/api", (req, res) => {
+  sendJSON(res, 200, {
+    message: "Health status - ok",
+    path: req.url,
+  });
+});
+
+addRoutes("POST", "/api/users", async (req, res) => {
+  const body = await parseBody(req);
+  sendJSON(res, 201, { success: true, data: body });
+});
+```

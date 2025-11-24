@@ -1,0 +1,106 @@
+---
+title: Module 11.10
+description: Dynamic Route Handling for PUT Requests
+---
+
+```ts title="./src/routes/index.ts"
+import { readUsers, writeUsers } from "../helpers/fileDB";
+import parseBody from "../helpers/parseBody";
+import addRoutes from "../helpers/RouteHandler";
+import sendJSON from "../helpers/sendJSON";
+
+addRoutes("GET", "/", (req, res) => {
+  sendJSON(res, 200, {
+    message: "Hello from NodeJS server with TypeScript...",
+    path: req.url,
+  });
+});
+
+addRoutes("GET", "/api", (req, res) => {
+  sendJSON(res, 200, {
+    message: "Health status - ok",
+    path: req.url,
+  });
+});
+
+addRoutes("POST", "/api/users", async (req, res) => {
+  const body = await parseBody(req);
+  const users = readUsers();
+  const newUser = {
+    id: Date.now(),
+    ...body,
+  };
+
+  users.push(newUser);
+  writeUsers(users);
+
+  sendJSON(res, 201, { success: true, data: body });
+});
+
+addRoutes("PUT", "/api/users/:id", async (req, res) => { //[!code highlight]
+  const { id } = (req as any).params; //[!code highlight]
+  const body = await parseBody(req); //[!code highlight]
+
+  const users = readUsers(); //[!code highlight]
+  const index = users.findIndex((user: any) => user.id === Number(id)); //[!code highlight]
+  if (index === -1) { //[!code highlight]
+    sendJSON(res, 404, { //[!code highlight]
+      success: false, //[!code highlight]
+      message: "User not found", //[!code highlight]
+    }); //[!code highlight]
+    return; //[!code highlight]
+  } //[!code highlight]
+
+  users[index] = { //[!code highlight]
+    ...users[index], //[!code highlight]
+    ...body, //[!code highlight]
+  }; //[!code highlight]
+
+  writeUsers(users); //[!code highlight]
+
+  sendJSON(res, 202, { //[!code highlight]
+    success: true, //[!code highlight]
+    message: `ID ${id} user updated`, //[!code highlight]
+    data: users[index], //[!code highlight]
+  }); //[!code highlight]
+}); //[!code highlight]
+```
+
+```ts title="./src/helpers/dynamicRouteHandler.ts"
+import { routes } from "./RouteHandler";
+
+const findDynamicRoute = (method: string, url: string) => {
+  const methodMap = routes.get(method);
+  if (!methodMap) return null;
+
+  for (const [routePath, handler] of methodMap.entries()) {
+    const routeParts = routePath.split("/");
+    const urlParts = url.split("/");
+
+    if (routeParts.length !== urlParts.length) continue;
+
+    const params: any = {};
+    let matched = true;
+
+    for (let i = 0; i < routeParts.length; i++) {
+      const routePart = routeParts[i];
+      const urlPart = urlParts[i];
+
+      if (routePart?.startsWith(":")) {
+        params[routePart.substring(1)] = urlPart;
+      } else if (routePart !== urlPart) {
+        matched = false;
+        break;
+      }
+    }
+
+    if (matched) {
+      return { handler, params };
+    }
+  }
+
+  return null;
+};
+
+export default findDynamicRoute;
+```

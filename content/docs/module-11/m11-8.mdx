@@ -1,0 +1,61 @@
+---
+title: Module 11.8
+description: Setting Up a Fake JSON Database
+---
+
+We'll manually create a JSON DB with the `fs` module.
+
+```ts title="./src/routes/index.ts"
+import { readUsers, writeUsers } from "../helpers/fileDB";
+import parseBody from "../helpers/parseBody";
+import addRoutes from "../helpers/RouteHandler";
+import sendJSON from "../helpers/sendJSON";
+
+addRoutes("GET", "/", (req, res) => {
+  sendJSON(res, 200, {
+    message: "Hello from NodeJS server with TypeScript...",
+    path: req.url,
+  });
+});
+
+addRoutes("GET", "/api", (req, res) => {
+  sendJSON(res, 200, {
+    message: "Health status - ok",
+    path: req.url,
+  });
+});
+
+addRoutes("POST", "/api/users", async (req, res) => {
+  const body = await parseBody(req);
+  const users = readUsers();
+  const newUser = {
+    id: Date.now(),
+    ...body,
+  };
+
+  users.push(newUser);
+  writeUsers(users);
+
+  sendJSON(res, 201, { success: true, data: body });
+});
+```
+
+```ts title="./src/helpers/fileDB.ts"
+import path from "path";
+import fs from "fs";
+
+const filePath = path.join(process.cwd(), "./src/data/users.json");
+
+export const readUsers = () => {
+  const data = fs.readFileSync(filePath, "utf-8");
+  return JSON.parse(data);
+};
+
+export const writeUsers = (users: any) => {
+  fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+};
+```
+
+```json title="./src/data/users.json"
+[]
+```
