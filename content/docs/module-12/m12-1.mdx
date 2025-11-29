@@ -1,0 +1,31 @@
+---
+title: Module 12.1
+description: Create a simple server with express.js & typescript
+---
+
+Created a basic express server.
+
+```ts title="./src/server.ts"
+import express, { Request, Response } from "express";
+const app = express();
+const port = 5000;
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello World!");
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+```
+
+```bash title="file tree"
+.
+├── bun.lock
+├── .env
+├── .gitignore
+├── package.json
+├── src
+│   └── server.ts
+└── tsconfig.json
+```
