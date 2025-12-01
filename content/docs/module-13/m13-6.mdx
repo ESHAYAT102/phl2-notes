@@ -1,0 +1,318 @@
+---
+title: Module 13.6
+description: Understanding Authentication & Authorization
+---
+
+We've organized the `/todos` endpoint too. Code:
+
+```bash
+.
+├── bun.lock
+├── .env
+├── .gitignore
+├── package.json
+├── src
+│   ├── config
+│   │   ├── DB.ts
+│   │   └── index.ts
+│   ├── middleware
+│   │   └── logger.ts
+│   ├── modules
+│   │   ├── todo
+│   │   │   ├── todo.controller.ts
+│   │   │   ├── todo.routes.ts
+│   │   │   └── todo.service.ts
+│   │   └── user
+│   │       ├── user.controller.ts
+│   │       ├── user.routes.ts
+│   │       └── user.service.ts
+│   └── server.ts
+└── tsconfig.json
+```
+
+```ts title="./src/server.ts"
+import express, { Request, Response } from "express";
+import config from "./config";
+import initDB from "./config/DB";
+import logger from "./middleware/logger";
+import { userRoutes } from "./modules/user/user.routes";
+import { todoRoutes } from "./modules/todo/todo.routes";
+
+const app = express();
+const port = config.port;
+
+initDB();
+
+app.use(express.json());
+
+app.get("/", logger, (req: Request, res: Response) => {
+  res.send("Hello World!");
+});
+
+app.use("/users", userRoutes);
+
+app.use("/todos", todoRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found — 404",
+    path: req.path,
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Port ${port}`);
+});
+```
+
+```ts title="./src/modules/todo/todo.controller.ts"
+import { Request, Response } from "express";
+import { todoServices } from "./todo.service";
+
+const createTodo = async (req: Request, res: Response) => {
+  const { user_id, title } = req.body;
+
+  try {
+    const result = await todoServices.createTodo(user_id, title);
+
+    res.status(201).json({
+      success: true,
+      message: "Todo created",
+      data: result.rows[0],
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const getTodo = async (req: Request, res: Response) => {
+  try {
+    const result = await todoServices.getTodo();
+
+    res.status(200).json({
+      success: true,
+      message: "Todos retrieved successfully",
+      data: result.rows,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      details: err,
+    });
+  }
+};
+
+const getSingleTodo = async (req: Request, res: Response) => {
+  try {
+    const result = await todoServices.getSingleTodo(req.params.id as string);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Todo not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Todo retrieved successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const updateTodo = async (req: Request, res: Response) => {
+  const { title, description, completed, due_date, user_id } = req.body;
+
+  try {
+    const result = await todoServices.updateTodo(
+      title,
+      description,
+      completed,
+      due_date,
+      user_id,
+      req.params.id!
+    );
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Todo not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Todo updated successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const deleteTodo = async (req: Request, res: Response) => {
+  try {
+    const result = await todoServices.deleteTodo(req.params.id!);
+
+    if (result.rowCount === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Todo not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Todo deleted successfully",
+        data: null,
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const todoControllers = {
+  createTodo,
+  getTodo,
+  getSingleTodo,
+  updateTodo,
+  deleteTodo,
+};
+```
+
+```ts title="./src/modules/todo/todo.service.ts"
+import { pool } from "../../config/DB";
+
+const createTodo = async (user_id: number, title: string) => {
+  const result = await pool.query(
+    `INSERT INTO todos(user_id, title) VALUES($1, $2) RETURNING *`,
+    [user_id, title]
+  );
+  return result;
+};
+
+const getTodo = async () => {
+  const result = await pool.query(`SELECT * FROM todos`);
+  return result;
+};
+
+const getSingleTodo = async (id: string) => {
+  const result = await pool.query(`SELECT * FROM todos WHERE id = $1`, [id]);
+  return result;
+};
+
+const updateTodo = async (
+  title: string,
+  description: string,
+  completed: boolean,
+  due_date: string,
+  user_id: number,
+  id: string
+) => {
+  const result = await pool.query(
+    `UPDATE todos SET
+      title = COALESCE($1, title),
+      description = COALESCE($2, description),
+      completed = COALESCE($3, completed),
+      due_date = COALESCE($4, due_date),
+      user_id = COALESCE($5, user_id),
+      updated_at = NOW()
+     WHERE id = $6 RETURNING *`,
+    [title, description, completed, due_date, user_id, id]
+  );
+  return result;
+};
+
+const deleteTodo = async (id: string) => {
+  const result = await pool.query(`DELETE FROM todos WHERE id = $1`, [id]);
+  return result;
+};
+
+export const todoServices = {
+  createTodo,
+  getTodo,
+  getSingleTodo,
+  updateTodo,
+  deleteTodo,
+};
+```
+
+```ts title="./src/modules/todo/todo.routes.ts"
+import express from "express";
+import { todoControllers } from "./todo.controller";
+
+const router = express.Router();
+
+router.post("/", todoControllers.createTodo);
+
+router.get("/", todoControllers.getTodo);
+
+router.get("/:id", todoControllers.getSingleTodo);
+
+router.put("/:id", todoControllers.updateTodo);
+
+router.delete("/:id", todoControllers.deleteTodo);
+
+export const todoRoutes = router;
+```
+
+---
+
+Let's work on auth now.
+
+```ts title="./src/config/DB.ts"
+import { Pool } from "pg";
+import config from ".";
+
+export const pool = new Pool({
+  connectionString: `${config.connectionStr}`,
+});
+
+const initDB = async () => {
+  await pool.query(`
+CREATE TABLE IF NOT EXISTS users(
+id SERIAL PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+email VARCHAR(150) UNIQUE NOT NULL,
+password TEXT NOT NULL, //[!code highlight]
+age INT,
+phone VARCHAR(20),
+address TEXT,
+created_at TIMESTAMP DEFAULT NOW(),
+updated_at TIMESTAMP DEFAULT NOW()
+)
+`);
+
+  await pool.query(`
+CREATE TABLE IF NOT EXISTS todos(
+id SERIAL PRIMARY KEY,
+user_id INT REFERENCES users(id) ON DELETE CASCADE,
+title VARCHAR(200) NOT NULL,
+description TEXT,
+completed BOOLEAN DEFAULT false,
+due_date DATE,
+created_at TIMESTAMP DEFAULT NOW(),
+updated_at TIMESTAMP DEFAULT NOW()
+)
+`);
+};
+
+export default initDB;
+```

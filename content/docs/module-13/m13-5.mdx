@@ -1,0 +1,375 @@
+---
+title: Module 13.5
+description: Rearranging the User Module
+---
+
+Organized all the routes for the `/user` endpoint.
+
+```bash
+.
+├── bun.lock
+├── .env
+├── .gitignore
+├── package.json
+├── src
+│   ├── config
+│   │   ├── DB.ts
+│   │   └── index.ts
+│   ├── middleware
+│   │   └── logger.ts
+│   ├── modules
+│   │   ├── todo
+│   │   └── user
+│   │       ├── user.controller.ts
+│   │       ├── user.routes.ts
+│   │       └── user.service.ts
+│   └── server.ts
+└── tsconfig.json
+```
+
+```ts title="./src/server.ts"
+import express, { Request, Response } from "express";
+import config from "./config";
+import initDB, { pool } from "./config/DB";
+import logger from "./middleware/logger";
+import { userRoutes } from "./modules/user/user.routes";
+
+const app = express();
+const port = config.port;
+
+initDB();
+
+app.use(express.json());
+
+app.get("/", logger, (req: Request, res: Response) => {
+  res.send("Hello World!");
+});
+
+app.use("/users", userRoutes);
+
+app.post("/todos", async (req: Request, res: Response) => {
+  const { user_id, title } = req.body;
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO todos(user_id, title) VALUES($1, $2) RETURNING *`,
+      [user_id, title]
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Todo created",
+      data: result.rows[0],
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+app.get("/todos", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`SELECT * FROM todos`);
+
+    res.status(200).json({
+      success: true,
+      message: "Todos retrieved successfully",
+      data: result.rows,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      details: err,
+    });
+  }
+});
+
+app.get("/todos/:id", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`SELECT * FROM todos WHERE id = $1`, [
+      req.params.id,
+    ]);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Todo not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Todo retrieved successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+app.put("/todos/:id", async (req: Request, res: Response) => {
+  const { title, description, completed, due_date, user_id } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE todos SET
+        title = COALESCE($1, title),
+        description = COALESCE($2, description),
+        completed = COALESCE($3, completed),
+        due_date = COALESCE($4, due_date),
+        user_id = COALESCE($5, user_id),
+        updated_at = NOW()
+       WHERE id = $6 RETURNING *`,
+      [title, description, completed, due_date, user_id, req.params.id]
+    );
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Todo not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Todo updated successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+app.delete("/todos/:id", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`DELETE FROM todos WHERE id = $1`, [
+      req.params.id,
+    ]);
+
+    if (result.rowCount === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Todo not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Todo deleted successfully",
+        data: null,
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found — 404",
+    path: req.path,
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Port ${port}`);
+});
+```
+
+```ts title="./src/modules/user/user.controller.ts"
+import { Request, Response } from "express";
+import { userServices } from "./user.service";
+
+const createUser = async (req: Request, res: Response) => {
+  const { name, email } = req.body;
+
+  try {
+    const result = await userServices.createUser(name, email);
+
+    res.status(201).json({
+      success: false,
+      message: "Data Inserted Successfully",
+      data: result.rows[0],
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const getUser = async (req: Request, res: Response) => {
+  try {
+    const result = await userServices.getUser();
+
+    res.status(200).json({
+      success: true,
+      message: "Users retrieved successfully",
+      data: result.rows,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      details: err,
+    });
+  }
+};
+
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const result = await userServices.getSingleUser(req.params.id as string);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "User not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "User retrieved successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const updateUser = async (req: Request, res: Response) => {
+  const { name, email } = req.body;
+
+  try {
+    const result = await userServices.updateUser(name, email, req.params.id!);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "User not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "User updated successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const result = await userServices.deleteUser(req.params.id!);
+
+    if (result.rowCount === 0) {
+      res.status(404).json({
+        success: false,
+        message: "User not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "User deleted successfully",
+        data: null,
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const userControllers = {
+  createUser,
+  getUser,
+  getSingleUser,
+  updateUser,
+  deleteUser,
+};
+```
+
+```ts title="./src/modules/user/user.service.ts"
+import { pool } from "../../config/DB";
+
+const createUser = async (name: string, email: string) => {
+  const result = await pool.query(
+    `INSERT INTO users(name, email) VALUES($1, $2) RETURNING *`,
+    [name, email]
+  );
+  return result;
+};
+
+const getUser = async () => {
+  const result = await pool.query(`SELECT * FROM users`);
+  return result;
+};
+
+const getSingleUser = async (id: string) => {
+  const result = await pool.query(`SELECT * FROM users WHERE id = $1`, [id]);
+  return result;
+};
+
+const updateUser = async (name: string, email: string, id: string) => {
+  const result = await pool.query(
+    `UPDATE users SET name=$1, email=$2 WHERE id=$3 RETURNING *`,
+    [name, email, id]
+  );
+  return result;
+};
+
+const deleteUser = async (id: string) => {
+  const result = await pool.query(`DELETE FROM users WHERE id = $1`, [id]);
+  return result;
+};
+
+export const userServices = {
+  createUser,
+  getUser,
+  getSingleUser,
+  updateUser,
+  deleteUser,
+};
+```
+
+```ts title="./src/modules/user/user.routes.ts"
+import express from "express";
+import { userControllers } from "./user.controller";
+
+const router = express.Router();
+
+router.post("/", userControllers.createUser);
+
+router.get("/", userControllers.getUser);
+
+router.get("/:id", userControllers.getSingleUser);
+
+router.put("/:id", userControllers.updateUser);
+
+router.delete("/:id", userControllers.deleteUser);
+
+export const userRoutes = router;
+```

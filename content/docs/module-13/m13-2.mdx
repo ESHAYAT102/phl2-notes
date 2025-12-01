@@ -1,50 +1,29 @@
 ---
-title: Module 12.9
-description: Not Found Route & Middleware
+title: Module 13.2
+description: Why Configuration Is Important?
 ---
+
+```bash
+.
+├── bun.lock
+├── .env
+├── .gitignore
+├── package.json
+├── src
+│   ├── config
+│   │   ├── DB.ts
+│   │   └── index.ts
+│   └── server.ts
+└── tsconfig.json
+```
 
 ```ts title="./src/server.ts"
 import express, { NextFunction, Request, Response } from "express";
-import { Connection, Pool } from "pg";
-import dotenv from "dotenv";
-import path from "path";
-
-dotenv.config({ path: path.join(process.cwd(), ".env") });
+import config from "./config";
+import initDB, { pool } from "./config/DB";
 
 const app = express();
-const port = 5000;
-
-const pool = new Pool({
-  connectionString: `${process.env.CONNECTION_STRING}`,
-});
-
-const initDB = async () => {
-  await pool.query(`
-CREATE TABLE IF NOT EXISTS users(
-id SERIAL PRIMARY KEY,
-name VARCHAR(100) NOT NULL,
-email VARCHAR(150) UNIQUE NOT NULL,
-age INT,
-phone VARCHAR(20),
-address TEXT,
-created_at TIMESTAMP DEFAULT NOW(),
-updated_at TIMESTAMP DEFAULT NOW()
-)
-`);
-
-  await pool.query(`
-CREATE TABLE IF NOT EXISTS todos(
-id SERIAL PRIMARY KEY,
-user_id INT REFERENCES users(id) ON DELETE CASCADE,
-title VARCHAR(200) NOT NULL,
-description TEXT,
-completed BOOLEAN DEFAULT false,
-due_date DATE,
-created_at TIMESTAMP DEFAULT NOW(),
-updated_at TIMESTAMP DEFAULT NOW()
-)
-`);
-};
+const port = config.port;
 
 initDB();
 
@@ -221,6 +200,94 @@ app.get("/todos", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/todos/:id", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`SELECT * FROM todos WHERE id = $1`, [
+      req.params.id,
+    ]);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Todo not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Todo retrieved successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+app.put("/todos/:id", async (req: Request, res: Response) => {
+  const { title, description, completed, due_date, user_id } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE todos SET
+        title = COALESCE($1, title),
+        description = COALESCE($2, description),
+        completed = COALESCE($3, completed),
+        due_date = COALESCE($4, due_date),
+        user_id = COALESCE($5, user_id),
+        updated_at = NOW()
+       WHERE id = $6 RETURNING *`,
+      [title, description, completed, due_date, user_id, req.params.id]
+    );
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Todo not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Todo updated successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+app.delete("/todos/:id", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`DELETE FROM todos WHERE id = $1`, [
+      req.params.id,
+    ]);
+
+    if (result.rowCount === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Todo not found — 404",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Todo deleted successfully",
+        data: null,
+      });
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -232,4 +299,57 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Port ${port}`);
 });
+```
+
+```ts title="./src/config/index.ts"
+import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config({ path: path.join(process.cwd(), ".env") });
+
+const config = {
+  connectionStr: process.env.CONNECTION_STRING,
+  port: process.env.PORT,
+};
+
+export default config;
+```
+
+```ts title="./src/config/DB.ts"
+import { Pool } from "pg";
+import config from ".";
+
+export const pool = new Pool({
+  connectionString: `${config.connectionStr}`,
+});
+
+const initDB = async () => {
+  await pool.query(`
+CREATE TABLE IF NOT EXISTS users(
+id SERIAL PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+email VARCHAR(150) UNIQUE NOT NULL,
+age INT,
+phone VARCHAR(20),
+address TEXT,
+created_at TIMESTAMP DEFAULT NOW(),
+updated_at TIMESTAMP DEFAULT NOW()
+)
+`);
+
+  await pool.query(`
+CREATE TABLE IF NOT EXISTS todos(
+id SERIAL PRIMARY KEY,
+user_id INT REFERENCES users(id) ON DELETE CASCADE,
+title VARCHAR(200) NOT NULL,
+description TEXT,
+completed BOOLEAN DEFAULT false,
+due_date DATE,
+created_at TIMESTAMP DEFAULT NOW(),
+updated_at TIMESTAMP DEFAULT NOW()
+)
+`);
+};
+
+export default initDB;
 ```

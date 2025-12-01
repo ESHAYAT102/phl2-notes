@@ -27,7 +27,7 @@ type Developer = {
   };
 };
 
-type User = Pick<Developer, "name" | "age" | "gender">; // Takes teh keys to include // [!code highlight]
+type User = Pick<Developer, "name" | "age" | "gender">; // Takes the keys to include // [!code highlight]
 
 type UserAlt = Omit<Developer, "device" | "type">; // Takes the keys to exclude // [!code highlight]
 
@@ -37,5 +37,5 @@ type UserOpt = Partial<Developer>; // All the values are optional // [!code high
 
 type UserRO = Readonly<Developer>; // The value is readonly and cannot be reassigned // [!code highlight]
 
-type UserRec = Record<string, number>; // The first parameter decides what the type of teh keys will be, nad the second one decides the type of the values // [!code highlight]
+type UserRec = Record<string, number>; // The first parameter decides what the type of the keys will be, nad the second one decides the type of the values // [!code highlight]
 ```

@@ -1,0 +1,48 @@
+---
+title: Module 13.4
+description: Implementing Business Logic in user.service.ts
+---
+
+```ts title="./src/modules/user/user.controller.ts"
+import { Request, Response } from "express";
+import { userServices } from "./user.service";
+
+const createUser = async (req: Request, res: Response) => {
+  const { name, email } = req.body;
+
+  try {
+    const result = await userServices.createUser(name, email);
+
+    res.status(201).json({
+      success: false,
+      message: "Data Inserted Successfully",
+      data: result.rows[0],
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const userControllers = {
+  createUser,
+};
+```
+
+```ts title="./src/modules/user/user.service.ts"
+import { pool } from "../../config/DB";
+
+const createUser = async (name: string, email: string) => {
+  const result = await pool.query(
+    `INSERT INTO users(name, email) VALUES($1, $2) RETURNING *`,
+    [name, email]
+  );
+  return result;
+};
+
+export const userServices = {
+  createUser,
+};
+```

@@ -1,0 +1,82 @@
+---
+title: Module 13.7
+description: Creating Password Field & Hashing Passwords
+---
+
+Created all the module files for auth.
+
+```bash
+.
+├── bun.lock
+├── .env
+├── .gitignore
+├── package.json
+├── src
+│   ├── config
+│   │   ├── DB.ts
+│   │   └── index.ts
+│   ├── middleware
+│   │   └── logger.ts
+│   ├── modules
+│   │   ├── auth
+│   │   │   ├── auth.routes.ts
+│   │   │   ├── auth.controller.ts
+│   │   │   └── auth.service.ts
+│   │   ├── todo
+│   │   │   ├── todo.controller.ts
+│   │   │   ├── todo.routes.ts
+│   │   │   └── todo.service.ts
+│   │   └── user
+│   │       ├── user.controller.ts
+│   │       ├── user.routes.ts
+│   │       └── user.service.ts
+│   └── server.ts
+└── tsconfig.json
+```
+
+```ts title="./src/server.ts"
+import express, { Request, Response } from "express";
+import config from "./config";
+import initDB from "./config/DB";
+import logger from "./middleware/logger";
+import { userRoutes } from "./modules/user/user.routes";
+import { todoRoutes } from "./modules/todo/todo.routes";
+import { authRoutes } from "./modules/auth/auth.routes";
+
+const app = express();
+const port = config.port;
+
+initDB();
+
+app.use(express.json());
+
+app.get("/", logger, (req: Request, res: Response) => {
+  res.send("Hello World!");
+});
+
+app.use("/users", userRoutes);
+
+app.use("/todos", todoRoutes);
+
+app.use("/auth", authRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found — 404",
+    path: req.path,
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Port ${port}`);
+});
+```
+
+```ts title="./src/modules/auth/auth.routes.ts"
+import { Router } from "express";
+
+const router = Router();
+
+export const authRoutes = router;
+```
