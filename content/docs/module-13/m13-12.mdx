@@ -1,0 +1,95 @@
+---
+title: Module 13.12
+description: Issue Solving & Role-Based Authentication
+---
+
+```ts title="./src/middleware/auth/auth.ts"
+import { NextFunction, Request, Response } from "express";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import config from "../config";
+
+const auth = (...roles: string[]) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = req.headers.authorization;
+      if (!token) {
+        return res.status(500).json({
+          success: false,
+          message: "Access Blocked",
+        });
+      }
+
+      const decoded = jwt.verify(
+        token,
+        config.jwtSecret as string
+      ) as JwtPayload;
+      console.log({ decoded });
+      req.user = decoded;
+
+      if (roles.length && !roles.includes(decoded.role as string)) {
+        res.status(500).json({
+          error: "Unauthorized",
+        });
+      }
+
+      next();
+    } catch (err: any) {
+      res.status(500).json({
+        success: false,
+        message: err.message,
+      });
+    }
+  };
+};
+
+export default auth;
+```
+
+```ts title="./src/modules/auth/auth.controller.ts"
+import express from "express";
+import { userControllers } from "./user.controller";
+import logger from "../../middleware/logger";
+import auth from "../../middleware/auth";
+
+const router = express.Router();
+
+router.post("/", userControllers.createUser);
+
+router.get("/", logger, auth("admin"), userControllers.getUser);
+
+router.get("/:id", auth("admin", "user"), userControllers.getSingleUser);
+
+router.put("/:id", userControllers.updateUser);
+
+router.delete("/:id", userControllers.deleteUser);
+
+export const userRoutes = router;
+```
+
+```ts title="./src/modules/user/user.routes.ts"
+import { Request, Response } from "express";
+import { authServices } from "./auth.service";
+
+const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    const result = await authServices.loginUser(email, password);
+
+    res.status(200).json({
+      success: true,
+      message: "Login Successful",
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const authController = {
+  loginUser,
+};
+```

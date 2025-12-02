@@ -1,0 +1,79 @@
+---
+title: Module 13.9
+description: JWT Theory & Token Generation
+---
+
+`/login` route setup with JWT.
+
+```ts title="./src/modules/auth/auth.routes.ts"
+import { Router } from "express";
+import { authController } from "./auth.controller";
+
+const router = Router();
+
+router.post("/login", authController.loginUser);
+
+export const authRoutes = router;
+```
+
+```ts title="./src/modules/auth/auth.controller.ts"
+import { Request, Response } from "express";
+import { authServices } from "./auth.service";
+
+const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    const result = await authServices.loginUser(email, password);
+
+    res.status(200).json({
+      success: true,
+      message: "Login Successful",
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const authController = {
+  loginUser,
+};
+```
+
+```ts title="./src/modules/auth/auth.service.ts"
+import bcrypt from "bcryptjs";
+import { pool } from "../../config/DB";
+import jwt from "jsonwebtoken";
+
+const loginUser = async (email: string, password: string) => {
+  const result = await pool.query(`SELECT * FROM users WHERE email=$1`, [
+    email,
+  ]);
+  if (result.rows.length === 0) {
+    return null;
+  }
+
+  const user = result.rows[0];
+  const match = await bcrypt.compare(password, user.password);
+
+  if (!match) {
+    return null;
+  }
+
+  const secret = "KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30";
+  const token = jwt.sign({ name: user.name, email: user.email }, secret, {
+    expiresIn: "30d",
+  });
+  console.log({ token });
+
+  return { token, user };
+};
+
+export const authServices = {
+  loginUser,
+};
+```

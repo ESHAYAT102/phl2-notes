@@ -1,0 +1,60 @@
+---
+title: Module 13.10
+description: Higher-Order Functions & Auth Middleware
+---
+
+Moved the JWT token from the code to `.env`, and created auth middleware.
+
+```bash
+.
+├── bun.lock
+├── .env
+├── .gitignore
+├── package.json
+├── src
+│   ├── config
+│   │   ├── DB.ts
+│   │   └── index.ts
+│   ├── middleware
+│   │   ├── auth.ts
+│   │   └── logger.ts
+│   ├── modules
+│   │   ├── auth
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.routes.ts
+│   │   │   └── auth.service.ts
+│   │   ├── todo
+│   │   │   ├── todo.controller.ts
+│   │   │   ├── todo.routes.ts
+│   │   │   └── todo.service.ts
+│   │   └── user
+│   │       ├── user.controller.ts
+│   │       ├── user.routes.ts
+│   │       └── user.service.ts
+│   └── server.ts
+└── tsconfig.json
+```
+
+```ts title="./src/middleware/auth.ts"
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import config from "../config";
+
+const auth = () => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(500).json({
+        success: false,
+        message: "Access Blocked",
+      });
+    }
+
+    const decoded = jwt.verify(token, config.jwtSecret as string);
+    console.log({ decoded });
+    next();
+  };
+};
+
+export default auth;
+```
