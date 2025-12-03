@@ -1,0 +1,30 @@
+---
+title: Module 13.5.1
+description: Build & Deploy Your Express & Typescript APP
+---
+
+- install vercel globally.
+- log into vercel.
+- create the `vercel.json` config.
+
+```json title="./vercel.json"
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/server.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/server.js"
+    }
+  ]
+}
+```
+
+- run `vercel --prod` in the terminal
+- complete the prompts
+- add the environment variables to vercel
