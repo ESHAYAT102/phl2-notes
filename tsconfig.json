@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -26,6 +25,7 @@
       }
     ]
   },
+
   "include": [
     "next-env.d.ts",
     "**/*.ts",
