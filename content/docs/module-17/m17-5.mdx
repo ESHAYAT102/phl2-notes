@@ -1,0 +1,32 @@
+---
+title: Module 17.5
+description: Character, Date & UUID Types
+---
+
+## Character / String
+
+| Data Type | Storage                         | Length            | Use Case                                                    |
+| --------- | ------------------------------- | ----------------- | ----------------------------------------------------------- |
+| CHAR(n)   | n bytes                         | Fixed length `n`  | When you know the exact length (country code, phone numbers)|
+| VARCHAR(N)| Variable                        | Upto `n` character| Flexible length but with a max limit (username, email)      |
+| TEXT      | Variable                        | Unlimited         | Long text (comment, description)                            |
+
+In `CHAR(n)`, of the passed value is not the legth that is set then it'll add spaces to fill in the character length.
+
+## Date
+
+| Data Type  | Example                                       |
+| ---------- | --------------------------------------------- |
+| DATE       | "1980-12-20" or "20-Dec-1980" or "Dec-20-1980"|
+| TIME       | "14:00:00"                                    |
+| TIMETZ     | "14:00:00+06"                                 |
+| TIMESTAMP  | "1980-12-20 14:00:00"                         |
+| TIMESTAMPTZ| "1980-12-20 14:00:00+06"                      |
+| INTERVAL   | "3days 4 hours"                               |
+
+## UUID
+
+| Data Type  | Example                               |
+| ---------- | ------------------------------------- |
+| UUID       | "550e8400-e29b-41d4-a716-446655440000"|
+

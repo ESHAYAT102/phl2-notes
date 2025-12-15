@@ -1,0 +1,25 @@
+---
+title: Module 17.4
+description: Integer & Boolean Types
+---
+
+## Boolean Types
+
+Usually there are two boolean values in programming languages. But in SQL, there are 3.
+
+- true
+- false
+- null
+
+## Integer Types
+
+| Data Type                | Storage                         | Range                             | Use Case                           |
+| ------------------------ | ------------------------------- | --------------------------------- | ---------------------------------- |
+| SMALLINT (int2)          | 2 bytes                         | -32,768 to +32,767                | Small numbers (age quantity)       |
+| INTEGER (int4)           | 4 bytes                         | ~ -2B to +2B                      | Default choice for whole numbers   |
+| BIGINT (int8)            | 8 bytes                         | ~ -9 quintillion to +9 quintillion| Very large numbers (IDs, counters) |
+| REAL (float4)            | 4 bytes                         | ~ 6 decimal digits precision      | Approximate values (sensor data)   |
+| DOUBLE PRECISION (float8)| 8 bytes                         | ~ 15 decimal digits precision     | Higher precision calculations      |
+| NUMERIV / DECIMAL        | Variable                        | User defined precision (exact)    | Money, Financial calculations      |
+| SERIAL                   | 4 bytes (auto increment integer)| 1 to 2,147,483,647                | Auto incrementing IDs, primary keys|
+

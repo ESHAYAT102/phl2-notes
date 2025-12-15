@@ -1,0 +1,23 @@
+---
+title: Module 17.9
+description: Insert Without Column Names
+---
+
+```
+create table users (
+ id serial,
+ username varchar(50) not null,
+ email varchar(100) not null,
+ age smallint check (age > 13),
+ isActive boolean default false,
+ primary key(id),
+ unique(username, email)
+);
+
+insert into
+ users (username, email, age)
+
+values
+ ('Eshayat', 'hello@eshayat.com', 16);
+```
+
