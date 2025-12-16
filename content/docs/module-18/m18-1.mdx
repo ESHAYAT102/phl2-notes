@@ -1,0 +1,67 @@
+---
+title: Module 17.1
+description: ALTER Table & Constraints
+---
+
+What if we forget to add a column while creating or we need to change the name of a data. ALTER is a solution for that.
+
+Suppose we want to change the type of a data to VARCHAR(25) from VARCHAR(50) because we're not using that much space.
+
+What ALTER does:
+
+- Rename table
+- Add/Drop column
+- Rename column
+- Modify data type
+- Setting default value
+- Add/Drop constraint
+
+Rename a table:
+
+```
+alter table users rename to students
+```
+
+Rename a column:
+
+```
+alter table users
+rename column username to name
+```
+
+
+Add a column:
+
+```
+alter table users
+add column dob date
+```
+
+drop a column:
+
+```
+alter table users
+drop column dob
+```
+
+Modify a constraint:
+
+```
+alter table users
+alter column username type varchar(50)
+```
+
+Add a constraint:
+
+```
+alter table users
+alter column age set not null
+```
+
+Drop a constraint:
+
+```
+alter table users
+alter column age drop not null
+```
+

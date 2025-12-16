@@ -25,3 +25,4 @@ export default function Layout({ children }: LayoutProps<"/">) {
     </html>
   );
 }
+

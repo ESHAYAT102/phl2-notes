@@ -1,0 +1,24 @@
+---
+title: Module 18.2
+description: ALTER Default Values & Column Constraints
+---
+
+Set default value:
+
+```
+alter table users
+alter column email set default 'test@mail.com'
+```
+
+Add constraint:
+
+```
+alter table users add constraint unique_users_email unique(email)
+```
+
+Drop constraint:
+
+```
+alter table users drop constraint unique_users_email
+```
+
