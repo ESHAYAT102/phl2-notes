@@ -1,0 +1,22 @@
+---
+title: Module 19.3
+description: Updating Data
+---
+
+The update command can destroy the whole table if a proper condition is not given, so be careful.
+
+```sql
+update users set email = 'eshayat.wasiu@gmail.com' where u_id = 1
+```
+
+Multiple values can be updated easily.
+
+```sql
+update users set email = 'eshayat.wasiu@gmail.com', u_name = 'Eshayat Al-Wasiu' where u_id = 1
+```
+
+Multiple rows can be updated easily.
+
+```sql
+update users set isActive = true where u_id in (1, 8)
+```

@@ -1,0 +1,21 @@
+---
+title: Module 19.2
+description: LIMIT, OFFSET Pagination
+---
+
+Simple example of `LIMIT`:
+
+```sql
+select * from products limit 5
+```
+
+`OFFSET` basically skips the `n` number of rows from the table (OFFSET is used with LIMIT). Simple pagination example:
+
+```sql
+select * from products limit 5 offset 5 * 0
+select * from products limit 5 offset 5 * 1
+select * from products limit 5 offset 5 * 2
+select * from products limit 5 offset 5 * 3
+select * from products limit 5 offset 5 * 4
+select * from products limit 5 offset 5 * 5
+```

@@ -1,0 +1,27 @@
+---
+title: Module 19.1
+description: Handling NULL With COALESCE
+---
+
+Operatiors will always return NULL if used with NULL.
+Example:
+
+```sql
+select * from users where email != null
+```
+
+Use this instead:
+
+```sql
+select * from users where email is not null
+```
+
+---
+
+`COALESCE` returns the first not null value that's passed into the function.
+
+A very useful exampe:
+
+```sql
+select name, coalesce(email, 'Not Provided') as email from users
+```

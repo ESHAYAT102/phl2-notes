@@ -1,0 +1,13 @@
+---
+title: Module 19.9
+description: Understanding Inner Join
+---
+
+Inner join creates a table with two different ones. Conditions can be passed.
+
+Example:
+
+```sql
+select title, username from posts --selects the wanted rows only
+join users on posts.user_id = user.id
+```
