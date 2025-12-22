@@ -1,0 +1,15 @@
+---
+title: Module 20.10
+description: Indexing Explained
+---
+
+`Explain Analyze` can be used to see insights of a query.
+
+Creating an index of a column of a table.
+
+```sql
+create index users_email_index
+on users(email)
+```
+
+Indexing small tables is not recommended because indexing takes time and space.

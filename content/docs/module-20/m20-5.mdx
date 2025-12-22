@@ -1,0 +1,26 @@
+---
+title: Module 20.5
+description: Functions Explained
+---
+
+```sql
+create function user_count()
+returns int
+language sql
+as
+$$
+    select count(*) from users
+$$
+select user_count()
+```
+
+```sql
+create function delete_user(u_id int)
+returns viod
+language sql
+as
+$$
+    delete from users where id = u_id
+$$
+select delete_user(1)
+```
