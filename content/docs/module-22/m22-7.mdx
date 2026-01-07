@@ -1,0 +1,45 @@
+---
+title: Module 22.7
+description: Creating data with Prisma
+---
+
+```ts
+import { prisma } from "./lib/prisma";
+
+async function run() {
+  const createUser = await prisma.user.create({
+    data: {
+      name: "Eshayat Al-Wasiu",
+      email: "eshayat.wasiu@gmail.com"
+
+  })
+
+  console.log("Created User:", createUser);
+}
+
+run()
+```
+
+This code will create a user if the prisma schema model is this:
+
+```
+model User {
+    id      Int       @id @default(auttoincrement())
+    name    String
+    email   String    @unique
+    role    ROLE      @default(USER)
+    posts   Posts[]
+    profile Profile?
+}
+```
+
+It also needs the proper `enums` with `USER` as default to output this:
+
+```
+Created user: {
+    id: 1,
+    name: "Eshayat Al-Wasiu",
+    email: "eshayat.wasiu@gmail.com",
+    role: 'USER'
+}
+```
