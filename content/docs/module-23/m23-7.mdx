@@ -1,0 +1,34 @@
+---
+title: Module 23.7
+description: Indexing, Mapping & Self-Relations in Prisma Schema
+---
+
+## Indexing
+
+Use `@@index` to index a data. Syntax:
+
+```
+@@index([userId])
+```
+
+## Mapping
+
+Use `@@map` to map a data. Syntax:
+
+```
+@@map("posts")
+```
+
+## Self-Relation
+
+Add a data with the same naem as the table to create a self relation.
+
+code example:
+
+```prisma title="prisma.schema"
+model Comment {
+    id          String      @id @default(uuid())
+    parent      Comment?    @relation("CommentReplies", fields: [parentId], references: [id])
+    replies     Comment[]   @relation("CommentReplies")
+}
+```
