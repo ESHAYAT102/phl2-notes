@@ -1,0 +1,62 @@
+---
+title: Module 24.1
+description: Inroduction to Email & Password Authentication (Better Auth Setup)
+---
+
+## Installing and setting up Better Auth.
+
+### Install `better-auth` with bun
+
+Run this in the terminal:
+
+```bash title="terminal"
+bun add better-auth
+```
+
+### Environment Variables
+
+Add these in the `.env` file:
+
+```bash
+BETTER_AUTH_SECRET=a_secret_code
+BETTER_AUTH_URL=http://localhost:3000 # Base URL of your app
+```
+
+### Creating the `auth.ts` file
+
+Create a file named `auth.ts` in one of these locations:
+
+`lib/` directory
+`utils/` directory
+
+### Prisma Setup
+
+Paste this code in the auth.ts file:
+
+```ts
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+// If your Prisma file is located elsewhere, you can change the path
+import { PrismaClient } from "@/generated/prisma/client";
+
+const prisma = new PrismaClient();
+export const auth = betterAuth({
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
+  }),
+});
+```
+
+It uses Prisma with PostgreSQL.
+
+### Prisma Schema Generation
+
+```bash
+bunx @better-auth/cli generate
+```
+
+#### Prisma Schema Migration
+
+```bash
+bunx prisma migrate dev
+```
