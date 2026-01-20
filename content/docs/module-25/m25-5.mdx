@@ -1,0 +1,38 @@
+---
+title: Module 25.5
+description: Advanced Search Using OR & HAS Conditions
+---
+
+Modified the previous code to search from content too and also added some conditions.
+
+Code:
+
+```ts
+const getAllPosts = async (payload: { search: string | undefined }) => {
+  const allPosts = await prisma.post.findMany({
+    where: {
+      OR: [
+        {
+          title: {
+            contains: payload.search as string,
+            mode: "insensitive",
+          },
+        },
+        {
+          content: {
+            contains: payload.search as string,
+            mode: "insensitive",
+          },
+        },
+        {
+          tags: {
+            has: payload.search as string,
+            mode: "insensitive",
+          },
+        },
+      ],
+    },
+  });
+  return allPosts;
+};
+```

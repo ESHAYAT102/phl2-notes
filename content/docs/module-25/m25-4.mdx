@@ -1,0 +1,24 @@
+---
+title: Module 25.4
+description: Searching Posts by Title
+---
+
+Created a get post to search posts by their title. It uses URL query to pass the query to the API.
+
+Example: `http://localhost:3000/posts?search=query`
+
+A simple search function looks like this:
+
+```ts
+const getAllPosts = async (payload: { search: string | undefined }) => {
+  const allPosts = await prisma.post.findMany({
+    where: {
+      title: {
+        contains: payload.search as string,
+        mode: "insensitive",
+      },
+    },
+  });
+  return allPosts;
+};
+```

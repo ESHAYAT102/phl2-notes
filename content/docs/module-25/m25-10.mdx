@@ -1,0 +1,182 @@
+---
+title: Module 25.10
+description: Filtering Posts by Status and Author ID
+---
+
+Final code:
+
+```ts title="service"
+import { Post, PostStatus } from "../../../generated/prisma/client";
+import { PostWhereInput } from "../../../generated/prisma/models";
+import { prisma } from "../../lib/prisma";
+
+const createPost = async (
+  data: Omit<Post, "id" | "createdAt" | "updatedAt" | "authorId">,
+  userId: string,
+) => {
+  const result = await prisma.post.create({
+    data: {
+      ...data,
+      authorId: userId,
+    },
+  });
+  return result;
+};
+
+const getAllPost = async ({
+  search,
+  tags,
+  isFeatured,
+  status,
+  authorId,
+}: {
+  search: string | undefined;
+  tags: string[] | [];
+  isFeatured: boolean | undefined;
+  status: PostStatus | undefined;
+  authorId: string | undefined;
+}) => {
+  const andConditions: PostWhereInput[] = [];
+
+  if (search) {
+    andConditions.push({
+      OR: [
+        {
+          title: {
+            contains: search,
+            mode: "insensitive",
+          },
+        },
+        {
+          content: {
+            contains: search,
+            mode: "insensitive",
+          },
+        },
+        {
+          tags: {
+            has: search,
+          },
+        },
+      ],
+    });
+  }
+
+  if (tags.length > 0) {
+    andConditions.push({
+      tags: {
+        hasEvery: tags as string[],
+      },
+    });
+  }
+
+  if (typeof isFeatured === "boolean") {
+    andConditions.push({
+      isFeatured,
+    });
+  }
+
+  if (status) {
+    andConditions.push({
+      status,
+    });
+  }
+
+  if (authorId) {
+    andConditions.push({
+      authorId,
+    });
+  }
+
+  const allPost = await prisma.post.findMany({
+    where: {
+      AND: andConditions,
+    },
+  });
+  return allPost;
+};
+
+export const postService = {
+  createPost,
+  getAllPost,
+};
+```
+
+```ts title="controller"
+import { Request, Response } from "express";
+import { postService } from "./post.service";
+import { PostStatus } from "../../../generated/prisma/enums";
+
+const createPost = async (req: Request, res: Response) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(400).json({
+        error: "Unauthorized!",
+      });
+    }
+    const result = await postService.createPost(req.body, user.id as string);
+    res.status(201).json(result);
+  } catch (e) {
+    res.status(400).json({
+      error: "Post creation failed",
+      details: e,
+    });
+  }
+};
+
+const getAllPost = async (req: Request, res: Response) => {
+  try {
+    const { search } = req.query;
+    const searchString = typeof search === "string" ? search : undefined;
+
+    const tags = req.query.tags ? (req.query.tags as string).split(",") : [];
+
+    // true or false
+    const isFeatured = req.query.isFeatured
+      ? req.query.isFeatured === "true"
+        ? true
+        : req.query.isFeatured === "false"
+          ? false
+          : undefined
+      : undefined;
+
+    const status = req.query.status as PostStatus | undefined;
+
+    const authorId = req.query.authorId as string | undefined;
+
+    const result = await postService.getAllPost({
+      search: searchString,
+      tags,
+      isFeatured,
+      status,
+      authorId,
+    });
+    res.status(200).json(result);
+  } catch (e) {
+    res.status(400).json({
+      error: "Post creation failed",
+      details: e,
+    });
+  }
+};
+
+export const PostController = {
+  createPost,
+  getAllPost,
+};
+```
+
+```ts title="router"
+import express, { Router } from "express";
+import { PostController } from "./post.controller";
+import auth, { UserRole } from "../../middlewares/auth";
+
+const router = express.Router();
+
+router.get("/", PostController.getAllPost);
+
+router.post("/", auth(UserRole.USER), PostController.createPost);
+
+export const postRouter: Router = router;
+```
