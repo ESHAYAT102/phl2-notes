@@ -41,13 +41,13 @@ const sales = [
 ];
 ```
 
-To get that outupt we first need a variable containing the function (reduce).
+To get that output we first need a variable containing the function (reduce).
 
 ```js
 const output = sales.reduce(() => {}, {});
 ```
 
-Then we need to name the parameters that we want to recieve.
+Then we need to name the parameters that we want to receive.
 
 ```js
 const output = sales.reduce((table, sale) => {}, {});
@@ -59,7 +59,6 @@ Now, as we will need the keys - `category`, `price`, `quantity` in this function
 const output = sales.reduce((table, sale) => {
   const { category, price, quantity } = sale; // [!code highlight]
 }, {});
-
 ```
 
 And as the parameter `table` will store the final output, we can simply return it, of course in the end of the function so that it's the last line.
@@ -70,7 +69,6 @@ const output = sales.reduce((table, sale) => {
 
   return table; // [!code highlight]
 }, {});
-
 ```
 
 Now we can add a condition which will check that if an object of a category already exists or not.
@@ -79,8 +77,10 @@ Now we can add a condition which will check that if an object of a category alre
 const output = sales.reduce((table, sale) => {
   const { category, price, quantity } = sale;
 
-  if (!table[category]) { // [!code highlight]
-    table[category] = { // [!code highlight]
+  if (!table[category]) {
+    // [!code highlight]
+    table[category] = {
+      // [!code highlight]
       totalRevenue: 0, // [!code highlight]
       itemCount: 0, // [!code highlight]
     }; // [!code highlight]

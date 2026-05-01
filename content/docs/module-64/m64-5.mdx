@@ -1,0 +1,86 @@
+---
+title: Module 64.5
+description: Switch Tagged & Normal
+---
+
+If we have a lot of conditions for one thing, we can use `switch` instead of using a lot of `if` and `else if`s.
+
+## Tagged Switch
+
+```go
+package main
+
+func main() {
+	day := "fri"
+
+	switch day {
+	case "fri":
+		println("🎉")
+	case "sat":
+		println("🎉")
+	case "sun":
+		println("🥀")
+	case "mon":
+		println("🥀")
+	case "tue":
+		println("🥀")
+	case "wed":
+		println("🥀")
+	case "thu":
+		println("🥀")
+	}
+}
+```
+
+## Normal Switch
+
+```go
+package main
+
+func main() {
+	day := "fri"
+
+	switch {
+	case day == "fri":
+		println("🎉")
+	case day == "sat":
+		println("🎉")
+	case day == "sun":
+		println("🥀")
+	case day == "mon":
+		println("🥀")
+	case day == "tue":
+		println("🥀")
+	case day == "wed":
+		println("🥀")
+	case day == "thu":
+		println("🥀")
+	}
+}
+```
+
+---
+
+I recommend using tagged switch instead of normal switch if we have to compare with only one parameter.
+But if it's something so simple like the example, then just use `if` with or operator.
+
+`case` works as `if` or `else if`, so how do we do `else`?
+
+Well, we use `default` for that. Example:
+
+```go
+package main
+
+func main() {
+	day := "fri"
+
+	switch day {
+	case "fri":
+		println("🎉")
+	case "sat":
+		println("🎉")
+	default:
+		println("🥀")
+	}
+}
+```

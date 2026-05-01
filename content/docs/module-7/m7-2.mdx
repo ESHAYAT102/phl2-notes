@@ -3,7 +3,7 @@ title: Module 7.2
 description: Inheritance, the 1st pilar of OOP
 ---
 
-We can recieve parameters in methods just like functions, no `this.` needed.
+We can receive parameters in methods just like functions, no `this.` needed.
 
 # Inheritance
 
@@ -13,7 +13,10 @@ class Table {
 }
 
 class Human extends Table {
-  constructor(living: boolean, public job: string) {
+  constructor(
+    living: boolean,
+    public job: string,
+  ) {
     super(living);
   }
 }

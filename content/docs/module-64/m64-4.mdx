@@ -1,0 +1,24 @@
+---
+title: Module 64.4
+description: Scoped if else
+---
+
+If we're using a variable only inside an `if` function, then we canjust declare it in the `if` function to keep the code clean.
+
+Example:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	if score := 82; score >= 80 {
+		fmt.Println("💯💥")
+	} else if score >= 50 {
+		fmt.Println("🙌🔥")
+	} else if score < 50 {
+		fmt.Println("👍")
+	}
+}
+```

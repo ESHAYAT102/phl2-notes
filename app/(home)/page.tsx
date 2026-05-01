@@ -21,7 +21,7 @@ export default function HomePage() {
           <img
             src="esyt.gif"
             alt="ESYT demo"
-            className="w-full max-w-3xl mt-8 mx-auto rounded-lg overflow-hidden border border-fd-border shadow-lg"
+            className="w-full max-w-3xl mt-8 mx-auto rounded-xl overflow-hidden border border-fd-border shadow-lg"
           />
         </div>
       </div>

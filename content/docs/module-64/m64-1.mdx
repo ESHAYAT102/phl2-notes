@@ -1,0 +1,38 @@
+---
+title: Module 64.1
+description: Anonymous & IIFE Functions
+---
+
+## Nested Function
+
+Go doesn't let a function have named child functions. The nested functions must be anonymous, so we have to assign it to a variable to use it.
+
+Example:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	coffee := func() {
+		fmt.Println("Making Coffee...")
+	}
+
+	coffee()
+}
+```
+
+## IIFE (Immediately Invoked Function Expression)
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	func() {
+		fmt.Println("Making Coffee...")
+	}()
+}
+```

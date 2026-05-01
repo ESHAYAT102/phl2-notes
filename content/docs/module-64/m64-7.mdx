@@ -1,0 +1,55 @@
+---
+title: Module 64.7
+description: For Loop Break & Continue
+---
+
+## Break
+
+Example of `break`:
+
+```go
+package main
+
+import "fmt"
+
+func projectHailMary(number int) {
+	fmt.Printf("%d Grace Rocky Save Stars\n", number)
+}
+
+func main() {
+	for i := range [10]int{} {
+        if i > 5 {
+            break
+		}
+        projectHailMary(i)
+	}
+}
+```
+
+`break` simply breaks the loop, making it stop.
+
+## Continue
+
+Example:
+
+```go
+package main
+
+import "fmt"
+
+func projectHailMary(number int) {
+	fmt.Printf("%d Grace Rocky Save Stars\n", number)
+}
+
+func main() {
+	for i := range [10]int{} {
+		if i%2 != 0 {
+			continue
+		}
+		projectHailMary(i)
+	}
+}
+```
+
+`continue` makes the loop skip the iteration if the condition meets.
+In this example, the odd index of iterations are getting skiped.

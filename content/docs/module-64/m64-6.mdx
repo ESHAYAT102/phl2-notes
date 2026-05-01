@@ -1,0 +1,40 @@
+---
+title: Module 64.6
+description: For Loop Basics
+---
+
+For loops in Go is literally the same as TypeScript or JavaScript. Example:
+
+```go
+package main
+
+import "fmt"
+
+func projectHailMary(number int) {
+	fmt.Printf("%d Grace Rocky Save Stars\n", number)
+}
+
+func main() {
+	for i := 0; i < 10; i++ {
+		projectHailMary(i)
+	}
+}
+```
+
+Go is a modern laguage, so it has the `range` option for the `for` loppstoo like in python. Example:
+
+```go
+package main
+
+import "fmt"
+
+func projectHailMary(number int) {
+	fmt.Printf("%d Grace Rocky Save Stars\n", number)
+}
+
+func main() {
+	for i := range [10]int{} {
+		projectHailMary(i)
+	}
+}
+```

@@ -73,7 +73,8 @@ class Stack {
     this.items = [];
   }
 
-  push(value) { // [!code highlight]
+  push(value) {
+    // [!code highlight]
     this.items.push(value); // [!code highlight]
   } // [!code highlight]
 
@@ -100,15 +101,18 @@ class Stack {
     this.items.push(value);
   }
 
-  pop() { // [!code highlight]
-    if (this.isEmpty()) { // [!code highlight]
+  pop() {
+    // [!code highlight]
+    if (this.isEmpty()) {
+      // [!code highlight]
       return undefined; // [!code highlight]
     } // [!code highlight]
   } // [!code highlight]
 
   peek() {}
 
-  isEmpty() { // [!code highlight]
+  isEmpty() {
+    // [!code highlight]
     return this.items.length === 0; // [!code highlight]
   } // [!code highlight]
 }
@@ -169,7 +173,8 @@ class Stack {
   }
 
   peek() {
-    if (this.isEmpty()) { // [!code highlight]
+    if (this.isEmpty()) {
+      // [!code highlight]
       return undefined; // [!code highlight]
     } // [!code highlight]
   }
@@ -246,7 +251,8 @@ class Stack {
     return this.items.length === 0;
   }
 
-  print() { // [!code highlight]
+  print() {
+    // [!code highlight]
     console.log(this.items.slice().reverse().join(" -> ")); // [!code highlight]
   } // [!code highlight]
 }
@@ -262,7 +268,7 @@ As we have defined, the stack has these features/methods:
 - `pop` - to remove the latest element
 - `peek` - to see the latest element
 - `isEmpty` - to check if the stack is empty or not
-- `print` - to outupt the stack
+- `print` - to output the stack
 
 ### Using the methods
 

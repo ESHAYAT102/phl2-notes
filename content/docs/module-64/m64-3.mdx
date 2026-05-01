@@ -1,0 +1,77 @@
+---
+title: Module 64.3
+description: if, else, and switch
+---
+
+## `if`
+
+`if` condition:
+
+```go
+package main
+
+import "fmt"
+
+func isAduld(age int) bool {
+	if age >= 18 {
+		return true
+	}
+	return false
+}
+
+func main() {
+	age := 18
+	fmt.Print(isAduld(age))
+}
+```
+
+### Conditional Variable
+
+We can store the returned value of a condition in a variable:
+
+```go
+isAdult := age >= 18
+```
+
+Code example:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	age := 18
+	isAdult := age >= 18
+
+	fmt.Print(isAdult)
+}
+```
+
+## `else`
+
+Using `else` is very simple. If the function is returning something then it's not even required
+(this code does the exact same thing as the first code of this page because the function is returning a value)
+
+```go
+package main
+
+import "fmt"
+
+func isAduld(age int) bool {
+	if age >= 18 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func main() {
+	age := 18
+	fmt.Print(isAduld(age))
+}
+```
+
+## `else if`
+
+`else if` is the same thing as `if`, just used for multi conditioning.
