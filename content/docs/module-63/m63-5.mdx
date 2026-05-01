@@ -1,0 +1,36 @@
+---
+title: Module 63.5
+description: Multiple Variables & Constants
+---
+
+## Variables
+
+### Declaring
+
+Declare multiple variables like this:
+
+```go
+var x, y int
+```
+
+This can only be used for variables of the same type. Different types of variables can't be declared like this.
+
+### Assigning
+
+We can directly assign the values too:
+
+```go
+var x, y int = 1958, 2009
+```
+
+## Constants
+
+### Declaring
+
+Declare a constant when th value is guaranteed to not be reassigned, because constants are obviously constant, they can't be reassigned.
+
+Constants are constant (obviously), so there's no need to declare it and assign it separately. So Go has this easier syntax:
+
+```go
+const pi = 3.14
+```

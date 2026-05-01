@@ -1,0 +1,63 @@
+---
+title: Module 63.4
+description: Variables in GO
+---
+
+## Declare A String Variable
+
+Use the `var` keyword to declare a variable.
+
+Go needs the type of the variable to be mentioned while declaring. Example:
+
+```go
+var variable_name string;
+```
+
+## Assigning A Value To A Variable
+
+```go
+var variable_name string;
+variable_name = "Hello World" // [!code highlight]
+```
+
+## Shorter approach
+
+### Ditching The `var` Keyword
+
+This doesn't require the manual declaration before assigning:
+
+```go
+variable_name := "Hello World"
+```
+
+### Using The `var` Keyword To Declare And Assigning At The Same Time
+
+This declares and assigns at the same time using the `var` keyword, the previous one didn't use the `var` keyword:
+
+```go
+var variable_name = "Hello World"
+```
+
+## Grouped Variables
+
+Declare multiple variables at the same time:
+
+```go
+var (
+    username string
+    age int
+)
+```
+
+You can also assign the values in here too:
+
+```go
+var (
+    username string  = "Eshayat"
+    age int          = 16
+)
+```
+
+## Personal Recommendations
+
+I personally use `variable_name := "Hello World"`, though it can only be used inside a function.

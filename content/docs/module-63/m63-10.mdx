@@ -1,0 +1,43 @@
+---
+title: Module 63.10
+description: Multiple & Named Returns
+---
+
+Multiple returned values:
+
+```go
+package main
+
+import "fmt"
+
+func coffee(coffeeType string, coffeeBill int) (string, int) {
+	coffeeToReturn := fmt.Sprintf("%v Coffee\n", coffeeType)
+	return coffeeToReturn, coffeeBill
+}
+
+func main() {
+	returnedCoffee, returnedBill := coffee("Africano", 25000)
+	fmt.Printf("I'm having a $%d %s", returnedBill, returnedCoffee)
+}
+```
+
+Named returned values:
+
+```go
+package main
+
+import "fmt"
+
+func coffee(coffeeType string) (coffeeToReturn string, price int) { // [!code highlight]
+	price = 25 // [!code highlight]
+	coffeeToReturn = fmt.Sprintf("%v Coffee\n", coffeeType) // [!code highlight]
+	return // [!code highlight]
+}
+
+func main() {
+	returnedCoffee, returnedBill := coffee("Africano")
+	fmt.Printf("I'm having a $%d %s", returnedBill, returnedCoffee)
+}
+```
+
+Function parameters can't be returned as named returns. When a named return is being used, the returned variables get declared in the fuction header, so don't declare them inside the function, just assign them. In the example avobe, you can see that I didn't use `:` before the equal sign for the variables, that's because I'm assigning them a value, they're already declared in the first like (the line that start with `func coffee...`)

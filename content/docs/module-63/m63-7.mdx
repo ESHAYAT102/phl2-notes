@@ -1,0 +1,77 @@
+---
+title: Module 63.7
+description: Zero Values & Printf
+---
+
+## Zero Values
+
+Zero values are the values a data type initially has, before we assign something oursleves.
+
+Default values for different data types:
+
+| type   | value |
+| ------ | ----- |
+| int    | 0     |
+| string | ""    |
+| float  | 0.0   |
+| bool   | false |
+
+## Print Variables
+
+| Code             | Definition                                                                          |
+| ---------------- | ----------------------------------------------------------------------------------- |
+| %v               | any type of variables                                                               |
+| %+v              | structs with key names                                                              |
+| %#v              | any type of data in Go's syntax/perspective                                         |
+| %%               | a % sign                                                                            |
+| %T               | type of a variable                                                                  |
+| %t               | value of a boolean data (true/false)                                                |
+| %s               | string                                                                              |
+| %q               | string with quotations                                                              |
+| %d               | decimal integer                                                                     |
+| %b               | binary integer                                                                      |
+| %o               | octal integer                                                                       |
+| %x               | hexadecimal integer in lowercase                                                    |
+| %X               | hexadecimal integer in uppercase                                                    |
+| %f               | full decimal number with lowercase letters                                          |
+| %f               | full decimal number with uppercase letters                                          |
+| %e               | scientific notation in lowercase                                                    |
+| %E               | scientific notation in uppercase                                                    |
+| %g               | the shortest representation of %e & %f                                              |
+| %G               | the shortest representation of %E & %F                                              |
+| %c               | unicode characters                                                                  |
+| %U               | unicode of a character                                                              |
+| %w               | wraps errors (unwraps with error.Unwrap)                                            |
+| + (flag)         | shows integers with (+/-)                                                           |
+| \<space\> (flag) | adds a space before positive numbers                                                |
+| 0 (flag)         | adds a gap in the beginning of the line                                             |
+| # (flag)         | alternates the value of Octals and Hex. Adds quotations to strings, only in %v      |
+| \<number\>       | max width of a line                                                                 |
+| .\<number\>      | For floats, digits after decimal. For strings, max chars. For integers, min digits. |
+
+## Print Commands
+
+| Code     | Definition                                                       |
+| -------- | ---------------------------------------------------------------- |
+| Print    | prints                                                           |
+| Println  | prints, adds a `\n` in the end, adds spaces between values       |
+| Printf   | prints, enables using Print Verbs                                |
+| Scan     | Takes user input                                                 |
+| Sprint   | Works same as Print. Returns the output instead of printing it   |
+| Sprintln | Works same as Println. Returns the output instead of printing it |
+| Sprintf  | Works same as Printf. Returns the output instead of printing it  |
+
+## Commands From Other Packages
+
+| Package   | Code       | Definition                                                                                |
+| --------- | ---------- | ----------------------------------------------------------------------------------------- |
+| math/rand | Intn()     | Generates a random number between 0 to its parameter                                      |
+| math/rand | Seed()     | Changes the random number generation seed so that the random number isn’t same every time |
+| time      | UnixNano() | Returns the nanosecond of the parent time function. Mostly used with Now()                |
+
+## Other Usefull Commands
+
+| Code         | Definition                                                                  |
+| ------------ | --------------------------------------------------------------------------- |
+| \*[variable] | Toggles pointer and value of a variable (Only works with pointed data type) |
+| &[variable]  | Toggles address and value of a variable                                     |
