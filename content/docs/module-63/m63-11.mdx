@@ -47,6 +47,23 @@ Order for Mizan: Latte coffee costs 150 taka ☕
 - Make your function **reusable** for any customer or coffee type.
 - Test it with **different names, types, and prices**.
 
+Happy coding! ☕
+
 ---
 
-Happy coding! ☕
+My solution:
+
+```go
+package main
+
+import "fmt"
+
+func coffeeOrder(customerName string, coffeeType string, price int) string {
+	return fmt.Sprintf("Order for %s: %d taka %s coffee ☕", customerName, price, coffeeType)
+}
+
+func main() {
+	order := coffeeOrder("Eshayat", "Africano", 25000)
+	fmt.Println(order)
+}
+```
