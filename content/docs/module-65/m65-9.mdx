@@ -1,0 +1,96 @@
+---
+title: Module 65.9
+description: More on Structs
+---
+
+## Defining & Assigning To Structs
+
+We can declare and assign struct based variables seperately too.
+
+```go
+package main
+
+import "fmt"
+
+type person struct {
+	name     string
+	age      int
+	isFamous bool
+}
+
+func main() {
+	var MJ person
+
+	MJ.name = "Michael Jackson"
+	MJ.age = 51
+	MJ.isFamous = true
+
+	fmt.Println(MJ)
+}
+```
+
+shorter way to assign values:
+
+```go
+package main
+
+import "fmt"
+
+type person struct {
+	name     string
+	age      int
+	isFamous bool
+}
+
+func main() {
+	var MJ person
+
+	MJ = person{name: "Michael Jackson", age: 51, isFamous: true}
+
+	fmt.Println(MJ)
+}
+```
+
+## Nesting Structs
+
+Example:
+
+```go
+package main
+
+import "fmt"
+
+type albums struct {
+	populrAlbumNames int
+	albumNames       []string
+}
+
+type singer struct {
+	name      string
+	age       int
+	isFamous  bool
+	albumInfo albums
+}
+
+func main() {
+	var MJ singer
+
+	MJ = singer{
+		name: "Michael Jackson",
+		age: 51,
+		isFamous: true,
+		albumInfo: albums{
+			populrAlbumNames: 8,
+			albumNames: []string{
+				"Thriller",
+				"Off The Wall",
+				"Bad",
+				"Dangerous",
+				"HIStory",
+				"This Is It",
+				"Xscape",
+				"Scream"}}}
+
+	fmt.Println(MJ)
+}
+```

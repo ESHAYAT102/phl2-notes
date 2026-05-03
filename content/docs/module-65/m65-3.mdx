@@ -1,0 +1,85 @@
+---
+title: Module 65.3
+description: Slices In Go
+---
+
+**We can slice an array in different ways:**
+
+slice from specified indexes:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	numbers := []int{10, 20, 30, 40, 50, 60}
+
+	sliced := numbers[1:4] // [!code highlight]
+
+	fmt.Println(sliced)
+}
+```
+
+Slice from the beginning of an array to a specified index:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	numbers := []int{10, 20, 30, 40, 50, 60}
+
+	sliced := numbers[:4] // [!code highlight]
+
+	fmt.Println(sliced)
+}
+
+```
+
+Slice from a specified index to the end of an array:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	numbers := []int{10, 20, 30, 40, 50, 60}
+
+	sliced := numbers[2:] // [!code highlight]
+
+	fmt.Println(sliced)
+}
+
+```
+
+We can also sloce from beginning to end to basically clone an array:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	numbers := []int{10, 20, 30, 40, 50, 60}
+
+	sliced := numbers[:] // [!code highlight]
+
+	fmt.Println(sliced)
+}
+```
+
+The fist index is _included_ and the last index is _excluded_.
+Making changes to a cloned/sliced array will apply the changes to the main array too.
+
+Adding a value to a new index in a slice must be done using the `append` method, and must be reassigned.
+Example:
+
+```go
+sliced = append(sliced, 70)
+```
+
+The `append` method takes two parameters.
+First one is the sliced array you want to append to, and the second one is the value you want to append to the sliced array.

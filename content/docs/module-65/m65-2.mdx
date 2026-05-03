@@ -1,0 +1,36 @@
+---
+title: Module 65.2
+description: More On Arrays
+---
+
+We can set the values in an array and print all with a `for` loop like this:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var array [6]int
+	for i := 0; i < len(array); i++ {
+		array[i] = i
+		fmt.Println(array[i])
+	}
+}
+```
+
+We can also use the modern approach with `range`:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var array [6]int
+	for i := range array {
+		array[i] = i
+		fmt.Println(array[i])
+	}
+}
+```

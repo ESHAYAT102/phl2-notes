@@ -1,0 +1,44 @@
+---
+title: Module 65.6
+description: Pointers in Function Parameters
+---
+
+When passing a variable to a function, we can use pointers to make the program use less memory in large scale.
+
+For example, do this:
+
+```go
+package main
+
+import "fmt"
+
+func test(x *int) { // [!code highlight]
+	fmt.Println("Value:", *x) // [!code highlight]
+}
+
+func main() {
+	a := 51
+	test(&a) // [!code highlight]
+}
+```
+
+not this:
+
+```go
+package main
+
+import "fmt"
+
+func test(x int) { // [!code highlight]
+	fmt.Println("Value:", x) // [!code highlight]
+}
+
+func main() {
+	a := 51
+	test(a) // [!code highlight]
+}
+```
+
+---
+
+This doesn't change the value of the main variable (`a`) too, which is exactly what we want, so this is a perfect solution for memory efficiency.

@@ -1,0 +1,66 @@
+---
+title: Module 65.8
+description: Struct Basics
+---
+
+Struct is basically `interface` from TypeScript.
+
+Example:
+
+```go
+package main
+
+import "fmt"
+
+type person struct { // [!code highlight]
+	name     string // [!code highlight]
+	age      int // [!code highlight]
+	isFamous bool // [!code highlight]
+}
+
+func main() {
+	MJ := person{name: "Michael Jackson", age: 51, isFamous: true} // [!code highlight]
+	fmt.Println(MJ)
+}
+```
+
+There's a more shorter approach, but it's less readable/understandable.
+
+```go
+package main
+
+import "fmt"
+
+type person struct {
+	name     string
+	age      int
+	isFamous bool
+}
+
+func main() {
+	MJ := person{"Michael Jackson", 51, true} // [!code highlight]
+	fmt.Println(MJ)
+}
+```
+
+We can reassign a value from a struct based variable like this:
+
+```go
+package main
+
+import "fmt"
+
+type person struct {
+	name     string
+	age      int
+	isFamous bool
+}
+
+func main() {
+	MJ := person{"Michael Jackson", 51, true}
+
+	MJ.age = 68 // [!code highlight]
+
+	fmt.Println(MJ)
+}
+```

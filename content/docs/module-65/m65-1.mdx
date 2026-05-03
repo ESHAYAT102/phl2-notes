@@ -1,0 +1,63 @@
+---
+title: Module 65.1
+description: Arrays in Go
+---
+
+## Declaring an array:
+
+```go
+var array_name [n]int
+```
+
+In this example, `n` equals to the number of values (not indexes) we want to store in it.
+
+If we don't assign any value to them, it'll stay the default. default values for different data types:
+
+- string: "" (empty string)
+- integer: 0
+- boolean: false
+- float: 0.0
+
+## Assigning a value
+
+the previous code will produce an array that looks like this if we assume `n` equals to 6:
+
+```go
+[0, 0, 0, 0, 0, 0]
+```
+
+So to assign a value, the code will be:
+
+```go
+array_name[0] = 51
+```
+
+This code will produce an array like this:
+
+```go
+[51, 0, 0, 0, 0, 0]
+```
+
+Use the `len()` function to check the length of an array.
+
+## Declaring & Assigning In The Same Line
+
+```go
+array_name := [6]int{10, 20, 30, 40, 50, 60}
+```
+
+I's valid to declare but not assign some values, they'll set to the default (in this case, zero)
+
+Example:
+
+```go
+array_name := [6]int{10, 20, 30, 40}
+```
+
+We can also leave the square brackets empty to assign as many values we want dynamically. Example:
+
+```go
+array_name := []int{10, 20, 30, 40, 50}
+```
+
+If we leave the square brackets empty, the array index limit/capacity will be the assigned indexes/items. So we can't reassign to it in a non defined array, we have to use the `append()` method to do that.

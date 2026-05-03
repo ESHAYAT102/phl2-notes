@@ -1,0 +1,11 @@
+---
+title: Module 65.4
+description: Slice Length & Capacity
+---
+
+Slice length is the normal length of the array.
+And, slice capacity is the capacity of the slice (obviously), which is the length of the parent array (the array sliced from)
+
+If the parent array has a fixed capacity,
+the values appeneded to the sliced array will stop reflecting on the parent array when the indexes exceed.
+Slice will keep working though, there won't be any errors for the capacity limit (inherited from the parent array)

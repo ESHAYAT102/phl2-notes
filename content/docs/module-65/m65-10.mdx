@@ -1,0 +1,32 @@
+---
+title: Module 65.10
+description: Constructor Functions
+---
+
+Constructor functions are a way to define structs in a more usable way.
+
+```go
+package main
+
+import "fmt"
+
+type person struct {
+	name string
+	age  int
+}
+
+func main() {
+	newPerson := func(name string, age int) person {
+		return person{
+			name: name,
+			age:  age,
+		}
+	}
+
+	fmt.Println(newPerson("Michael Jackson", 51))
+}
+```
+
+So, why use a constructor function when we can directly just use the struct?
+This is actually done for form validation and more stuff to struct data that are usually not possible.
+Like setting a default data for a key.

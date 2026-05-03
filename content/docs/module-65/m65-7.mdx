@@ -1,0 +1,63 @@
+---
+title: Module 65.7
+description: Passing Arrays as Pointers
+---
+
+Doing something to an array in a function doesn't actually edit the main array. The changes are only inside the function.
+But if we use pointers, the main array will actually change. So we must use this with caution.
+
+Examples:
+
+Without pointer:
+
+```go
+package main
+
+import "fmt"
+
+func changeArray(arr []int) {
+	arr = append(arr, 51)
+	fmt.Println("Inside function:", arr)
+}
+
+func main() {
+	array := []int{10, 20, 30, 40, 50}
+	changeArray(array)
+	fmt.Println("Outside function:", array)
+}
+```
+
+Output:
+
+```go
+Inside function: [10 20 30 40 50 51]
+Outside function: [10 20 30 40 50]
+```
+
+With pointer:
+
+```go
+package main
+
+import "fmt"
+
+func changeArray(arr *[]int) {
+	*arr = append(*arr, 51)
+	fmt.Println("Inside function:", *arr)
+}
+
+func main() {
+	array := []int{10, 20, 30, 40, 50}
+	changeArray(&array)
+	fmt.Println("Outside function:", array)
+}
+```
+
+Output:
+
+```go
+Inside function: [10 20 30 40 50 51]
+Outside function: [10 20 30 40 50 51]
+```
+
+Reassigning a value of an array pointer doesn't require asterisk before the variable name.

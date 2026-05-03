@@ -1,0 +1,37 @@
+---
+title: Module 65.5
+description: Pointers In Go
+---
+
+Use `&` sign to point to a variable's address in the memory.
+
+Example:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := 2
+	b := &a
+	fmt.Println(b)
+}
+```
+
+If you run this code, you'll see that `b` is not really `2` (inherited from `a`) because it's pointing to the address of `a`.
+To see the actual value (or we can say 'decode it') we can use an asterisk (`*`) before `b` in the printing:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := 2
+	b := &a
+	fmt.Println(*b)
+}
+```
+
+This will show/output `2`.
