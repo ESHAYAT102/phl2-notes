@@ -1,0 +1,77 @@
+---
+title: Module 66.5
+description: Range & Byte Slice
+---
+
+We can use `range` for looping on these data types:
+
+- array
+- slice
+- string
+- map
+- channel
+
+## `map`
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	me := map[string]string{
+		"Name":     "Eshayat Al-Wasiu",
+		"Passion":  "Programming",
+		"Platform": "Web & CLI",
+	}
+
+	for key, value := range me {
+		fmt.Printf("%s: %s\n", key, value)
+	}
+}
+```
+
+If we don't need a specifin data (either the key or the value), we can use an underscore:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	me := map[string]string{
+		"Name":     "Eshayat Al-Wasiu",
+		"Passion":  "Programming",
+		"Platform": "Web & CLI",
+	}
+
+	for _, value := range me { // [!code highlight]
+		fmt.Printf("%s\n", value) // [!code highlight]
+	}
+}
+```
+
+## `array`
+
+Unlike maps, arrays have indexes instead of key. So for arrays, it's the same thing but the first parameter is the index.
+
+Example code:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	albums := []string{"Thriller", "Off The Wall", "This Is It", "Bad", "Dangerous"}
+
+	for i, album := range albums { // [!code highlight]
+		fmt.Printf("%d. %s\n", i+1, album)
+	}
+}
+```
+
+## `string`
+
+For strings, we get the same parameters like array. The index, and the value.
+We get the ASCII value of a character for strings.

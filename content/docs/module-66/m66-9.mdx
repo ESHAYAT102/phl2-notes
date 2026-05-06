@@ -1,0 +1,48 @@
+---
+title: Module 66.9 - 66.10
+description: Payment Service Example
+---
+
+```go
+package main
+
+import "fmt"
+
+type PaymentMethod interface {
+	pay(amount float64)
+}
+
+type BKash struct {
+	apiKey string
+}
+
+func NewBkash(api string) *BKash {
+	return &BKash{
+		apiKey: api,
+	}
+}
+
+func (bk BKash) pay(amount float64) {
+	fmt.Printf("Paying %.0f taka with BKash\n", amount)
+}
+
+type PaymentService struct {
+	method PaymentMethod
+}
+
+func NewPaymentService(m PaymentMethod) *PaymentService {
+	return &PaymentService{
+		method: m,
+	}
+}
+
+func (ps PaymentService) checkout(amount float64) {
+	ps.method.pay(amount)
+}
+
+func main() {
+	bkash := NewBkash("API_KEY")
+	ps := NewPaymentService(bkash)
+	ps.checkout(51)
+}
+```

@@ -1,0 +1,41 @@
+---
+title: Module 66.3 - 66.4
+description: Maps in Go
+---
+
+Maps are like structs but you can add values to it on demand. There's a catch tho, you can only store only one type of data in it, like an array.
+
+## Declaring
+
+```go
+myMap := make(map[string]int)
+```
+
+or
+
+```go
+myMap := map[string]int{}
+```
+
+In the example, the type in the square brackets is the type of the key, which is `string`, and `int` is the type of the values
+(maps are like JSON)
+
+## Assigning
+
+```go
+myMap["myData"] = 51
+```
+
+## Seeing
+
+To see a value, we have to use the array syntax.
+
+```go
+fmt.Println(myMap["myData"])
+```
+
+## Declaring & Assigning
+
+```go
+myMap := map[string]int{"myData": 51}
+```

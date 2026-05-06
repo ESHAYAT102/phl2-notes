@@ -1,0 +1,58 @@
+---
+title: Module 66.1
+description: More on structs
+---
+
+We can use functions in structs. Example:
+
+```go
+package main
+
+import "fmt"
+
+type user struct {
+	name  string
+	age   int
+	greet func()
+}
+
+func main() {
+	me := user{name: "Eshayat Al-Wasiu", age: 16}
+
+	me.greet = func() {
+		fmt.Printf("Hello, %s\n", me.name)
+	}
+
+	me.greet()
+}
+```
+
+`greet` is defined outside the curly brackets because `me` is not accessible from there.
+
+## Receiver Functions
+
+Receiver functions are basically methods for classes in TypeScript.
+
+```go
+package main
+
+import "fmt"
+
+type user struct {
+	name string
+	age  int
+}
+
+func main() {
+	me := user{name: "Eshayat Al-Wasiu", age: 16}
+
+	me.greet() // [!code highlight]
+}
+
+func (u user) greet() { // [!code highlight]
+	fmt.Println("Hello,", u.name) // [!code highlight]
+} // [!code highlight]
+```
+
+Go already passes the variable that's created using the struct to the receiver functions,
+so we just have to receive it. (received it as `u` in the example)

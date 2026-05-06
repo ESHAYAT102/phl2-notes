@@ -1,0 +1,61 @@
+---
+title: Module 66.2
+description: Receiver Functions (Value vs Pointer)
+---
+
+Changes made in a receiver function are not permanent. To solve that, we can use pointers.
+
+Example:
+
+Without pointer (which is not persistent):
+
+```go
+package main
+
+import "fmt"
+
+type user struct {
+	name string
+	age  int
+}
+
+func main() {
+	me := user{name: "Eshayat Al-Wasiu", age: 16}
+
+	me.changeName("Michael Jackson")
+
+	fmt.Println(me.name)
+}
+
+func (u user) changeName(newName string) {
+	u.name = newName
+	fmt.Println("New Name:", u.name)
+}
+```
+
+Without pointer (which is persistent):
+
+```go
+package main
+
+import "fmt"
+
+type user struct {
+	name string
+	age  int
+}
+
+func main() {
+	me := user{name: "Eshayat Al-Wasiu", age: 16}
+
+	pointer_me := &me
+	pointer_me.changeName("Michael Jackson")
+
+	fmt.Println(me.name)
+}
+
+func (u *user) changeName(newName string) {
+	u.name = newName
+	fmt.Println("New Name:", u.name)
+}
+```

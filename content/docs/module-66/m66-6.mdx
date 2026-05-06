@@ -1,0 +1,95 @@
+---
+title: Module 66.6 - 66.8
+description: Interface
+---
+
+What is interface?
+
+Interface is Go defines the behavior of a value. It holds structs depending on what methods they have. Example:
+
+```go
+package main
+
+import "fmt"
+
+type Animal interface {
+	speak()
+}
+
+type Cat struct{}
+type Dog struct{}
+type Human struct {
+	name string
+}
+
+func (d Dog) speak() {
+	fmt.Println("Woof!!!")
+}
+
+func (c Cat) speak() {
+	fmt.Println("Meow...")
+}
+
+func (h Human) speak() {
+	fmt.Printf("My name is %s.\n", h.name)
+}
+
+func makeSound(a Animal) {
+	a.speak()
+}
+
+func main() {
+	saffron := Cat{}
+	chop := Dog{}
+	me := Human{name: "Eshayat"}
+
+	makeSound(saffron)
+	makeSound(chop)
+	makeSound(me)
+}
+```
+
+`Human`, `Cat`, and `Dog` have the `speak` method defined, so they are in the `Animal` category.
+
+If we create an element without the speak method, they'll not be considered `Animal`.
+
+Example:
+
+```go
+package main
+
+import "fmt"
+
+type Animal interface {
+	speak()
+}
+
+type Cat struct{}
+type Bottle struct {
+	brand    string
+	capacity int // in mililiter unit
+	is_a_can bool
+}
+
+func (c Cat) speak() {
+	fmt.Println("Meow...")
+}
+
+func makeSound(a Animal) {
+	a.speak()
+}
+
+func main() {
+	saffron := Cat{}
+	monster := Bottle{brand: "Monster", capacity: 473, is_a_can: true}
+
+	makeSound(saffron)
+	fmt.Printf("%+v\n", monster)
+}
+```
+
+`saffron` is an `Animal`, but `monster` is not an `Animal`.
+
+Basically, `makeSound` is a function for only the structs that are compatible to be in the `Animal` interface.
+
+OOP is possible in Go. Some features aren't directly there, we just have to make those ourselves.
