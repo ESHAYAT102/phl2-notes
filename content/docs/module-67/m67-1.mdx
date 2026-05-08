@@ -1,0 +1,56 @@
+---
+title: Module 67.1
+description: Empty Interface & Type Assertion
+---
+
+If we need to have an interface but we don't know what type of data we are gonna put in it, we can define it like this:
+
+```go
+var data interface{}
+data = "Hello"
+fmt.Println(data)
+```
+
+We can do similar thing for functions too:
+
+```go
+package main
+
+import "fmt"
+
+func Print(v any) {
+	fmt.Println(v)
+}
+
+func main() {
+	mj := "Michael Jackson"
+	Print(mj)
+}
+```
+
+Old Go versions use `interface{}` instead of `any`.
+
+This example doesn't let us do things based on the type of the data/parameter.
+
+```go
+package main
+
+import "fmt"
+
+func Process(v any) {
+	strV, strOK := v.(string) // [!code highlight]
+	intV, intOK := v.(int) // [!code highlight]
+	if strOK {
+		fmt.Println("Sup,", strV)
+	} else if intOK {
+		fmt.Println(intV + 51)
+	}
+}
+
+func main() {
+	mj := "Michael Jackson"
+	Process(mj)
+}
+```
+
+This is how we can do something based on the type of a data.

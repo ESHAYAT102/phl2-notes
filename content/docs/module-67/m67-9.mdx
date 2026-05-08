@@ -1,0 +1,18 @@
+---
+title: Module 67.9 - 67.10
+description: go mod tidy & Init Function
+---
+
+use `go mod tidy` to tidy up your code.
+
+It deletes the unnecessary third-party imports,
+installs packages that we're importing and using but haven't installed,
+and clears up the code.
+
+---
+
+There's a special function besides the `main` function, which is `init`. The `init` function is automatically called by go right before the `main` function.
+
+The `init` functions of the imported files are gonna run first, before the main package's one.
+
+Both `main` and `init` functions don't take parameters.

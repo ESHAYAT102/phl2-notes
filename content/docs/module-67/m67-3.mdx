@@ -1,0 +1,23 @@
+---
+title: Module 67.3
+description: Variadic Arguments
+---
+
+If we want to pass a slice into a variadic function, we have to do it like this:
+
+```go
+package main
+
+import "fmt"
+
+func greet(prefix string, people ...string) {
+	for _, person := range people {
+		fmt.Println(prefix, person)
+	}
+}
+
+func main() {
+	people := []string{"Eshayat Al-Wasiu", "Toha Al Rafiu", "Abdullah Al Jayed"}
+	greet("Welcome", people...) // [!code highlight]
+}
+```

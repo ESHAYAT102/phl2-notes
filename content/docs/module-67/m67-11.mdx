@@ -1,0 +1,61 @@
+---
+title: Module 67.11
+description: Callback Functions
+---
+
+Functions are actually a data type in Go. It's possible to have an array of function, it sounds weird but it is possible.
+
+Callback function example:
+
+```go
+package main
+
+import "fmt"
+
+func callback(function func()) {
+	function()
+}
+
+func main() {
+	greet := func() {
+		fmt.Println("Hello")
+	}
+	callback(greet)
+}
+```
+
+A real life use case:
+
+```go
+package main
+
+import "fmt"
+
+func calculate(a int, b int, operation func(x int, y int) int) int {
+	result := operation(a, b)
+	return result
+}
+
+func add(x int, y int) int {
+	return x + y
+}
+
+func sub(x int, y int) int {
+	return x - y
+}
+
+func mul(x int, y int) int {
+	return x * y
+}
+
+func div(x int, y int) int {
+	return x / y
+}
+
+func main() {
+	number := calculate(51, 9, add)
+	fmt.Println(number)
+}
+```
+
+We can use callback functions for something like this, a simple calculator.

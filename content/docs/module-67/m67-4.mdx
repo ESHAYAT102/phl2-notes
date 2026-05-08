@@ -1,0 +1,88 @@
+---
+title: Module 67.4 - 67.7
+description: Code Split (Packages)
+---
+
+We can have one package for one type of work. Example: We can have `user` package to handle all the functionalities related to user.
+
+If we want to use a function from a different package, we have to import it manually.
+
+Suppose we have a project that's structured like this:
+
+```bash
+.
+├── main.go
+└── user
+    └── user.go
+```
+
+to use the functions in the `user.go` file, we have to import it first. Like this:
+
+First run `go mod init [module_name_here]`:
+
+```bash
+go mod init learngo
+```
+
+Then import `user` in the `main` file:
+
+```go
+package main
+
+import "learngo/user" // [!code highlighta]
+
+// other code...
+```
+
+To use one package's functions in another, we must use capital letter as the first character of the function (This makes a function public, which means accessible from other packages too)
+
+```go
+package main
+
+import (
+	"fmt"
+	"learngo/user" // [!code highlighta]
+)
+
+func main() {
+	fmt.Println("Hello from `main` package")
+	user.User() // [!code highlighta]
+}
+```
+
+The code in the `user.go` file:
+
+```go
+package user
+
+import "fmt"
+
+func User() {
+	fmt.Println("Hello from `user` package")
+}
+```
+
+After initializing a project, run it with this in the directory where the `go.mod` file is located:
+
+```bash
+go run .
+```
+
+`go run main.go` will still work but `go run .` is a better practice.
+
+A project must have a `main` package, and a `main()` function in it to work.
+
+---
+
+We can build/compile a project with:
+
+```bash
+go build .
+```
+
+This will produce a binary file that'll run without the Go compiler. It runs directly from the OS.
+
+Go build will produce:
+
+- `.exe` file if you're using a Windows machine (example: `learngo.exe`)
+- `[module_name]` if you're using a Mac or a Linux machine (example: `learngo`)

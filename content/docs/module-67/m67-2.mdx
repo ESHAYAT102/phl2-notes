@@ -1,0 +1,49 @@
+---
+title: Module 67.2
+description: Variadic Functions
+---
+
+A variadic function is a function that can take unlimited number of parameters. Example:
+
+```go
+package main
+
+import "fmt"
+
+func add(numbers ...int) int { // [!code highlight]
+	total := 0
+
+	for _, number := range numbers {
+		total = total + number
+	}
+
+	return total
+}
+
+func main() {
+	sum := add(51, 16, 58, 26)
+	fmt.Println(sum)
+}
+```
+
+Just like in TypeScript.
+
+The `...` makes a slice of `int` values, which has the length of the number of parameter passed.
+
+We can also do these kinda stuff:
+
+```go
+package main
+
+import "fmt"
+
+func greet(prefix string, people ...string) {
+	for _, person := range people {
+		fmt.Println(prefix, person)
+	}
+}
+
+func main() {
+	greet("Welcome", "Eshayat Al-Wasiu", "Toha Al Rafiu", "Abdullah Al Jayed")
+}
+```
