@@ -1,0 +1,120 @@
+---
+title: Module 69.7
+description: WaitGroup for Goroutine Sync
+---
+
+We should set a time for the goroutines so they can execute properly.
+Previously, the program finished before the time even completed for the functions.
+
+To solve this, we have to make the program wait for the functions to finish their work.
+We can't just set a few seconds delay, it might cause extra delay or even be too short.
+So, to solve this issue, we can use `WaitGroup` from the `sync` package. Example:
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func uploadFile() {
+	fmt.Println("Uploading file...")
+	time.Sleep(3 * time.Second)
+	fmt.Println("File uploaded.")
+	wg.Add(-1) // [!code highlight]
+}
+
+func saveToDB() {
+	fmt.Println("Saving in database...")
+	time.Sleep(1 * time.Second)
+	fmt.Println("Saved in database.")
+	wg.Add(-1) // [!code highlight]
+}
+
+func sendMail() {
+	fmt.Println("Sending email...")
+	time.Sleep(2 * time.Second)
+	fmt.Println("Email sent.")
+	wg.Add(-1) // [!code highlight]
+}
+
+var wg sync.WaitGroup // [!code highlight]
+
+func main() {
+	start := time.Now()
+
+	wg.Add(1) // [!code highlight]
+	uploadFile()
+
+	wg.Add(1) // [!code highlight]
+	saveToDB()
+
+	wg.Add(1) // [!code highlight]
+	sendMail()
+
+	wg.Wait() // [!code highlight]
+
+	fmt.Println("all tasks completed")
+	fmt.Println("time taken:", time.Since(start))
+}
+```
+
+The `Add` method is a counter that adds a goroutine to the list of go routines stored in the `wg` variable.
+
+The `Wait` method is used to make the program wait for all the goroutines to finish stored in the `wg` variable.
+
+The -1 in the `Add` method is simply to decrement the counter.
+We can use the `Done` method to do the same thing dynamically.
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func uploadFile() {
+	fmt.Println("Uploading file...")
+	time.Sleep(3 * time.Second)
+	fmt.Println("File uploaded.")
+	wg.Done() // [!code highlight]
+}
+
+func saveToDB() {
+	fmt.Println("Saving in database...")
+	time.Sleep(1 * time.Second)
+	fmt.Println("Saved in database.")
+	wg.Done() // [!code highlight]
+}
+
+func sendMail() {
+	fmt.Println("Sending email...")
+	time.Sleep(2 * time.Second)
+	fmt.Println("Email sent.")
+	wg.Done() // [!code highlight]
+}
+
+var wg sync.WaitGroup // [!code highlight]
+
+func main() {
+	start := time.Now()
+
+	wg.Add(1) // [!code highlight]
+	uploadFile()
+
+	wg.Add(1) // [!code highlight]
+	saveToDB()
+
+	wg.Add(1) // [!code highlight]
+	sendMail()
+
+	wg.Wait() // [!code highlight]
+
+	fmt.Println("all tasks completed")
+	fmt.Println("time taken:", time.Since(start))
+}
+```

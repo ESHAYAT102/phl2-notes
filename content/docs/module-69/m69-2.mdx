@@ -1,0 +1,54 @@
+---
+title: Module 69.2
+description: Problems with Blocking Code
+---
+
+Let's see what's concurrency in Go.
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func uploadFile() {
+	fmt.Println("Uploading file...")
+	time.Sleep(3 * time.Second)
+	fmt.Println("File uploaded.")
+}
+
+func saveToDB() {
+	fmt.Println("Saving in database...")
+	time.Sleep(1 * time.Second)
+	fmt.Println("Saved in database.")
+}
+
+func sendMail() {
+	fmt.Println("Sending email...")
+	time.Sleep(2 * time.Second)
+	fmt.Println("Email sent.")
+}
+
+func main() {
+	start := time.Now()
+	uploadFile()
+	saveToDB()
+	sendMail()
+
+	fmt.Println("all tasks completed")
+	fmt.Println("time taken:", time.Since(start))
+}
+```
+
+In this code:
+
+- `time.Sleep()` makes the execution wait for a certain amount of time.
+- `time.Since()` calculates the time it took to execute a piece of code.
+
+`time.Sleep()` is simulating API calls.
+
+---
+
+If you run this code, it'll take around 6 seconds, because the code is completing each task one by one, not asynchronously.

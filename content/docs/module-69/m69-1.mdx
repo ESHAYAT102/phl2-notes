@@ -1,0 +1,36 @@
+---
+title: Module 69.1
+description: JSON to Struct
+---
+
+We did `struct` to `JSON` conversion in the previous module. In this module, we'll convert `JSON` to `struct`.
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type person struct {
+	Name    string `json:"name"`
+	Age     int    `json:"age"`
+	IsMJfan bool   `json:"isMJfan"`
+}
+
+func main() {
+	var p person
+	JSONText := `{"name":"Eshayat Al-Wasiu","age":16,"isMJfan":true}`
+
+	err := json.Unmarshal([]byte(JSONText), &p)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	fmt.Println(p)
+}
+```
+
+This is how we can create a struct from a JSON.
+The JSON data is converted to struct in the original name, not as the tag. (`Name`, not `name`)

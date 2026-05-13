@@ -1,0 +1,45 @@
+---
+title: Module 69.3 - 69.5
+description: Why Concurrency Matters
+---
+
+We can fix the slow ass code by using goroutines. This is how it'll look like if we use goroutines with the previous example:
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func uploadFile() {
+	fmt.Println("Uploading file...")
+	time.Sleep(3 * time.Second)
+	fmt.Println("File uploaded.")
+}
+
+func saveToDB() {
+	fmt.Println("Saving in database...")
+	time.Sleep(1 * time.Second)
+	fmt.Println("Saved in database.")
+}
+
+func sendMail() {
+	fmt.Println("Sending email...")
+	time.Sleep(2 * time.Second)
+	fmt.Println("Email sent.")
+}
+
+func main() {
+	start := time.Now()
+	go uploadFile() //[!code highlight]
+	go saveToDB() //[!code highlight]
+	go sendMail() //[!code highlight]
+
+	fmt.Println("all tasks completed")
+	fmt.Println("time taken:", time.Since(start))
+}
+```
+
+This code will execute very fast but the result will be kinda shuffled.

@@ -1,0 +1,111 @@
+---
+title: Module 69.8
+description: Improved WaitGroup
+---
+
+A more efficient way to use WaitGroup is by using defer.
+
+Example:
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func uploadFile() {
+	defer wg.Done() // [!code highlight]
+	fmt.Println("Uploading file...")
+	time.Sleep(3 * time.Second)
+	fmt.Println("File uploaded.")
+}
+
+func saveToDB() {
+	defer wg.Done() // [!code highlight]
+	fmt.Println("Saving in database...")
+	time.Sleep(1 * time.Second)
+	fmt.Println("Saved in database.")
+}
+
+func sendMail() {
+	defer wg.Done() // [!code highlight]
+	fmt.Println("Sending email...")
+	time.Sleep(2 * time.Second)
+	fmt.Println("Email sent.")
+}
+
+var wg sync.WaitGroup
+
+func main() {
+	start := time.Now()
+
+	wg.Add(1)
+	uploadFile()
+
+	wg.Add(1)
+	saveToDB()
+
+	wg.Add(1)
+	sendMail()
+
+	wg.Wait()
+
+	fmt.Println("all tasks completed")
+	fmt.Println("time taken:", time.Since(start))
+}
+```
+
+there's an even shorter and better way.
+We don't have to deal with the whole counter thing like this, Go does this in the background automatically.
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func uploadFile() {
+	fmt.Println("Uploading file...")
+	time.Sleep(3 * time.Second)
+	fmt.Println("File uploaded.")
+}
+
+func saveToDB() {
+	fmt.Println("Saving in database...")
+	time.Sleep(1 * time.Second)
+	fmt.Println("Saved in database.")
+}
+
+func sendMail() {
+	fmt.Println("Sending email...")
+	time.Sleep(2 * time.Second)
+	fmt.Println("Email sent.")
+}
+
+var wg sync.WaitGroup
+
+func main() {
+	start := time.Now()
+
+	wg.Go(uploadFile) // [!code highlight]
+
+	wg.Go(saveToDB) // [!code highlight]
+
+	wg.Go(sendMail) // [!code highlight]
+
+	wg.Wait()
+
+	fmt.Println("all tasks completed")
+	fmt.Println("time taken:", time.Since(start))
+}
+```
+
+---
+
+We're basically executing these functions asynchronously (in TypeScript/JavaScript fashion)

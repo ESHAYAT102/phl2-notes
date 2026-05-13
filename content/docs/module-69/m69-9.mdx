@@ -1,0 +1,68 @@
+---
+title: Module 69.9 - 69.10
+description: Shared Data Problems & Safe Shared Data with Mutex
+---
+
+If a function returns a value, we can't use goroutines on it.
+So to solve that, we can make the function store the data in a global variable instead of returning it.
+
+---
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var wg sync.WaitGroup
+var counter int
+
+func main() {
+	for range 10000 {
+		wg.Go(increment)
+	}
+	wg.Wait()
+
+	fmt.Println("Counter value is:", counter)
+}
+
+func increment() {
+	counter++
+}
+```
+
+This code has too many goroutines, so it's gonna output some crazy results.
+We can fix it like this, using `mutex` from the `sync` package.
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var wg sync.WaitGroup
+var mu sync.Mutex //[!code highlight]
+
+var counter int
+
+func main() {
+	for range 10000 {
+		wg.Go(increment)
+	}
+	wg.Wait()
+
+	fmt.Println("Counter value is:", counter)
+}
+
+func increment() {
+	mu.Lock() //[!code highlight]
+	defer mu.Unlock() //[!code highlight]
+	counter = counter + 1
+}
+```
+
+`mutex` makes other goroutines wait for the current one to finish.
