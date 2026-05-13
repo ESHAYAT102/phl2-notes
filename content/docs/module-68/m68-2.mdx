@@ -1,0 +1,50 @@
+---
+title: Module 68.2 - 68.3
+description: Closure
+---
+
+an anonymous function that stores a value directly in a variable is called a closure.
+Example:
+
+```go
+package main
+
+import "fmt"
+
+func intNext() func() int {
+	i := 0
+	return func() int {
+		i++
+		return i
+	}
+}
+
+func main() {
+	nextNumber := intNext()
+
+	fmt.Println(nextNumber())
+	fmt.Println(nextNumber())
+	fmt.Println(nextNumber())
+}
+```
+
+We can use this to call a function twice to do something. It will remember the previous ones. Example:
+
+```go
+package main
+
+import "fmt"
+
+func multiplyBy(factor int) func(int) int {
+	return func(x int) int {
+		return x * factor
+	}
+}
+
+func main() {
+	double := multiplyBy(2)
+	fmt.Println(double(8))
+}
+```
+
+It looks kinda confusing at first, but we'll get used to it when we'll use it later on.

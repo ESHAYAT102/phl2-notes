@@ -1,0 +1,33 @@
+---
+title: Module 68.7
+description: Multiple Defer Execution Order
+---
+
+If we use multiple defers, the first one will run in the end, and the last one will execute first.
+Just like a stack (LIFO - Last In First Out)
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	defer fmt.Println(1)
+	defer fmt.Println(2)
+	defer fmt.Println(3)
+}
+```
+
+The output for this code will be:
+
+```bash
+3
+2
+1
+```
+---
+
+Real life use case:
+
+We can use defer to disconnect from a DB, but by writing the line on top, to keep the code clean.
+

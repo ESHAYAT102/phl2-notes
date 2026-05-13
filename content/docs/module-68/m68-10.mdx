@@ -1,0 +1,74 @@
+---
+title: Module 68.10
+description: Working with JSON
+---
+
+## How to make JSON data
+
+there's a package called `encoding/json` in Go that lets us create JSON data.
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type person struct {
+	Name    string
+	Age     int
+	IsMJfan bool
+}
+
+func main() {
+	me := person{
+		Name:    "Eshayat Al-Wasiu",
+		Age:     16,
+		IsMJfan: true,
+	}
+	rawJSON, err := json.Marshal(me)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+	fmt.Println(string(rawJSON))
+}
+```
+
+The `Marshal` method returns raw bytes for the JSON data, so we have to use the `string()` method to see the actual data instead of the raw byes.
+
+Make sure to always make the first characters uppercase, it won't work otherwise.
+
+If you need to store lowercase values in the JSON, do this:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type person struct {
+	Name    string `json:"name"`
+	Age     int    `json:"age"`
+	IsMJfan bool   `json:"isMJfan"`
+}
+
+func main() {
+	me := person{
+		Name:    "Eshayat Al-Wasiu",
+		Age:     16,
+		IsMJfan: true,
+	}
+	rawJSON, err := json.Marshal(me)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+	fmt.Println(string(rawJSON))
+}
+```
+
+This is called "struct tag".
+This tells the compiler to name the key in JSON the passed string when the `encoding/json` package is using it.
+

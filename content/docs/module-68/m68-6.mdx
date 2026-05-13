@@ -1,0 +1,23 @@
+---
+title: Module 68.6
+description: Defer with Named Return Values
+---
+
+A named return value is an empty `return` keyword in a function. Go automatically returns the value we might want to return. Example:
+
+```go
+package main
+
+import "fmt"
+
+func example(i int) (result int) {
+	result = i + 51
+	return
+}
+
+func main() {
+	number := 16
+	fmt.Println(example(number))
+}
+```
+

@@ -1,0 +1,60 @@
+---
+title: Module 68.8
+description: Enums
+---
+
+to declare an enum in go,
+we have to use a combination of `const` and `type`
+because Go doesn't have an `enum` keyword built in like TypeScript.
+
+We have to use `iota` to make a group of variables that increment by 1 automatically.
+
+Example:
+
+```go
+package main
+
+import "fmt"
+
+type Weekdays int
+
+const (
+	_ Weekdays = iota
+	Saturday
+	Sunday
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+)
+
+func getWorkdayStatus(day Weekdays) string {
+	switch day {
+	case Saturday, Sunday, Tuesday, Wednesday, Thursday:
+		return "Work day"
+	case Monday:
+		return "Off day"
+	case Friday:
+		return "The Weeknd"
+	default:
+		return "Invalid day"
+	}
+}
+
+func main() {
+	fmt.Println(getWorkdayStatus(Friday))
+}
+```
+
+The underscore `_` is used to ignore zero and start the counting from one.
+If you do want to start the counting from zero, just replace the underscore with the first constant you want to declare.
+
+---
+
+The reason why you should use this instead of strings is very simple:
+
+- Type safety: you don't have to remember the spellings
+- IntelliSense: you get code completion with this
+- Code completion: you don't have to write the whole string, you can just write a few characters and hit tab or enter
+

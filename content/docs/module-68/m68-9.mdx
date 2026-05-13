@@ -1,0 +1,42 @@
+---
+title: Module 68.9
+description: String Enums
+---
+
+Instead of making a group of numbers/integers, we might need to make strings. This is how we can do that:
+
+```go
+package main
+
+import "fmt"
+
+type Weekdays string
+
+const (
+	Saturday Weekdays = "sat"
+	Sunday = "sun"
+	Monday = "mon"
+	Tuesday = "tue"
+	Wednesday = "wed"
+	Thursday = "thu"
+	Friday = "fri"
+)
+
+func getWorkdayStatus(day Weekdays) string {
+	switch day {
+	case Saturday, Sunday, Tuesday, Wednesday, Thursday:
+		return "Work day"
+	case Monday:
+		return "Off day"
+	case Friday:
+		return "The Weeknd"
+	default:
+		return "Invalid day"
+	}
+}
+
+func main() {
+	fmt.Println(getWorkdayStatus(Friday))
+}
+```
+

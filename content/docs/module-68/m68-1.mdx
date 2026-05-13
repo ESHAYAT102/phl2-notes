@@ -1,0 +1,58 @@
+---
+title: Module 68.1
+description: Anonymous Callback & Higher-Order Functions
+---
+
+## Anonymous Callback
+
+We can use functions directly where we want to call it. Example:
+
+We can do this:
+
+```go
+package main
+
+import "fmt"
+
+func calculate(x int, y int, z func(a int, b int) int) int {
+	return z(x, y)
+}
+
+func main() {
+	x := 16
+	y := 51
+
+	fmt.Printf("%d + %d = %d\n", x, y, calculate(x, y, func(a int, b int) int { return a + b }))
+}
+```
+
+Instead of this:
+
+```go
+package main
+
+import "fmt"
+
+func add(x int, y int) int {
+	return x + y
+}
+
+func calculate(x int, y int, z func(a int, b int) int) int {
+	return z(x, y)
+}
+
+func main() {
+	x := 16
+	y := 51
+
+	fmt.Printf("%d + %d = %d\n", x, y, calculate(x, y, add))
+}
+```
+
+---
+
+It looks kinda messy and unreadable, but it's shorter. It's more widely used too.
+
+## Higher Order Functions
+
+A higher order function is a function that takes another function as a parameter or returns a function.

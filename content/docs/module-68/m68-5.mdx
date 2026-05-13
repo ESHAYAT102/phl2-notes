@@ -1,0 +1,9 @@
+---
+title: Module 68.5
+description: Defer with Closures
+---
+
+If we use a function as a defer that receives a parameter, it'll store the value at the line it's declared.
+For example, if we create a defer function that stores a variable that has an `int` value '10' by receiving it as a parameter.
+Then we change the variable, something like `variable + 100`. The value in the deferred function will still be 10.
+
