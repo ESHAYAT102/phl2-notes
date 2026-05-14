@@ -1,0 +1,40 @@
+---
+title: Module 70.9
+description: Panic, Recover & Defer Handling
+---
+
+Go has panic errors, this returns the error message and stops the whole program.
+We can handle it though (thankfully)
+
+We can use `defer`, defers run before showing the panic massage. Then the code stops at the point the panic occurred.
+
+We can use the built in `recover()` function in the defer (it's only useful while used inside a defer)
+to recover data if a panic occurs.
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func doSomething() {
+	defer func() {
+		fmt.Println("Something bad is 'bout to happen~~~")
+		time.Sleep(1 * time.Second)
+		r := recover()
+		if r != nil {
+			fmt.Println("Recovered", r)
+		}
+	}()
+
+	panic("Something bad happened :(") // simulating panic error
+}
+
+func main() {
+	doSomething()
+
+	fmt.Println("Main function completed")
+}
+```

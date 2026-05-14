@@ -1,0 +1,58 @@
+---
+title: Module 70.2
+description: Receiving from Channels & Deadlocks
+---
+
+We've passed the file URL to a channel but we haven't received it. This is how we can do that:
+
+```go
+file := <-ch
+```
+
+And use it simply like this:
+
+```go
+fmt.Println(file)
+```
+
+---
+
+full code:
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	ch := make(chan string)
+	go fileUpload(ch)
+
+	file := <-ch
+	fmt.Println(file)
+}
+
+func fileUpload(c chan string) {
+	fmt.Println("uploading file...")
+	time.Sleep(3 * time.Second)
+	fmt.Println("file uploaded...")
+	fileURL := "https://file.url/img.png"
+	c <- fileURL
+}
+```
+
+## Deadlocks
+
+If we don't send a value to a channel from a function, the program will be stuck and won't do anything.
+And if we do send a value but don't receive it with a channel, the program will do literally nothing.
+This is called deadlock.
+We have to make sure to carefully send and receive data from the channels.
+
+Explain:
+
+When we send a data from a function to a channel, the function waits for the value to be received from somewhere else.
+If the data is received, the function goes on or finishes.
+But if the data isn't received, the channel keep waiting, causing the program to freeze.

@@ -1,0 +1,68 @@
+---
+title: Module 70.1
+description: Channel Fundamentals in Go
+---
+
+Channeling lets goroutines communicate between each other.
+
+In the previous module,
+we've triedto fix the `race condition` with `mutex` and updated a global variable
+(which is not really a good thing)
+
+We can use channeling to make that more secure.
+
+Use the `make()` method to make a channel:
+
+```go
+ch := make(chan string)
+```
+
+Then we can use the channel like this:
+
+```go
+go fileUpload(ch)
+```
+
+We'll have to receive the channel in the `fileUpload` function, so we can do this:
+
+```go
+func fileUpload(c chan string) {}
+```
+
+Then we can pass the file URL the user uploaded to the channel:
+
+```go
+func fileUpload(c chan string) {
+	fmt.Println("uploading file...")
+	time.Sleep(3 * time.Second)
+	fmt.Println("uploading file...")
+	fileURL := "https://file.url/img.png"
+	c <- fileURL
+}
+```
+
+---
+
+Full code:
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	ch := make(chan string)
+	go fileUpload(ch)
+}
+
+func fileUpload(c chan string) {
+	fmt.Println("uploading file...")
+	time.Sleep(3 * time.Second)
+	fmt.Println("uploading file...")
+	fileURL := "https://file.url/img.png"
+	c <- fileURL
+}
+```

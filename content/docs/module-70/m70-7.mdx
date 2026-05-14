@@ -1,0 +1,48 @@
+---
+title: Module 70.7
+description: Custom Errors & Type Assertions
+---
+
+Go's error handling is pretty solid and better than other languages.
+But it doesn't follow a rule _✨ SIMPLICITY ✨_.
+
+We can fix that like this:
+
+```go
+package main
+
+import "fmt"
+
+type CustomError struct {
+	message string
+	code    int
+}
+
+func (ce *CustomError) Error() string {
+	return ce.message
+}
+
+func login(password string) error {
+	if password != "1234" {
+		return nil
+	} else {
+		return &CustomError{
+			message: "Password not secure",
+			code:    401,
+		}
+	}
+}
+
+func main() {
+	err := login("1234")
+	if err != nil {
+		customError := err.(*CustomError)
+		fmt.Println(customError)
+		fmt.Println(customError.code)
+	}
+}
+```
+
+## Why create a custom error?
+
+We should use custom errors to be able to send extra information besides the error message if an error occurs.

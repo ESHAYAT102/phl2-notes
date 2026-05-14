@@ -1,0 +1,39 @@
+---
+title: Module 70.10
+description: Understanding log.Fatal and Fatal Errors
+---
+
+`panic` is like a missile, it does the damage or stops the program. But it is recoverable.
+
+In the other hand, `fatal` is like an atomic bomb. There's no recovery after the damage is done 💀
+
+the code in `defer` doesn't even run if a `fatal` error occurs.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"time"
+)
+
+func doSomething() {
+	defer func() {
+		fmt.Println("Something bad is 'bout to happen~~~")
+		time.Sleep(1 * time.Second)
+		r := recover()
+		if r != nil {
+			fmt.Println("Recovered", r)
+		}
+	}()
+
+	log.Fatal() // simulating fatal error
+}
+
+func main() {
+	doSomething()
+
+	fmt.Println("Main function completed")
+}
+```

@@ -1,0 +1,51 @@
+---
+title: Module 70.5 - 70.6
+description: Go's Philosophy of Error Handling
+---
+
+Go's error handling is kinda different from the other programming languages.
+
+In other languages, we have `try` `catch` blocks:
+
+```js
+try {
+  // code...
+} catch (err) {
+  console.log(err);
+}
+```
+
+Go has multiple data returns from a function instead of `try` `catch`.
+
+But in go, all errors don't return an exception error and shut the program down.
+Instead, it'll return a simple value letting you know that an error occured and doesn't crash the app.
+
+This doesn't happen automatically. We can do it like this:
+
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+func main() {
+  // handle those returned params
+	result, err := divide(10, 4)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(result)
+}
+
+// ----------------Multiple returns-----
+// -----------------------\/------------
+func divide(a int, b int) (int, error) {
+	if b == 0 {
+		return 0, errors.New("Cannot divide by zero")
+	}
+
+	return a / b, nil
+}
+```

@@ -1,0 +1,43 @@
+---
+title: Module 70.8
+description: Comma OK Idiom & Assertion Handling
+---
+
+In the previous code, we could've used the `errors.New()` method to return the error from the `login()` function.
+But the code won't know that we used the other one which doesn't have any value as `code` in it. So the code will panic and crash.
+It won't show any red line, or any sytax error, or anything. Which can be really frustrating.
+
+To handle that, we can do this:
+
+```go
+func main() {
+	err := login("1234")
+	if err != nil {
+		customError, ok := err.(*CustomError)
+		if !ok { //[!code highlight]
+			fmt.Println(customError) //[!code highlight]
+		} else { //[!code highlight]
+			fmt.Println(customError)      //[!code highlight]
+			fmt.Println(customError.code) //[!code highlight]
+		}
+	}
+}
+```
+
+Now it won't crash and just show the error message without the error code.
+
+We can do all that in a way shorter way:
+
+```go
+func main() {
+	err := login("1234")
+	if err != nil {
+		if customError, ok := err.(*CustomError); ok {
+			fmt.Println(customError.code)
+		}
+	}
+}
+```
+
+This is more widely used, because it's so simple.
+And honestly, the code for handling an error shouldn't be too long. It makes the code less readable.

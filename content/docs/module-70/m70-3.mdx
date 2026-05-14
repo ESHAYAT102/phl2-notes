@@ -1,0 +1,96 @@
+---
+title: Module 70.3 - 70.4
+description: Buffered Channels Explained
+---
+
+The channel we saw is un-buffered, it waits for the process to end.
+To prevent that, we can make a buffered channel.
+To do that, we can assign a capacity to a channel, this lets the channel pass multiple data sent from different goroutines.
+In this process, the goroutines doesn't wait for another goroutine to finish, it can send asynchronously.
+Think of it like multiple threads. THe default capacity of a channel is 1.
+
+We can pass a second parameter of `int` type to the `make()` method that sets the number of slots in a channel.
+
+```go
+ch := make(chan string, 3)
+```
+
+We can visualize channels like an array. It has a fixed length.
+There are functions which take the data out and functions that put data in it.
+
+When the array is full, the functions that put the data in waits for the current data to be pulled out.
+
+The data are put into the list like appending (index 1 fills up first, then 2, then 3, and so on).
+
+The data in the fist index gets pulled out first, then all the data moves down by one index (2 becomes 1, 3 becomes 2, and so on).
+This loops until the list (channel) gets empty.
+
+If we put more data in a channel than it's total slots, the newer ones get into a queue.
+
+---
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	start := time.Now()
+
+	ch := make(chan string, 3)
+	go fileUpload(ch)
+	go sendEmail(ch)
+	go syncDB(ch)
+
+	for range 3 {
+		file := <-ch
+		fmt.Println(file)
+	}
+
+	fmt.Println("time taken:", time.Since(start))
+}
+
+func fileUpload(c chan string) {
+	fmt.Println("uploading file...")
+	time.Sleep(3 * time.Second)
+	fmt.Println("file uploaded...")
+	fileURL := "https://file.url/img.png"
+	c <- fileURL
+}
+
+func sendEmail(c chan string) {
+	fmt.Println("sending email...")
+	time.Sleep(1 * time.Second)
+	fmt.Println("email sent...")
+	email := "eshayat.wasiu@gmail.com"
+	c <- email
+}
+
+func syncDB(c chan string) {
+	fmt.Println("saving to database...")
+	time.Sleep(2 * time.Second)
+	fmt.Println("database synced...")
+	DB := "DB"
+	c <- DB
+}
+```
+
+output:
+
+```bash
+saving to database...
+uploading file...
+sending email...
+email sent...
+eshayat.wasiu@gmail.com
+database synced...
+DB
+file uploaded...
+https://file.url/img.png
+time taken: 3.000458026s
+```
+
+We can see that the processes completed in about 3 seconds, which is perfect, because it means all the processes ran asynchronously.
