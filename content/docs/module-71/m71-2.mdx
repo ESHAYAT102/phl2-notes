@@ -1,0 +1,72 @@
+---
+title: Module 71.2 - 71.3
+description: Adding Concurrency to the Health Checker
+---
+
+The previous code takes about a few seconds to complete. But we can make it way faster by using concurrency and channeling.
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"time"
+)
+
+type Result struct {
+	Url    string
+	Status string
+	Err    error
+}
+
+func checkWebsiteUrl(url string, channel chan Result) {
+	res, err := http.Get(url)
+	if err != nil {
+		channel <- Result{
+			Url:    url,
+			Status: "down",
+			Err:    err,
+		}
+		return
+	}
+
+	defer res.Body.Close()
+
+	channel <- Result{
+		Url:    url,
+		Status: "up",
+		Err:    err,
+	}
+}
+
+func main() {
+	urls := []string{
+		"https://eshayat.com",
+		"https://xenon.eshayat.com",
+		"https://esyt.eshayat.com",
+		"https://airpipe.eshayat.com",
+	}
+
+	ch := make(chan Result)
+
+	start := time.Now()
+
+	for _, url := range urls {
+		go checkWebsiteUrl(url, ch)
+	}
+
+	for range urls {
+		result := <-ch
+
+		if result.Err != nil {
+			fmt.Println(result.Url, result.Status, "Error:", result.Err)
+			continue
+		}
+
+		fmt.Println(result)
+	}
+
+	fmt.Println("\ntime taken:", time.Since(start))
+}
+```

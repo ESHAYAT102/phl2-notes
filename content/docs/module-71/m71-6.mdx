@@ -1,0 +1,47 @@
+---
+title: Module 71.6
+description: HTTP Methods & Create User Route
+---
+
+This is how we can handle different types of HTTP methods:
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func main() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", rootHandler)
+	mux.HandleFunc("/health", healthHandler)
+	mux.HandleFunc("/createUser", createUserHandler)
+
+	fmt.Println("Server is running at port 5000")
+	err := http.ListenAndServe(":5000", mux)
+	if err != nil {
+		fmt.Println("Server error:", err)
+	}
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Go Server Running")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "ok")
+}
+
+func createUserHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		fmt.Fprintln(w, "Only POST method is allowed")
+		return
+	}
+
+	fmt.Fprintln(w, "User created")
+}
+```

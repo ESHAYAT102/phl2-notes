@@ -1,0 +1,191 @@
+---
+title: Module 71.9
+description: JSON Struct Tags & JSON Encoding
+---
+
+The data is now sending properly, but there's one problem, the casing.
+We have to sent the key names all in lowercase or in camel case.
+We can use struct tags to solve this issue:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
+
+type User struct {
+	ID    int    `json:"id"` // [!code highlight]
+	Name  string `json:"name"` // [!code highlight]
+	Age   int    `json:"age"` // [!code highlight]
+	Email string `json:"email"` // [!code highlight]
+}
+
+var users = []User{
+	{ID: 1, Name: "Eshayat", Age: 16, Email: "eshayat.wasiu@gmail.com"},
+	{ID: 2, Name: "John", Age: 21, Email: "john.doe@example.com"},
+	{ID: 3, Name: "Alex", Age: 28, Email: "alex@example.com"},
+}
+
+func main() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /", rootHandler)
+	mux.HandleFunc("GET /health", healthHandler)
+	mux.HandleFunc("POST /createUser", createUserHandler)
+	mux.HandleFunc("GET /users", usersHandler)
+
+	fmt.Println("Server is running at port 5000")
+	err := http.ListenAndServe(":5000", mux)
+	if err != nil {
+		fmt.Println("Server error:", err)
+	}
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Go Server Running")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "ok")
+}
+
+func createUserHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "User created")
+}
+
+func usersHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	users, _ := json.Marshal(users)
+	w.Write(users)
+}
+```
+
+---
+
+There's a better approach to return the struct data as JSON:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
+
+type User struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Age   int    `json:"age"`
+	Email string `json:"email"`
+}
+
+var users = []User{
+	{ID: 1, Name: "Eshayat", Age: 16, Email: "eshayat.wasiu@gmail.com"},
+	{ID: 2, Name: "John", Age: 21, Email: "john.doe@example.com"},
+	{ID: 3, Name: "Alex", Age: 28, Email: "alex@example.com"},
+}
+
+func main() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /", rootHandler)
+	mux.HandleFunc("GET /health", healthHandler)
+	mux.HandleFunc("POST /createUser", createUserHandler)
+	mux.HandleFunc("GET /users", usersHandler)
+
+	fmt.Println("Server is running at port 5000")
+	err := http.ListenAndServe(":5000", mux)
+	if err != nil {
+		fmt.Println("Server error:", err)
+	}
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Go Server Running")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "ok")
+}
+
+func createUserHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "User created")
+}
+
+func usersHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+ 	json.NewEncoder(w).Encode(users) // [!code highlight]
+}
+```
+
+Encoder sends the data directly to the server, but marshal saves the data to the memory first, and then sends that to the server.
+So this is more memory efficient.
+
+## Create a user
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
+
+type User struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Age   int    `json:"age"`
+	Email string `json:"email"`
+}
+
+var users = []User{
+	{ID: 1, Name: "Eshayat", Age: 16, Email: "eshayat.wasiu@gmail.com"},
+	{ID: 2, Name: "John", Age: 21, Email: "john.doe@example.com"},
+	{ID: 3, Name: "Alex", Age: 28, Email: "alex@example.com"},
+}
+
+func main() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /", rootHandler)
+	mux.HandleFunc("GET /health", healthHandler)
+	mux.HandleFunc("POST /createUser", createUserHandler)
+	mux.HandleFunc("GET /users", usersHandler)
+
+	fmt.Println("Server is running at port 5000")
+	err := http.ListenAndServe(":5000", mux)
+	if err != nil {
+		fmt.Println("Server error:", err)
+	}
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Go Server Running")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "ok")
+}
+
+func createUserHandler(w http.ResponseWriter, r *http.Request) {
+	var newUser User
+
+	err := json.NewDecoder(r.Body).Decode(&newUser)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, "Invalid request body")
+		return
+	}
+}
+
+func usersHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(users)
+}
+```

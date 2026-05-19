@@ -1,0 +1,39 @@
+---
+title: Module 71.5
+description: Custom ServeMux & More Routes
+---
+
+We can use different `mux`es for different type of things.
+Like, we can use separate `mux`es for user related routes, api related routes, etc...
+
+Here's an example of how to use `mux` and make different routes:
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func main() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", rootHandler)
+	mux.HandleFunc("/health", healthHandler)
+
+	fmt.Println("Server is running at port 5000")
+	err := http.ListenAndServe(":5000", mux)
+	if err != nil {
+		fmt.Println("Server error:", err)
+	}
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Go Server Running")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "ok")
+}
+```

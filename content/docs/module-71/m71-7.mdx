@@ -1,0 +1,164 @@
+---
+title: Module 71.7 - 71.8
+description: HandleFunc Patterns & Fake DB Slice - Get Users Route & JSON Headers
+---
+
+There's a better way to handle different types of HTTP methods:
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func main() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", rootHandler)
+	mux.HandleFunc("/health", healthHandler)
+	mux.HandleFunc("POST /createUser", createUserHandler)
+
+	fmt.Println("Server is running at port 5000")
+	err := http.ListenAndServe(":5000", mux)
+	if err != nil {
+		fmt.Println("Server error:", err)
+	}
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Go Server Running")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "ok")
+}
+
+func createUserHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "User created")
+}
+```
+
+No more need to use that if functions!
+
+---
+
+This is a simple example of how you can return JSON data:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
+
+type User struct {
+	ID    int
+	Name  string
+	Age   int
+	Email string
+}
+
+var users = []User{
+	{ID: 1, Name: "Eshayat", Age: 16, Email: "eshayat.wasiu@gmail.com"},
+	{ID: 2, Name: "John", Age: 21, Email: "john.doe@example.com"},
+	{ID: 3, Name: "Alex", Age: 28, Email: "alex@example.com"},
+}
+
+func main() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /", rootHandler)
+	mux.HandleFunc("GET /health", healthHandler)
+	mux.HandleFunc("POST /createUser", createUserHandler)
+	mux.HandleFunc("GET /users", usersHandler)
+
+	fmt.Println("Server is running at port 5000")
+	err := http.ListenAndServe(":5000", mux)
+	if err != nil {
+		fmt.Println("Server error:", err)
+	}
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Go Server Running")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "ok")
+}
+
+func createUserHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "User created")
+}
+
+func usersHandler(w http.ResponseWriter, r *http.Request) {
+	users, _ := json.Marshal(users)
+	w.Write(users)
+}
+```
+
+---
+
+This is how you can send header:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
+
+type User struct {
+	ID    int
+	Name  string
+	Age   int
+	Email string
+}
+
+var users = []User{
+	{ID: 1, Name: "Eshayat", Age: 16, Email: "eshayat.wasiu@gmail.com"},
+	{ID: 2, Name: "John", Age: 21, Email: "john.doe@example.com"},
+	{ID: 3, Name: "Alex", Age: 28, Email: "alex@example.com"},
+}
+
+func main() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /", rootHandler)
+	mux.HandleFunc("GET /health", healthHandler)
+	mux.HandleFunc("POST /createUser", createUserHandler)
+	mux.HandleFunc("GET /users", usersHandler)
+
+	fmt.Println("Server is running at port 5000")
+	err := http.ListenAndServe(":5000", mux)
+	if err != nil {
+		fmt.Println("Server error:", err)
+	}
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Go Server Running")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "ok")
+}
+
+func createUserHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "User created")
+}
+
+func usersHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json") // [!code highlight]
+	users, _ := json.Marshal(users)
+	w.Write(users)
+}
+```
+
+This line tells the client that the data is a JSON.
