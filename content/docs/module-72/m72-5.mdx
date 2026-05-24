@@ -1,0 +1,20 @@
+---
+title: Module 72.5
+description: Modern User Deletion with Go's slices Package
+---
+
+We can do the same array reassigning thing with the built in `slices` package.
+
+So, we can do this:
+
+```go
+users = slices.Delete(users, i, i+1)
+```
+
+Instead of this:
+
+```go
+users = append(users[:i], users[i+1:]...)
+```
+
+Just make sure to import the `slices` package.
