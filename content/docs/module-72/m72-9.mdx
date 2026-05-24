@@ -33,7 +33,7 @@ var users = []User{
 }
 
 func connectDB() {
-	connectionString := "postgresql://neondb_owner:npg_g16diClrEVGB@ep-jolly-unit-aor1jrei-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+	connectionString := "DATABASE_URL"
 
 	var err error
 	db, err = pgx.Connect(context.Background(), connectionString)
