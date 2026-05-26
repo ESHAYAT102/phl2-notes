@@ -1,0 +1,114 @@
+---
+title: Module 73.5 - 73.6
+description: Bootstrapping the Project with Echo
+---
+
+## Step 1
+
+First initialize the directory for Go with `go mod init go-ticket`.
+
+## Step 2
+
+Create two folders:
+
+- `cmd`: holds all the main codes; You can put the main code in the root too, no problem.
+- `internal`: holds the private code of the application; services, database connection, etc.
+
+## Step 3
+
+Make a `main.go` file in the `cmd` directory, and put this startup code snippet in it:
+
+```go title="./cmd/main.go" lineNumbers
+package main
+
+import (
+	"net/http"
+
+	"github.com/labstack/echo/v5"
+	"github.com/labstack/echo/v5/middleware"
+)
+
+func main() {
+	e := echo.New()
+	e.Use(middleware.RequestLogger())
+
+	e.GET("/", func(c *echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
+
+	if err := e.Start(":5000"); err != nil {
+		e.Logger.Error("failed to start server", "error", err)
+	}
+}
+```
+
+## Step 4
+
+Install the dependencies with:
+
+```bash
+go mod tidy
+```
+
+## Step 5
+
+Start the server with:
+
+```bash
+go run cmd/main.go
+```
+
+---
+
+## Explanation
+
+What the lines do in list:
+
+- 1 to 8: it's just package initialization and imports.
+- 10: the main function starts.
+- 11: start new Echo server.
+- 12: using the `RequestLogger` middleware by `Echo`, it shows a log when a request is made.
+- 14 to 16: the function that executes when the root (`/`) directory is hit.
+- 18 tp 20: starts the server in port `5000` and catches the error if returned.
+
+---
+
+## Creating a POST route
+
+```go title="./cmd/main.go" lineNumbers
+package main
+
+import (
+	"net/http"
+
+	"github.com/labstack/echo/v5"
+	"github.com/labstack/echo/v5/middleware"
+)
+
+type User struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+func main() {
+	e := echo.New()
+	e.Use(middleware.RequestLogger())
+
+	e.GET("/", func(c *echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
+
+	e.POST("/users", func(c *echo.Context) error {
+		u := new(User)
+		if err := c.Bind(u); err != nil {
+			return err
+		}
+		return c.JSON(http.StatusCreated, u)
+	})
+
+	if err := e.Start(":5000"); err != nil {
+		e.Logger.Error("failed to start server", "error", err)
+	}
+}
+```

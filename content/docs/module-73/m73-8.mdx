@@ -1,0 +1,77 @@
+---
+title: Module 73.8
+description: Validator & GORM Database Configuration
+---
+
+We can connect the database like this:
+
+```go title="./cmd/main.go" lineNumbers
+package main
+
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/labstack/echo/v5"
+	"github.com/labstack/echo/v5/middleware"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
+
+type User struct {
+	Name     string `json:"name" validate:"required"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=8"`
+}
+
+type CustomValidator struct {
+	validator *validator.Validate
+}
+
+func (cv *CustomValidator) Validate(i any) error {
+	if err := cv.validator.Struct(i); err != nil {
+		return echo.ErrBadRequest.Wrap(err)
+	}
+	return nil
+}
+
+func main() {
+	dsn := "host=db_url.ap-southeast-1.aws.neon.tech user=neondb_owner password=password dbname=neondb port=5432 sslmode=require"
+	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	if err != nil {
+		panic("DB not connected")
+	} else {
+		fmt.Println("DB connected")
+	}
+
+	e := echo.New()
+	e.Use(middleware.RequestLogger())
+
+	e.Validator = &CustomValidator{validator: validator.New()}
+
+	e.GET("/", func(c *echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
+
+	e.POST("/users", func(c *echo.Context) error {
+		u := new(User)
+		if err := c.Bind(u); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]any{"error": err.Error()})
+		}
+
+		if err := c.Validate(u); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]any{"error": err.Error()})
+		}
+
+		return c.JSON(http.StatusCreated, u)
+	})
+
+	if err := e.Start(":5000"); err != nil {
+		e.Logger.Error("failed to start server", "error", err)
+	}
+}
+```
+
+<Callout type="warn">Make sure to change the DSN (in line 32)</Callout>

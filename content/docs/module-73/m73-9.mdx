@@ -1,0 +1,98 @@
+---
+title: Module 73.9 - 73.10
+description: Auto Migration & Saving Users to DB
+---
+
+POST method:
+
+```go title="cmd/main.go" lineNumbers
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"os"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/joho/godotenv"
+	"github.com/labstack/echo/v5"
+	"github.com/labstack/echo/v5/middleware"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
+
+type User struct {
+	ID       uint   `json:"id" gorm:"primaryKey;autoIncrement"`
+	Name     string `json:"name" validate:"required" gorm:"type:varchar(100);not null"`
+	Email    string `json:"email" validate:"required,email" gorm:"type:varchar(255);unique;not null"`
+	Password string `json:"password" validate:"required,min=8" gorm:"type:varchar(100);not null"`
+}
+
+type CustomValidator struct {
+	validator *validator.Validate
+}
+
+func (cv *CustomValidator) Validate(i any) error {
+	if err := cv.validator.Struct(i); err != nil {
+		return echo.ErrBadRequest.Wrap(err)
+	}
+	return nil
+}
+
+func main() {
+	_ = godotenv.Load()
+
+	dsn := os.Getenv("DATABASE_URL")
+	if dsn == "" {
+		panic("DATABASE_URL is required")
+	}
+
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  dsn,
+		PreferSimpleProtocol: true,
+	}), &gorm.Config{})
+	if err != nil {
+		panic(fmt.Sprintf("DB not connected: %v", err))
+	}
+
+	if err := db.AutoMigrate(&User{}); err != nil {
+		panic(fmt.Sprintf("DB migration failed: %v", err))
+	}
+
+	fmt.Println("DB connected")
+
+	e := echo.New()
+	e.Use(middleware.RequestLogger())
+
+	e.Validator = &CustomValidator{validator: validator.New()}
+
+	e.GET("/", func(c *echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
+
+	e.POST("/users", func(c *echo.Context) error {
+		u := new(User)
+		if err := c.Bind(u); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]any{"error": err.Error()})
+		}
+
+		if err := c.Validate(u); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]any{"error": err.Error()})
+		}
+
+		if err := db.Create(u).Error; err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]any{"error": err.Error()})
+		}
+
+		return c.JSON(http.StatusCreated, u)
+	})
+
+	if err := e.Start(":5000"); err != nil {
+		e.Logger.Error("failed to start server", "error", err)
+	}
+}
+```
+
+```bash title=".env"
+DATABASE_URL="host=db_url.ap-southeast-1.aws.neon.tech user=neondb_owner password=password dbname=neondb port=5432 sslmode=require"
+```

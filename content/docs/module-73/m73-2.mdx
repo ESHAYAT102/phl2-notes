@@ -1,0 +1,259 @@
+---
+title: Module 73.2
+description: Protecting Secrets with Environment Variables
+---
+
+We should use `.env` to store our database connection URL. This is how we can do it in Go:
+
+```go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+	"strconv"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/joho/godotenv"
+)
+
+var db *pgx.Conn
+
+type User struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Age   int    `json:"age"`
+	Email string `json:"email"`
+}
+
+var users = []User{
+	{ID: 1, Name: "Eshayat", Age: 16, Email: "eshayat.wasiu@gmail.com"},
+	{ID: 2, Name: "John", Age: 21, Email: "john.doe@example.com"},
+	{ID: 3, Name: "Alex", Age: 28, Email: "alex@example.com"},
+}
+
+func connectDB() {
+	var err error
+
+	connectionString := os.Getenv("DATABASE_URL")
+
+	db, err = pgx.Connect(context.Background(), connectionString)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("DB connected")
+}
+
+func main() {
+	var err error
+	err = godotenv.Load()
+	if err != nil {
+		panic("ENV not found")
+	}
+
+	connectDB()
+
+	defer db.Close(context.Background())
+
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /", rootHandler)
+	mux.HandleFunc("GET /health", healthHandler)
+	mux.HandleFunc("POST /createUser", createUserHandler)
+	mux.HandleFunc("GET /users", usersHandler)
+	mux.HandleFunc("GET /users/{id}", dynamicUserHandler)
+	mux.HandleFunc("PUT /users/{id}", updateUserHandler)
+	mux.HandleFunc("DELETE /users/{id}", deleteUserHandler)
+
+	fmt.Println("Server is running at port 5000")
+	err = http.ListenAndServe(":5000", mux)
+	if err != nil {
+		fmt.Println("Server error:", err)
+	}
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Go Server Running")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "ok")
+}
+
+func createUserHandler(w http.ResponseWriter, r *http.Request) {
+	var newUser User
+
+	err := json.NewDecoder(r.Body).Decode(&newUser)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, "Invalid request body")
+		return
+	}
+
+	query := `
+		insert into users (name, age, email)
+		values ($1, $2, $3)
+		returning id
+	`
+
+	err = db.QueryRow(context.Background(), query, newUser.Name, newUser.Age, newUser.Email).Scan(&newUser.ID)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintln(w, "Could not create user")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(newUser)
+}
+
+func usersHandler(w http.ResponseWriter, r *http.Request) {
+	query := `select id, name, age, email from users`
+
+	rows, err := db.Query(context.Background(), query)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintln(w, "Could not get users")
+		return
+	}
+
+	defer rows.Close()
+
+	var users []User
+
+	for rows.Next() {
+		var user User
+
+		err := rows.Scan(&user.ID, &user.Name, &user.Age, &user.Email)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprintln(w, "Could not scan users")
+			return
+		}
+		users = append(users, user)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(users)
+}
+
+func dynamicUserHandler(w http.ResponseWriter, r *http.Request) {
+	idParam := r.PathValue("id")
+
+	id, err := strconv.Atoi(idParam)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, "Invalid user ID")
+		return
+	}
+
+	query := `select id, name, age, email from users where id = $1`
+
+	var user User
+	err = db.QueryRow(context.Background(), query, id).Scan(&user.ID, &user.Name, &user.Age, &user.Email)
+	if err == pgx.ErrNoRows {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintln(w, "User not found")
+		return
+	}
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintln(w, "Could not get user")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(user)
+}
+
+func updateUserHandler(w http.ResponseWriter, r *http.Request) {
+	idParam := r.PathValue("id")
+
+	id, err := strconv.Atoi(idParam)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, "Invalid user ID")
+		return
+	}
+
+	var updatedUser User
+
+	err = json.NewDecoder(r.Body).Decode(&updatedUser)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, "Invalid request body")
+		return
+	}
+
+	query := `
+		update users
+		set name = $1, age = $2, email = $3
+		where id = $4
+		returning id, name, age, email
+	`
+
+	err = db.QueryRow(context.Background(), query, updatedUser.Name, updatedUser.Age, updatedUser.Email, id).Scan(&updatedUser.ID, &updatedUser.Name, &updatedUser.Age, &updatedUser.Email)
+
+	if err == pgx.ErrNoRows {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintln(w, "User not found")
+		return
+	}
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintln(w, "Could not update user")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(updatedUser)
+}
+
+func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
+	idParam := r.PathValue("id")
+
+	id, err := strconv.Atoi(idParam)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, "Invalid user ID")
+		return
+	}
+
+	query := `delete from users where id = $1`
+
+	cmdTag, err := db.Exec(context.Background(), query, id)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintln(w, "Could not get user")
+		return
+	}
+
+	if cmdTag.RowsAffected() != 1 {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintln(w, "User not found")
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+	fmt.Fprintln(w, "User deleted successfully")
+}
+```
+
+Make sure to match the environment variable's name is the exact same in both the code file and the env file,
+which is `DATABASE_URL` in this case.
+
+Also, definitely add the env file in the `.gitignore` file.
