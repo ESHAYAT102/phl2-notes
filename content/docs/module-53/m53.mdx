@@ -1,0 +1,180 @@
+---
+title: Module 53
+description: Docker
+---
+
+### Create a Dockerfile
+
+Create a file named `Dockerfile` in the directory you want to containerize.
+
+### Edit the Dockerfile
+
+#### Create the environment
+
+First, write what environment you wanna run in the container:
+
+```bash
+FROM node:20-alpine
+```
+
+`node` is the environment we want to use and `20-alpine` is the version of NodeJS we want to use.
+20-alpine uses Alpine Linux to run NodeJS because Alpine is very lightweight.
+
+```bash
+WORKDIR /app
+```
+
+Make a folder named `app` inside the container and select that as the `.` directory.
+
+```bash
+COPY package*.json ./
+```
+
+Copy the package json files in to the container.
+
+```bash
+RUN npm ci
+```
+
+Run the `npm ci` command in the container when the container initially starts.
+
+```bash
+COPY . .
+```
+
+Copy everything from the directory we ran the container from into the docker container's working directory.
+The first dot is to select the local files and the second dot is to tell docker where to put the local files in the container.
+
+```bash
+EXPOSE 8080
+```
+
+Tell docker what port to expose the container's app to, this one's not the host port, it's the container port.
+
+```bash
+CMD [ "node", "index.ts" ]
+```
+
+Run `node index.ts` everytime the container starts.
+
+### Run the code
+
+Run this in the terminal to make an image:
+
+```bash
+docker image -t my-app .
+```
+
+Then make a container from the image:
+
+```bash
+docker run --name my-container my-app
+```
+
+You can run this to stop the container:
+
+```bash
+docker stop my-container
+```
+
+Start the container again with:
+
+```bash
+docker start my-container
+```
+
+Run this to see the images:
+
+```bash
+docker images
+```
+
+Run this to see the containers:
+
+```bash
+docker ps
+```
+
+If you wanna see the logs of a container, run this:
+
+```bash
+docker logs my-container
+```
+
+You can access the shell/terminal of a container with this command:
+
+```bash
+docker exec -it my-container sh
+```
+
+### Create a volume
+
+The data inside a container is not persistent, so if you need to keep the information of a container, you can use volumes.
+Let's make a volume to store our database of `my-app`:
+
+```bash
+docker volume create database # 'database' is the volume name
+```
+
+We can get detailed info of a volume with:
+
+```bash
+docker volume inspect database
+```
+
+List all the volumes:
+
+```bash
+docker volume ls
+```
+
+Delete a volume with:
+
+```bash
+docker volume rm database
+```
+
+### Network
+
+We can connect doker containers to each other like a network cluster, which is called docker network.
+
+Create a network with:
+
+```bash
+docker network create my-network
+```
+
+List all the networks:
+
+```bash
+docker network ls
+```
+
+Remove a network:
+
+```bash
+docker network rm my-network
+```
+
+### Port mapping
+
+To expose the app running in the container outside the container, we have to do port mapping:
+
+```bash
+docker run -d --name my-container -p 3000:8080 my-app
+```
+
+The port fomat is like this: `HOST_PORT:CONTAINER_PORT`
+
+We must use the `p` flag right before the port mapping and the `d` flag is to run the container in the background.
+
+Also, we can use the `v` flag to create a volume for a container while running it.
+
+### Real world example
+
+This is the full command we would be using in real projects:
+
+```bash
+docker run -it --name my-project -v "${PWD}:/app" -v node_modules:app/node_modules -w /app -p 3000:8080 node:20-alpine sh -c "npm i -g nodemon && npm i && nodemon --watch /app --legacy-watch index.ts"
+```
+
