@@ -16,7 +16,6 @@ const projects = [
     description: "Automated React project scaffolding tool",
     link: "https://esyt.eshayat.com",
   },
-  },
   {
     name: "MarkDown",
     description: "Markdown preview utility tool",
