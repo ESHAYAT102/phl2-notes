@@ -1,22 +1,41 @@
 ---
-title: Module 63.9
-description: Functions With Return
+title: "Functions with Return Values"
+description: "Lesson 63.9: Functions with Return Values."
 ---
 
-Function with return:
+A return type appears after the parameter list. Every path through a function
+with a return type must return a compatible value.
 
 ```go
 package main
 
 import "fmt"
 
-func coffee(coffeeType string) string { // [!code highlight]
-	coffeeToReturn := fmt.Sprintf("%v Coffee\n", coffeeType)
-	return coffeeToReturn // [!code highlight]
+func coffee(kind string) string {
+	return fmt.Sprintf("%s coffee", kind)
 }
 
 func main() {
-	returnedCoffee := coffee("Africano") // [!code highlight]
-	fmt.Print("I'm Having ", returnedCoffee) // [!code highlight]
+	drink := coffee("Americano")
+	fmt.Println("I'm having", drink)
 }
 ```
+
+Go commonly returns an `error` alongside a result when an operation can fail:
+
+```go
+func percentage(part, total float64) (float64, error) {
+	if total == 0 {
+		return 0, errors.New("total must not be zero")
+	}
+	return part / total * 100, nil
+}
+```
+
+Handle the error before using the result. Reserve `panic` for conditions the
+current code cannot reasonably recover from.
+
+## Related Concepts
+
+- [Multiple and Named Returns](./m63-10)
+- [Go's Philosophy of Error Handling](../module-70/m70-5)

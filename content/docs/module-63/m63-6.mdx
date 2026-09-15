@@ -1,63 +1,67 @@
 ---
-title: Module 63.6
-description: GO Data Types
+title: "Go Data Types"
+description: "Lesson 63.6: Go Data Types."
 ---
 
-## Naming
+## What a Data Type Does
 
-Use meaningful names for variables. Naming cases:
-
-Valid:
-
-- camel
-- snake
-
-Invalid:
-
-- kebab
-
-## What a data type does
-
-A data type tells Go:
+A type tells Go:
 
 - What kind of data a variable holds
 - How much memory to allocate
 - What operations are allowed
 
-## Data types in Go
+## Common Built-In Types
 
-### Integer
+### Integers
 
-#### int (integer)
+- Signed: `int`, `int8`, `int16`, `int32`, `int64`
+- Unsigned: `uint`, `uint8`, `uint16`, `uint32`, `uint64`, `uintptr`
+- Aliases: `byte` is `uint8`; `rune` is `int32`
 
-- int
-- int8
-- int16
-- int32
-- int64
+Use `int` for ordinary counts and indexes. Use a fixed-width type for binary
+formats or protocols that require an exact size. Unsigned integers include zero;
+they are not simply “positive integers.”
 
-Just use `int` if you're not sure which one to use, Go does the memory allocation behind the scenes.
+### Floating-Point and Complex Numbers
 
-#### uint (unsigned integer)
+- `float32`, `float64`
+- `complex64`, `complex128`
 
-`uint` is the same as int, but it only stores positive numbers.
+Go has no type named `float`; use `float64` unless a specific size is required.
+Floating-point values are approximate, so do not use them for exact currency.
 
-### Float
+### Booleans and Strings
 
-- float
-- float32
-- float64
+- `bool` stores `true` or `false`.
+- `string` stores an immutable sequence of bytes, conventionally UTF-8 text.
 
-This one can also be simply typed as `float`, go does the things in the background.
+Indexing a string returns a byte. Use `for range` when iterating over Unicode
+code points (`rune` values).
 
-### Boolean
+## Type Inference and Conversion
 
-- bool
+Go infers a type from an initializer, but it does not perform implicit numeric
+conversions:
 
-Boolean (`bool`) stores `true` and `false`.
+```go
+count := 3        // int
+ratio := 0.5      // float64
+total := float64(count) * ratio
+```
 
-### String
+Conversions are explicit because different numeric types can have different
+ranges and precision.
 
-- string
+## Composite Types
 
-String stores text data in quotations.
+Arrays, slices, maps, structs, pointers, functions, interfaces, and channels are
+also types. Their behavior—such as whether they are comparable or have a `nil`
+value—depends on the specific type.
+
+## Related Concepts
+
+- [Variables in Go](./m63-4)
+- [Zero Values and fmt.Printf](./m63-7)
+- [Arrays in Go](../module-65/m65-1)
+- [Struct Basics](../module-65/m65-8)

@@ -1,4 +1,9 @@
 {
-  "title": "Module 26",
-  "pages": ["m26-0", "m26-1", "m26-3", "m26-9"]
+  "title": "Module 26: Admin Seeding, Pagination, and Transactions",
+  "pages": [
+    "m26-0",
+    "m26-1",
+    "m26-3",
+    "m26-9"
+  ]
 }

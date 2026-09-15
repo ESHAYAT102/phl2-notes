@@ -1,43 +1,59 @@
 ---
-title: Module 63.10
-description: Multiple & Named Returns
+title: "Multiple and Named Returns"
+description: "Lesson 63.10: Multiple and Named Returns."
 ---
 
-Multiple returned values:
+Go functions can return more than one value. The most common pattern is a result
+plus an `error`.
 
 ```go
 package main
 
 import "fmt"
 
-func coffee(coffeeType string, coffeeBill int) (string, int) {
-	coffeeToReturn := fmt.Sprintf("%v Coffee\n", coffeeType)
-	return coffeeToReturn, coffeeBill
+func coffee(kind string, price int) (string, int) {
+	return fmt.Sprintf("%s coffee", kind), price
 }
 
 func main() {
-	returnedCoffee, returnedBill := coffee("Africano", 25000)
-	fmt.Printf("I'm having a $%d %s", returnedBill, returnedCoffee)
+	drink, price := coffee("Americano", 250)
+	fmt.Printf("%s costs %d taka\n", drink, price)
 }
 ```
 
-Named returned values:
+Use `_` to ignore a value intentionally:
+
+```go
+drink, _ := coffee("Americano", 250)
+```
+
+## Named Results
+
+Names in the result list create variables initialized to their zero values:
 
 ```go
 package main
 
 import "fmt"
 
-func coffee(coffeeType string) (coffeeToReturn string, price int) { // [!code highlight]
-	price = 25 // [!code highlight]
-	coffeeToReturn = fmt.Sprintf("%v Coffee\n", coffeeType) // [!code highlight]
-	return // [!code highlight]
+func coffee(kind string) (drink string, price int) {
+	drink = fmt.Sprintf("%s coffee", kind)
+	price = 250
+	return
 }
 
 func main() {
-	returnedCoffee, returnedBill := coffee("Africano")
-	fmt.Printf("I'm having a $%d %s", returnedBill, returnedCoffee)
+	drink, price := coffee("Americano")
+	fmt.Printf("%s costs %d taka\n", drink, price)
 }
 ```
 
-Function parameters can't be returned as named returns. When a named return is being used, the returned variables get declared in the fuction header, so don't declare them inside the function, just assign them. In the example avobe, you can see that I didn't use `:` before the equal sign for the variables, that's because I'm assigning them a value, they're already declared in the first like (the line that start with `func coffee...`)
+Named results can clarify short functions or documentation, but bare `return`
+statements become difficult to follow in long functions. Prefer explicit returns
+when they make the control flow clearer.
+
+## Related Concepts
+
+- [Basics of Functions](./m63-8)
+- [Functions with Return Values](./m63-9)
+- [Defer with Named Return Values](../module-68/m68-6)

@@ -1,9 +1,10 @@
 ---
-title: Module 1.10
-description: Analysis of O(n) and O(n²)
+title: "Analysis of O(n) and O(n²)"
+description: "Lesson 1.10: Analysis of O(n) and O(n²)."
 ---
 
-# Overview
+# Removing Duplicates Efficiently
 
-Removing duplicates with array with forEach approach is slower that using set (the last code in the previous module).
-The array approach is an O(n²) and the set approach is an O(n), that's why it's significantly faster.
+A nested array-based approach that scans the accumulated results for every input
+value takes O(n²) time in the worst case. Constructing a `Set` visits each value
+once on average, so it takes O(n) time and is usually much faster for large inputs.

@@ -1,15 +1,16 @@
 ---
-title: Module 1.7
-description: Our Workhorse - The Array
+title: "Array Operation Complexity"
+description: "Lesson 1.7: Array Operation Complexity."
 ---
 
-# Big O notation
+# Array Operation Complexity
 
-For loops are mostly O(n), as it takes more time for more elements.
+A loop over every array element is O(n): its work grows linearly with the array.
 
-These methods are O(1) because they don't iterate through the whole array but simply points to the designated array:
+These end-of-array operations are typically O(1):
 
 - `push`
 - `pop`
 
-If the index is hardcoded then the function will be O(1).
+Reading an element by index is also O(1). By contrast, `shift`, `unshift`, and
+inserting near the beginning are O(n) because the remaining elements must move.

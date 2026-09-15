@@ -1,51 +1,56 @@
 ---
-title: Module 64.2
-description: Variable Scope
+title: "Variable Scope"
+description: "Lesson 64.2: Variable Scope."
 ---
 
-A variable can't be accessed outside the function it's declared in. They're available to child functions.
+Scope determines where a declared name can be used. Go has package, file, function,
+and block scopes.
 
-We can think of scopes as layers, each nested function/process is a new layer on top of the previous one.
-Each new layers (scopes) are smaller than the previous payer, so the previous layer kan wrap around it.
+## Package and Local Scope
 
-Example:
+A package-level variable is available throughout its package. A local variable is
+available only inside the function or block where it is declared.
 
 ```go
 package main
 
 import "fmt"
 
+var application = "notes" // package scope
+
 func main() {
-	hello := "hello world"
-	fmt.Print(hello)
+	message := "hello" // function scope
+	if ready := true; ready {
+		fmt.Println(application, message, ready)
+	}
+	// ready is not available here
 }
 ```
 
-The `hello` variable is the first layer here
-(though we can declare an upper layer variable outside the main function. But we're not gonna do that for now)
+## Closures
 
----
+An inner function can capture variables from its surrounding scope:
 
 ```go
-package main
-
-import "fmt"
-
-func main() {
-	hello := "hello world"
-	fmt.Print(hello)
-
-	func() { // [!code highlight]
-		test := "testing variable" // [!code highlight]
-		fmt.Print(test) // [!code highlight]
-	}() // [!code highlight]
+count := 0
+increment := func() {
+	count++
 }
+increment()
+fmt.Println(count) // 1
 ```
 
-The nested function (`test`) is the smaller layer on top of the previous one.
+The captured variable remains shared with the closure; it is not copied for each
+call.
 
----
+## Shadowing
 
-So we can use the `hello` variable in the nested function (smaller layer) because it's in the larger layer,
-which wraps around the smaller layer. But we can't access the `test` variable from the `main` function,
-because it's in the smaller layer, which can't wrap around the other layer.
+An inner declaration may reuse an outer name. This is called shadowing, and the
+outer value becomes temporarily inaccessible. Keep scopes small and avoid
+accidental shadowing, particularly when using `:=` with `err`.
+
+## Related Concepts
+
+- [Variables in Go](../module-63/m63-4)
+- [Anonymous and IIFE Functions](./m64-1)
+- [Closure](../module-68/m68-2)

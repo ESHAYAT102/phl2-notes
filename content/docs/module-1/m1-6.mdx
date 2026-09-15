@@ -1,10 +1,14 @@
 ---
-title: Module 1.6
-description: Visual comparison of different time complexity
+title: "Comparing Time Complexities"
+description: "Lesson 1.6: Comparing Time Complexities."
 ---
 
-# Big O notation
+# Comparing Time Complexities
 
-Always optimize algorithms for the worst case. So, instead of working with 5th index of data, work with the last index.
+Complexity analysis often considers the worst case because it provides an upper
+bound on the work an algorithm may perform. Best-case and average-case behavior
+can also matter, depending on the application.
 
-All the array methods are O(n) because behind the scenes they loop through the array until the condition is satisfied. It will take one more index of time for each index of the array.
+Array methods do not all have the same complexity. Methods that scan the array,
+such as `find`, `map`, and `filter`, are O(n). Indexed access and `push` are
+typically O(1), while operations that shift existing elements are O(n).

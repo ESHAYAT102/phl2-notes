@@ -1,63 +1,81 @@
 ---
-title: Module 63.4
-description: Variables in GO
+title: "Variables in Go"
+description: "Lesson 63.4: Variables in Go."
 ---
 
-## Declare A String Variable
+Go offers several forms of variable declaration. Choose the form that makes the
+type and initial value easiest to understand.
 
-Use the `var` keyword to declare a variable.
+## Declaration Forms
 
-Go needs the type of the variable to be mentioned while declaring. Example:
+Use `var` with an explicit type when the zero value is useful or the type is not
+obvious:
 
 ```go
-var variable_name string;
+var name string // ""
+var attempts int // 0
 ```
 
-## Assigning A Value To A Variable
+Assign a value in the declaration and Go can infer its type:
 
 ```go
-var variable_name string;
-variable_name = "Hello World" // [!code highlight]
+var language = "Go" // string
+var version = 1.25  // float64
 ```
 
-## Shorter approach
-
-### Ditching The `var` Keyword
-
-This doesn't require the manual declaration before assigning:
+Inside a function, `:=` is the usual short declaration form:
 
 ```go
-variable_name := "Hello World"
+func main() {
+	message := "Hello, Go"
+	fmt.Println(message)
+}
 ```
 
-### Using The `var` Keyword To Declare And Assigning At The Same Time
+`:=` cannot be used at package scope. Within the same scope, it must declare at
+least one new variable.
 
-This declares and assigns at the same time using the `var` keyword, the previous one didn't use the `var` keyword:
-
-```go
-var variable_name = "Hello World"
-```
-
-## Grouped Variables
-
-Declare multiple variables at the same time:
+## Multiple and Grouped Variables
 
 ```go
+var x, y int
+name, age := "Eshayat", 16
+
 var (
-    username string
-    age int
+	host = "localhost"
+	port = 8080
 )
+
+x, y = y, x // swap values without a temporary variable
 ```
 
-You can also assign the values in here too:
+## Reassignment and Shadowing
+
+Use `=` to update an existing variable. A declaration in an inner block can
+shadow a variable with the same name, creating a different variable:
 
 ```go
-var (
-    username string  = "Eshayat"
-    age int          = 16
-)
+count := 1
+if ready := true; ready {
+	count := 2 // shadows the outer count
+	fmt.Println(count)
+}
+fmt.Println(count) // 1
 ```
 
-## Personal Recommendations
+Shadowing is legal but can hide mistakes, especially with `err` variables.
 
-I personally use `variable_name := "Hello World"`, though it can only be used inside a function.
+## Naming Rules and Conventions
+
+- Names are case-sensitive and cannot start with a digit.
+- Go convention uses short `camelCase` or `PascalCase` names, not underscores.
+- A package-level name beginning with an uppercase letter is exported.
+- Use `_`, the blank identifier, when a returned value is intentionally ignored.
+
+## Related Concepts
+
+- [Multiple Variables and Constants](./m63-5)
+- [Go Data Types](./m63-6)
+- [Zero Values and fmt.Printf](./m63-7)
+- [Variable Scope](../module-64/m64-2)
+- [Pointers in Go](../module-65/m65-5)

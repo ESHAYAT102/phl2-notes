@@ -1,25 +1,24 @@
 ---
-title: Module 23.0
-description: Text Instructions
+title: "Module Overview"
+description: "An overview of Module 23: Blog API Architecture."
 ---
 
-হ্যালো ডেভেলপারস!!
+## What This Module Covers
 
-এত ঠান্ডা যে মনে হচ্ছে ল্যাপটপ বুট নেয়ার আগে চা খেতে চাইবে 😎! কিন্তু তারপরও মিশন তো থেমে থাকে না। ইয়েস! চলে এসেছে প্রিজমা নিয়ে আরো একটি মডিউল। এই মডিউলে আমরা ধাপে ধাপে শিখব কিভাবে একটা প্রফেশনাল লেভেলের ব্লগ সিস্টেম ডিজাইন করা যায় এবং সেটাকে বাস্তবে ইমপ্লিমেন্ট করা যায়।
+Design a blog API from requirements through system design, ER modeling, Prisma schemas, Express configuration, and the create-post endpoint.
 
-আজকের মডিউলে প্রথমে দেখব, কিভাবে প্রজেক্টের Requirement Analysis করতে হয় এবং তার উপর ভিত্তি করে তৈরি করব আমাদের ব্লগ অ্যাপের High-Level System Design তারপর ডিজাইন করব একটি সুন্দর ER Diagram, যেখানে শিখব কোন entity কার সাথে কীভাবে connected থাকে এবং তাদের মধ্যে কী ধরনের relationship কাজ করে। এরপর শুরু করব প্র্যাকটিক্যাল কাজ। প্রজেক্ট initialize করব, সেটআপ করব প্রয়োজনীয় কনফিগারেশন এবং Prisma ব্যবহার করে define করব আমাদের Post ও Comment মডেল। সাথে সাথে শিখবndexing, mapping এবং self-relations কিভাবে কাজ করে।
+## Lessons
 
-এখানেই শেষ না! আমরা Express দিয়ে আমাদের server configure করব এবং ধাপে ধাপে তৈরি করব Create Post API দুইটা আলাদা পার্টে, যেন পুরো প্রক্রিয়াটা পরিষ্কারভাবে বুঝতে পারি।
+- [Requirement Analysis of the Blog Application](./m23-1)
+- [High-Level System Design for the Blog App](./m23-2)
+- [Designing the ER Diagram for the Blog App and Understanding Entity Relationships in the ER Diagram](./m23-3)
+- [Project Initialization and Setup for the Blog App](./m23-5)
+- [Defining Post and Comment Models using Prisma Schema](./m23-6)
+- [Indexing, Mapping and Self-Relations in Prisma Schema](./m23-7)
+- [Express Server and Application Configuration](./m23-8)
+- [Implementing Create Post API: Part 1](./m23-9)
+- [Implementing Create Post API: Part 2](./m23-10)
 
-এই মডিউলের শেষে তুমি বুঝে যাবে কীভাবে প্ল্যানিং থেকে শুরু করে বাস্তব অ্যাপ্লিকেশন তৈরি পর্যন্ত পুরোটা ওয়ার্কফ্লো চলে। তাহলে চল, শুরু করি আজকের যাত্রা
+## Learning Goal
 
-<Cards>
-  <Card
-    title="GitHub Repo"
-    href="https://github.com/Apollo-Level2-Web-Dev/prisma-blog-server"
-  />
-  <Card
-    title="Resources"
-    href="https://github.com/Apollo-Level2-Web-Dev/prisma-blog-server/tree/main/resources"
-  />
-</Cards>
+By the end of this module, you should be able to translate application requirements into a maintainable API and database design.

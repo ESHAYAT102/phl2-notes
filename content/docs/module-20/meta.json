@@ -1,4 +1,12 @@
 {
-  "title": "Module 20",
-  "pages": ["m20-0", "m20-1", "m20-4", "m20-5", "m20-6", "m20-8", "m20-10"]
+  "title": "Module 20: SQL Practice and Database Programming",
+  "pages": [
+    "m20-0",
+    "m20-1",
+    "m20-4",
+    "m20-5",
+    "m20-6",
+    "m20-8",
+    "m20-10"
+  ]
 }

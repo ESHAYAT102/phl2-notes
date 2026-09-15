@@ -1,36 +1,58 @@
 ---
-title: Module 63.5
-description: Multiple Variables & Constants
+title: "Multiple Variables and Constants"
+description: "Lesson 63.5: Multiple Variables and Constants."
 ---
 
-## Variables
+## Multiple Variables
 
-### Declaring
-
-Declare multiple variables like this:
+Variables with the same type can share a declaration:
 
 ```go
-var x, y int
+var width, height int
+var start, end = 1958, 2009
+name, active := "Gopher", true
 ```
 
-This can only be used for variables of the same type. Different types of variables can't be declared like this.
-
-### Assigning
-
-We can directly assign the values too:
+Multiple assignment evaluates the right-hand side before updating the variables,
+which makes swaps straightforward:
 
 ```go
-var x, y int = 1958, 2009
+left, right = right, left
 ```
 
 ## Constants
 
-### Declaring
-
-Declare a constant when th value is guaranteed to not be reassigned, because constants are obviously constant, they can't be reassigned.
-
-Constants are constant (obviously), so there's no need to declare it and assign it separately. So Go has this easier syntax:
+A constant is a compile-time value that cannot be reassigned. Constants can be
+strings, numbers, booleans, or expressions composed from other constants.
 
 ```go
-const pi = 3.14
+const pi = 3.14159       // untyped constant
+const timeout = 30       // can be used with compatible numeric types
+const appName string = "Notes"
 ```
+
+Constants have no `:=` form and cannot be initialized from a runtime result such
+as `time.Now()`.
+
+### Groups and `iota`
+
+Use a constant group with `iota` for related sequential values:
+
+```go
+type Status int
+
+const (
+	StatusPending Status = iota
+	StatusRunning
+	StatusDone
+)
+```
+
+Use `iota` when the numeric values are implementation details. Use explicit
+values when they are part of a database, file, or network contract.
+
+## Related Concepts
+
+- [Variables in Go](./m63-4)
+- [Go Data Types](./m63-6)
+- [Enums](../module-68/m68-8)

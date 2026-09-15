@@ -83,7 +83,7 @@ function ProjectPromo({
 }) {
   return (
     <a
-      href={project.href}
+      href={project.link}
       target="_blank"
       rel="noreferrer noopener sponsored nofollow"
       className="group mt-4 flex cursor-pointer flex-col justify-between rounded-2xl border border-zinc-200 bg-white/80 p-5 text-zinc-900 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-zinc-300 hover:shadow-md active:translate-y-1 active:shadow-none dark:border-zinc-800 dark:bg-zinc-950/60 dark:text-zinc-50 dark:hover:border-zinc-700"

@@ -1,77 +1,54 @@
 ---
-title: Module 63.7
-description: Zero Values & Printf
+title: "Zero Values and fmt.Printf"
+description: "Lesson 63.7: Zero Values and fmt.Printf."
 ---
 
 ## Zero Values
 
-Zero values are the values a data type initially has, before we assign something oursleves.
+A declared variable that has no initializer receives the zero value for its type.
+This lets useful types work without a constructor.
 
-Default values for different data types:
+| Type | Zero value |
+| --- | --- |
+| Numbers | `0` |
+| `bool` | `false` |
+| `string` | `""` |
+| Pointers, slices, maps, functions, interfaces, channels | `nil` |
+| Arrays and structs | Each field or element receives its zero value |
 
-| type   | value |
-| ------ | ----- |
-| int    | 0     |
-| string | ""    |
-| float  | 0.0   |
-| bool   | false |
+A nil slice can be read, ranged over, and appended to. A nil map can be read but
+must be initialized with `make` before writing.
 
-## Print Variables
+## Formatting with `fmt`
 
-| Code             | Definition                                                                          |
-| ---------------- | ----------------------------------------------------------------------------------- |
-| %v               | any type of variables                                                               |
-| %+v              | structs with key names                                                              |
-| %#v              | any type of data in Go's syntax/perspective                                         |
-| %%               | a % sign                                                                            |
-| %T               | type of a variable                                                                  |
-| %t               | value of a boolean data (true/false)                                                |
-| %s               | string                                                                              |
-| %q               | string with quotations                                                              |
-| %d               | decimal integer                                                                     |
-| %b               | binary integer                                                                      |
-| %o               | octal integer                                                                       |
-| %x               | hexadecimal integer in lowercase                                                    |
-| %X               | hexadecimal integer in uppercase                                                    |
-| %f               | full decimal number with lowercase letters                                          |
-| %f               | full decimal number with uppercase letters                                          |
-| %e               | scientific notation in lowercase                                                    |
-| %E               | scientific notation in uppercase                                                    |
-| %g               | the shortest representation of %e & %f                                              |
-| %G               | the shortest representation of %E & %F                                              |
-| %c               | unicode characters                                                                  |
-| %U               | unicode of a character                                                              |
-| %w               | wraps errors (unwraps with error.Unwrap)                                            |
-| + (flag)         | shows integers with (+/-)                                                           |
-| \<space\> (flag) | adds a space before positive numbers                                                |
-| 0 (flag)         | adds a gap in the beginning of the line                                             |
-| # (flag)         | alternates the value of Octals and Hex. Adds quotations to strings, only in %v      |
-| \<number\>       | max width of a line                                                                 |
-| .\<number\>      | For floats, digits after decimal. For strings, max chars. For integers, min digits. |
+| Verb | Output |
+| --- | --- |
+| `%v` | Default representation |
+| `%+v` | Field names when printing a struct |
+| `%#v` | Go-syntax representation |
+| `%T` | Value's type |
+| `%t` | Boolean |
+| `%s`, `%q` | String; quoted string |
+| `%d`, `%b`, `%o`, `%x`, `%X` | Integer in decimal, binary, octal, or hexadecimal |
+| `%f`, `%e`, `%g` | Floating-point formats |
+| `%c`, `%U` | Character and Unicode format |
+| `%p` | Pointer address |
+| `%%` | Literal percent sign |
 
-## Print Commands
+Width and precision refine a verb: `%8d` pads an integer to eight characters and
+`%.2f` prints two digits after the decimal point.
 
-| Code     | Definition                                                       |
-| -------- | ---------------------------------------------------------------- |
-| Print    | prints                                                           |
-| Println  | prints, adds a `\n` in the end, adds spaces between values       |
-| Printf   | prints, enables using Print Verbs                                |
-| Scan     | Takes user input                                                 |
-| Sprint   | Works same as Print. Returns the output instead of printing it   |
-| Sprintln | Works same as Println. Returns the output instead of printing it |
-| Sprintf  | Works same as Printf. Returns the output instead of printing it  |
+```go
+name, score := "Ari", 91.456
+fmt.Printf("%s scored %.2f (%T)\n", name, score, score)
+```
 
-## Commands From Other Packages
+Use `fmt.Print` or `fmt.Println` for direct output. Use `fmt.Sprintf` to return a
+formatted string. `%w` is specific to `fmt.Errorf` and wraps an error for
+`errors.Is` and `errors.As`.
 
-| Package   | Code       | Definition                                                                                |
-| --------- | ---------- | ----------------------------------------------------------------------------------------- |
-| math/rand | Intn()     | Generates a random number between 0 to its parameter                                      |
-| math/rand | Seed()     | Changes the random number generation seed so that the random number isn’t same every time |
-| time      | UnixNano() | Returns the nanosecond of the parent time function. Mostly used with Now()                |
+## Related Concepts
 
-## Other Usefull Commands
-
-| Code         | Definition                                                                  |
-| ------------ | --------------------------------------------------------------------------- |
-| \*[variable] | Toggles pointer and value of a variable (Only works with pointed data type) |
-| &[variable]  | Toggles address and value of a variable                                     |
+- [Go Data Types](./m63-6)
+- [Pointers in Go](../module-65/m65-5)
+- [Go's Philosophy of Error Handling](../module-70/m70-5)

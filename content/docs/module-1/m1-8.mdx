@@ -1,15 +1,16 @@
 ---
-title: Module 1.8
-description: Hands on experiment to understand Big-O notation of basic Array methods
+title: "Measuring the Complexity of Array Methods"
+description: "Lesson 1.8: Measuring the Complexity of Array Methods."
 ---
 
-# Code Practices
+# Measuring Execution Time
 
-## Tracking the time taken of a code
+Timing a function can help compare implementations, although a single result is
+not a substitute for a proper benchmark.
 
 ### `performance.now()` approach
 
-Using `performance.now()` to track time of a certain process. Example:
+Use `performance.now()` to measure elapsed time with a high-resolution timer:
 
 ```js
 const startTime = performance.now(); // [!code highlight]
@@ -23,7 +24,7 @@ const endTime = performance.now(); // [!code highlight]
 console.log(`This code took ${endTime - startTime}ms`); // [!code highlight]
 ```
 
-The output will have something like this:
+The output will look similar to this:
 
 ```bash
 This code took 8.351621000000002ms
@@ -31,7 +32,7 @@ This code took 8.351621000000002ms
 
 ### `console.time()` approach
 
-Using `console.time()` to track time:
+For quick measurements, `console.time()` and `console.timeEnd()` provide a simpler alternative:
 
 ```js
 console.time("task"); // [!code highlight]
@@ -43,14 +44,15 @@ for (let i = 0; i <= 5000; i++) {
 console.timeEnd("task"); // [!code highlight]
 ```
 
-The output would have something like this in the end:
+The output will look similar to this:
 
 ```bash
 [6.95ms] task
 ```
 
-### Warning
+### Accuracy
 
 <Callout type="warning">
-  `performance.now()` is more accurate than `console.time()`
+  Results vary between runs. Warm up the code, repeat the measurement, and test
+  realistic inputs before drawing conclusions.
 </Callout>
