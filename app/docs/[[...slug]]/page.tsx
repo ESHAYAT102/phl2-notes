@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/mdx-components";
 import type { Metadata } from "next";
 import { createRelativeLink } from "fumadocs-ui/mdx";
+import { MobilePlaygroundTrigger } from "@/components/code-playground";
 
 const projects = [
   {
@@ -116,7 +117,16 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
         footer: projectPromo ? <ProjectPromo project={projectPromo} /> : undefined,
       }}
       tableOfContentPopover={{
-        footer: projectPromo ? <ProjectPromo project={projectPromo} /> : undefined,
+        footer: (
+          <>
+            {projectPromo && (
+              <div className="mobile-toc-project-promo">
+                <ProjectPromo project={projectPromo} />
+              </div>
+            )}
+            <MobilePlaygroundTrigger />
+          </>
+        ),
       }}
       toc={page.data.toc}
       full={page.data.full}
