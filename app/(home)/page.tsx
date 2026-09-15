@@ -7,9 +7,9 @@ const projects = [
     link: "https://xenon.eshayat.com",
   },
   {
-    name: "Adrian",
-    description: "Self hostable private GitHub",
-    link: "https://github.com/ESHAYAT102/adrian",
+    name: "Remail",
+    description: "Email client for Resend",
+    link: "https://mail.eshayat.com",
   },
   {
     name: "ESYT",
@@ -42,9 +42,9 @@ const projects = [
     link: "https://github.com/ESHAYAT102/archon",
   },
   {
-    name: "Catppuccin theme",
-    description: "Sleek Catppuccin mocha theme for Omarchy",
-    link: "https://github.com/ESHAYAT102/omarchy-catppuccin-mocha-theme",
+    name: "Argus",
+    description: ".env manager in the CLI",
+    link: "https://github.com/ESHAYAT102/argus",
   },
 ] as const;
 

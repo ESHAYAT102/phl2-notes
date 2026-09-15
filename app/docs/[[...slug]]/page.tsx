@@ -14,47 +14,47 @@ const projects = [
   {
     name: "Xenon",
     description: "GitHub with Raycast and Twitter",
-    href: "https://xenon.eshayat.com",
+    link: "https://xenon.eshayat.com",
   },
   {
-    name: "Adrian",
-    description: "Self hostable private GitHub",
-    href: "https://github.com/ESHAYAT102/adrian",
+    name: "Remail",
+    description: "Email client for Resend",
+    link: "https://mail.eshayat.com",
   },
   {
     name: "ESYT",
     description: "Automated React project scaffolding tool",
-    href: "https://esyt.eshayat.com",
+    link: "https://esyt.eshayat.com",
+  },
+  {
+    name: "MarkDown",
+    description: "Markdown preview utility tool",
+    link: "https://markdown.eshayat.com",
   },
   {
     name: "Skater",
     description: "TUI for skate (by Charm)",
-    href: "https://github.com/ESHAYAT102/skater",
+    link: "https://github.com/ESHAYAT102/skater",
   },
   {
     name: "Milo",
     description: "CLI email client (for Resend)",
-    href: "https://github.com/ESHAYAT102/milo",
+    link: "https://github.com/ESHAYAT102/milo",
   },
   {
     name: "Moonify",
     description: "CLI moon phase calendar",
-    href: "https://github.com/ESHAYAT102/moonify",
-  },
-  {
-    name: "AirPipe",
-    description: "File transfer platform",
-    href: "https://airpipe.eshayat.com",
+    link: "https://github.com/ESHAYAT102/moonify",
   },
   {
     name: "Archon",
     description: "Automated setup script for Omarchy",
-    href: "https://github.com/ESHAYAT102/archon",
+    link: "https://github.com/ESHAYAT102/archon",
   },
   {
-    name: "Catppuccin theme",
-    description: "Sleek Catppuccin mocha theme for Omarchy",
-    href: "https://github.com/ESHAYAT102/omarchy-catppuccin-mocha-theme",
+    name: "Argus",
+    description: ".env manager in the CLI",
+    link: "https://github.com/ESHAYAT102/argus",
   },
 ] as const;
 
