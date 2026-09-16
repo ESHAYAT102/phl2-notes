@@ -2,6 +2,26 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
+.search-dialog-content {
+  overflow: visible;
+  border: 0;
+  border-radius: initial;
+  background: transparent;
+  box-shadow: none;
+}
+
+.search-dialog-beam {
+  width: 100%;
+}
+
+.search-dialog-surface {
+  overflow: hidden;
+  border: 1px solid var(--color-fd-border);
+  border-radius: inherit;
+  background: var(--color-fd-popover);
+  box-shadow: 0 24px 64px rgb(0 0 0 / 0.35);
+}
+
 .shiki > .fd-scroll-container {
   max-height: none;
 }
