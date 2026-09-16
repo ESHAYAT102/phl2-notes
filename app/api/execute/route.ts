@@ -40,8 +40,8 @@ function rateLimited(ip: string) {
 export function formatExecution(result: JudgeResult) {
   const sections = [result.compile_output, result.stderr, result.stdout, result.message]
     .filter((value): value is string => Boolean(value?.trim()));
-  const output = sections.join("\n").trim();
-  if (output) return output.slice(0, 65_536);
+  const output = sections.join("\n");
+  if (output.trim()) return output.slice(0, 65_536);
   return result.status?.id === 3
     ? "Program finished without output."
     : (result.status?.description ?? "Execution failed.");

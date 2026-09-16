@@ -9,8 +9,6 @@ import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/mdx-components";
 import type { Metadata } from "next";
 import { createRelativeLink } from "fumadocs-ui/mdx";
-import { MobilePlaygroundTrigger } from "@/components/code-playground";
-
 const projects = [
   {
     name: "Xenon",
@@ -87,7 +85,7 @@ function ProjectPromo({
       href={project.link}
       target="_blank"
       rel="noreferrer noopener sponsored nofollow"
-      className="group mt-4 flex cursor-pointer flex-col justify-between rounded-2xl border border-zinc-200 bg-white/80 p-5 text-zinc-900 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-zinc-300 hover:shadow-md active:translate-y-1 active:shadow-none dark:border-zinc-800 dark:bg-zinc-950/60 dark:text-zinc-50 dark:hover:border-zinc-700"
+      className="group mt-4 mb-4 flex cursor-pointer flex-col justify-between rounded-2xl border border-zinc-200 bg-white/80 p-5 text-zinc-900 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-zinc-300 hover:shadow-md active:translate-y-1 active:shadow-none dark:border-zinc-800 dark:bg-zinc-950/60 dark:text-zinc-50 dark:hover:border-zinc-700"
     >
       <h3 className="text-base font-semibold">
         {project.name}
@@ -117,16 +115,9 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
         footer: projectPromo ? <ProjectPromo project={projectPromo} /> : undefined,
       }}
       tableOfContentPopover={{
-        footer: (
-          <>
-            {projectPromo && (
-              <div className="mobile-toc-project-promo">
-                <ProjectPromo project={projectPromo} />
-              </div>
-            )}
-            <MobilePlaygroundTrigger />
-          </>
-        ),
+        footer: projectPromo ? (
+          <ProjectPromo project={projectPromo} />
+        ) : undefined,
       }}
       toc={page.data.toc}
       full={page.data.full}
