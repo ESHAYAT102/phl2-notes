@@ -1,28 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { formatExecution, isLanguage, languageIds } from "./helpers";
+import type { JudgeResult } from "./helpers";
 
 export const runtime = "nodejs";
 
-const languageIds = {
-  go: 60,
-  python: 71,
-  javascript: 63,
-  typescript: 74,
-} as const;
-
-type Language = keyof typeof languageIds;
-type JudgeResult = {
-  stdout?: string | null;
-  stderr?: string | null;
-  compile_output?: string | null;
-  message?: string | null;
-  status?: { id: number; description: string };
-};
-
 const attempts = new Map<string, { count: number; resetAt: number }>();
-
-export function isLanguage(value: unknown): value is Language {
-  return typeof value === "string" && Object.hasOwn(languageIds, value);
-}
 
 function rateLimited(ip: string) {
   const now = Date.now();
@@ -35,16 +17,6 @@ function rateLimited(ip: string) {
   current.count += 1;
   return current.count > 12;
   // ponytail: this is per server instance; use a shared store if runner abuse becomes a real problem.
-}
-
-export function formatExecution(result: JudgeResult) {
-  const sections = [result.compile_output, result.stderr, result.stdout, result.message]
-    .filter((value): value is string => Boolean(value?.trim()));
-  const output = sections.join("\n");
-  if (output.trim()) return output.slice(0, 65_536);
-  return result.status?.id === 3
-    ? "Program finished without output."
-    : (result.status?.description ?? "Execution failed.");
 }
 
 function judgeHeaders() {

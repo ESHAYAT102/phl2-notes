@@ -4,7 +4,7 @@ import {
   DocsDescription,
   DocsPage,
   DocsTitle,
-} from "fumadocs-ui/page";
+} from "fumadocs-ui/layouts/glass/page";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/mdx-components";
 import type { Metadata } from "next";
@@ -111,13 +111,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   return (
     <DocsPage
       tableOfContent={{
-        style: "clerk",
         footer: projectPromo ? <ProjectPromo project={projectPromo} /> : undefined,
-      }}
-      tableOfContentPopover={{
-        footer: projectPromo ? (
-          <ProjectPromo project={projectPromo} />
-        ) : undefined,
       }}
       toc={page.data.toc}
       full={page.data.full}

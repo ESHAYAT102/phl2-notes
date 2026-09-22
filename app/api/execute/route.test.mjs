@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { formatExecution, isLanguage } from "./route.ts";
+import { formatExecution, isLanguage } from "./helpers.ts";
 
 describe("formatExecution", () => {
   test("prefers useful runner output and handles silent programs", () => {
